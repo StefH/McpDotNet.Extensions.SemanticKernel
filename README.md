@@ -1,5 +1,5 @@
 ﻿# McpDotNet.Extensions.SemanticKernel
-Microsoft SemanticKernel integration for the [Model Context Protocol](https://modelcontextprotocol.io) using [mcpdotnet](https://github.com/PederHP/mcpdotnet).
+[Microsoft SemanticKernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) integration for the [Model Context Protocol](https://modelcontextprotocol.io) using [mcpdotnet](https://github.com/PederHP/mcpdotnet).
 Enables seamless use of MCP tools as AI functions.
 
 ## NuGet
