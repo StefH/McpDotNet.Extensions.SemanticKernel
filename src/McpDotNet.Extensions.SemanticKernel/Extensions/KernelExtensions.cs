@@ -11,13 +11,14 @@ namespace McpDotNet.Extensions.SemanticKernel.Extensions;
 
 public static class KernelExtensions
 {
-    private static readonly ConcurrentDictionary<string, KernelPlugin> Map = new();
+    private static readonly ConcurrentDictionary<string, KernelPlugin> StdioMap = new();
+    private static readonly ConcurrentDictionary<string, KernelPlugin> SseMap = new();
 
     /// <summary>
     /// Creates a Model Content Protocol plugin from a Stdio server that contains the specified MCP functions and adds it into the plugin collection.
     /// </summary>
     /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
-    /// <param name="serverName">The MCP Server name</param>
+    /// <param name="serverName">The MCP Server name.</param>
     /// <param name="transportOptions">Additional transport-specific configuration.</param>
     /// <param name="loggerFactory">Optional <see cref="ILoggerFactory"/>.</param>
     /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
@@ -27,26 +28,53 @@ public static class KernelExtensions
         Guard.NotNullOrWhiteSpace(serverName);
         Guard.NotNull(transportOptions);
 
-        if (Map.TryGetValue(serverName, out var kernelPlugin))
+        if (StdioMap.TryGetValue(serverName, out var stdioKernelPlugin))
         {
-            return kernelPlugin;
+            return stdioKernelPlugin;
         }
 
-        var mcpClient = await GetStdioClientAsync(serverName, transportOptions, loggerFactory).ConfigureAwait(false);
+        var mcpClient = await GetClientAsync(serverName, null, transportOptions, loggerFactory).ConfigureAwait(false);
         var functions = await mcpClient.MapToFunctionsAsync().ConfigureAwait(false);
 
-        var plugin = plugins.AddFromFunctions(serverName, functions);
-
-        return Map[serverName] = plugin;
+        stdioKernelPlugin = plugins.AddFromFunctions(serverName, functions);
+        return StdioMap[serverName] = stdioKernelPlugin;
     }
 
-    private static async Task<IMcpClient> GetStdioClientAsync(string serverName, Dictionary<string, string> transportOptions, ILoggerFactory? loggerFactory = null)
+    /// <summary>
+    /// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="serverName">The MCP Server name.</param>
+    /// <param name="endpoint">The endpoint (location).</param>
+    /// <param name="loggerFactory">Optional <see cref="ILoggerFactory"/>.</param>
+    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, string serverName, string endpoint, ILoggerFactory? loggerFactory = null)
     {
+        Guard.NotNull(plugins);
+        Guard.NotNullOrWhiteSpace(serverName);
+        Guard.NotNull(endpoint);
+
+        if (SseMap.TryGetValue(serverName, out var sseKernelPlugin))
+        {
+            return sseKernelPlugin;
+        }
+
+        var mcpClient = await GetClientAsync(serverName, endpoint, null, loggerFactory).ConfigureAwait(false);
+        var functions = await mcpClient.MapToFunctionsAsync().ConfigureAwait(false);
+
+        sseKernelPlugin = plugins.AddFromFunctions(serverName, functions);
+        return SseMap[serverName] = sseKernelPlugin;
+    }
+
+    private static async Task<IMcpClient> GetClientAsync(string serverName, string? endpoint, Dictionary<string, string>? transportOptions, ILoggerFactory? loggerFactory = null)
+    {
+        var transportType = !string.IsNullOrEmpty(endpoint) ? TransportTypes.Sse : TransportTypes.StdIo;
+
         McpClientOptions options = new()
         {
             ClientInfo = new()
             {
-                Name = $"{serverName} Client",
+                Name = $"{serverName} {transportType}Client",
                 Version = "1.0.0"
             }
         };
@@ -55,7 +83,8 @@ public static class KernelExtensions
         {
             Id = serverName.ToLowerInvariant(),
             Name = serverName,
-            TransportType = TransportTypes.StdIo,
+            Location = endpoint,
+            TransportType = transportType,
             TransportOptions = transportOptions
         };
 
