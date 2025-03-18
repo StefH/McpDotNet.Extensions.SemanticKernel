@@ -18,14 +18,14 @@ var kernel = builder.Build();
 var everyThingTransportOptions = new Dictionary<string, string>
 {
     ["command"] = "npx",
-    ["arguments"] = "-y --verbose @modelcontextprotocol/server-everything"
+    ["arguments"] = "-y @modelcontextprotocol/server-everything"
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", everyThingTransportOptions);
 
 var githubTransportOptions = new Dictionary<string, string>
 {
     ["command"] = "npx",
-    ["arguments"] = "-y --verbose @modelcontextprotocol/server-github"
+    ["arguments"] = "-y @modelcontextprotocol/server-github"
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", githubTransportOptions);
 
