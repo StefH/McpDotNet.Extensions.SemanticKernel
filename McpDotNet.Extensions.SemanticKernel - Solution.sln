@@ -30,6 +30,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.SemanticKernel.St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.SemanticKernel.Sse.Example", "examples\McpDotNet.SemanticKernel.Sse.Example\McpDotNet.SemanticKernel.Sse.Example.csproj", "{F7557642-BEF3-E293-46BA-D1BF186130BE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub - Actions", "GitHub - Actions", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\BuildAndTest.yml = .github\workflows\BuildAndTest.yml
+		.github\workflows\CreateRelease.yml = .github\workflows\CreateRelease.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +67,7 @@ Global
 		{8C85F035-A84F-47D6-8376-042538DBA6A9} = {CEFF40B4-4435-408E-B0B9-F93903A8B470}
 		{4CE6D33C-AB94-4789-8348-80F003BAF1CC} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 		{F7557642-BEF3-E293-46BA-D1BF186130BE} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {6A9880FB-CAF7-4373-8877-3EFA092736C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45F31459-D6F5-441C-890A-F02A1328053D}

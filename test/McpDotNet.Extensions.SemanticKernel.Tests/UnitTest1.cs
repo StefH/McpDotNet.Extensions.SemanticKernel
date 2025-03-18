@@ -21,6 +21,8 @@ public sealed class UnitTest1
         var commits = await mcpClient.CallToolAsync("list_commits", new Dictionary<string, object> { { "owner", "StefH" }, { "repo", "FluentBuilder" } });
         commits.Content.SelectMany(c => c.Text ?? string.Empty).Should().Contain("229388090f50a39f489e30cb535f67f3705cf61f");
 
+        await mcpClient.DisposeAsync();
+
         server.Stop();
         server.Dispose();
     }
