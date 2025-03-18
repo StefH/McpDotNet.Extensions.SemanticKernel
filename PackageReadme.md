@@ -91,9 +91,3 @@ Here are the summaries of the last three commits to the `StefH/FluentBuilder` re
 
 All three commits involve updates to the README.md file, reflecting ongoing improvements or changes to the documentation.
 ```
-
-
-## 📖 References
-- https://github.com/PederHP/mcpdotnet
-- https://modelcontextprotocol.io
-- https://devblogs.microsoft.com/semantic-kernel/integrating-model-context-protocol-tools-with-semantic-kernel-a-step-by-step-guide/
