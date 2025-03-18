@@ -12,22 +12,18 @@ public sealed class UnitTest1
     [Fact]
     public async Task Test1()
     {
-        var (server, mcpClient) = await GetMcpClientAsync();
+        await using var tuple = await GetMcpClientAsync();
+        var mcpClient = tuple.Item1;
 
         // Assert
-        var tools = await mcpClient.ListToolsAsync();
+        var tools = await tuple.Item1.ListToolsAsync();
         tools.Tools.Should().HaveCount(17);
 
         var commits = await mcpClient.CallToolAsync("list_commits", new Dictionary<string, object> { { "owner", "StefH" }, { "repo", "FluentBuilder" } });
         commits.Content.SelectMany(c => c.Text ?? string.Empty).Should().Contain("229388090f50a39f489e30cb535f67f3705cf61f");
-
-        await mcpClient.DisposeAsync();
-
-        server.Stop();
-        server.Dispose();
     }
 
-    private static async Task<(WireMockServer, IMcpClient)> GetMcpClientAsync()
+    private static async Task<AsyncDisposableTuple<IMcpClient, WireMockServer>> GetMcpClientAsync()
     {
         var server = InitWireMockServer();
 
@@ -50,16 +46,21 @@ public sealed class UnitTest1
             LoggerFactory.Create(c => c.AddConsole())
         );
 
-        return (server, await factory.GetClientAsync(config.Id));
+        return new(await factory.GetClientAsync(config.Id), server);
     }
 
     private static WireMockServer InitWireMockServer()
     {
-        bool firstMessage = true;
-        bool toolsSent = false;
-        bool commitsSent = false;
+        var firstMessage = true;
+        var toolsSent = false;
+        var commitsSent = false;
         var tscTools = new TaskCompletionSource(false);
         var tscListCommits = new TaskCompletionSource(false);
+
+        var initializeResponse =
+            """
+            {"jsonrpc":"2.0","id":2,"result":{"protocolVersion":"2024-11-05","capabilities":{"logging":{},"prompts":{"listChanged":true},"resources":{"subscribe":true,"listChanged":true},"tools":{"listChanged":true}},"serverInfo":{"name":"ExampleServer","version":"1.0.0"}}}
+            """;
 
         var toolsResponse =
             """
@@ -80,7 +81,7 @@ public sealed class UnitTest1
                 .WithHeader("Content-Type", "text/event-stream")
                 .WithHeader("Cache-Control", "no-cache")
                 .WithHeader("Connection", "keep-alive")
-                .WithBody(async reqMsg =>
+                .WithBody(async _ =>
                 {
                     if (firstMessage)
                     {
@@ -105,11 +106,6 @@ public sealed class UnitTest1
                     return string.Empty;
                 })
             );
-
-        var initializeResponse =
-            """
-            {"jsonrpc":"2.0","id":2,"result":{"protocolVersion":"2024-11-05","capabilities":{"logging":{},"prompts":{"listChanged":true},"resources":{"subscribe":true,"listChanged":true},"tools":{"listChanged":true}},"serverInfo":{"name":"ExampleServer","version":"1.0.0"}}}
-            """;
 
         server
             .WhenRequest(r => r
@@ -142,7 +138,7 @@ public sealed class UnitTest1
                 .WithBody("{\"jsonrpc\":\"2.0\",\"id\":3,\"method\":\"tools/list\"}")
             )
             .ThenRespondWith(r => r
-                .WithBody(reqMsg =>
+                .WithBody(_ =>
                 {
                     tscTools.SetResult();
                     return "accepted";
@@ -156,7 +152,7 @@ public sealed class UnitTest1
                 .WithBody("{\"jsonrpc\":\"2.0\",\"id\":4,\"method\":\"tools/call\",\"params\":{\"name\":\"list_commits\",\"arguments\":{\"owner\":\"StefH\",\"repo\":\"FluentBuilder\"}}}")
             )
             .ThenRespondWith(r => r
-                .WithBody(reqMsg =>
+                .WithBody(_ =>
                 {
                     tscListCommits.SetResult();
                     return "accepted";
