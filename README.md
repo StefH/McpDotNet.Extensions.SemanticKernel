@@ -5,6 +5,23 @@ Enables seamless use of MCP tools as AI functions.
 ## NuGet
 [![NuGet Badge](https://img.shields.io/nuget/v/McpDotNet.Extensions.SemanticKernel)](https://www.nuget.org/packages/McpDotNet.Extensions.SemanticKernel) 
 
+## Overview
+``` mermaid
+---
+title: "Overview"
+---
+
+graph LR;
+    SK[Semantic Kernel<br>'OpenAI'] 
+    MCPClient[MCPClient<br>'Function Calling']
+    MCPServer[Local MCP Server<br>'server-github'] 
+    GitHub[GitHub]
+
+    SK <-- C# --> MCPClient
+    MCPClient <-- MCP Protocol --> MCPServer
+    MCPServer <-- Web API --> GitHub
+```
+
 ## 💻 Stdio Example
 ### Code
 ``` csharp
