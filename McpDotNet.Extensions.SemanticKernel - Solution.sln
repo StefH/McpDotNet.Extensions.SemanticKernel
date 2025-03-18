@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{94D1D405-E9C2-4FB3-A220-1E5C4AB2C2B4}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-examples", "src-examples", "{6F341AD1-BB1C-4CCF-91B7-F55688619CEE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6A9880FB-CAF7-4373-8877-3EFA092736C0}"
+	ProjectSection(SolutionItems) = preProject
+		Generate-ReleaseNotes.bat = Generate-ReleaseNotes.bat
+		PackageReadme.md = PackageReadme.md
+		PackageReleaseNotes.template = PackageReleaseNotes.template
+		PackageReleaseNotes.txt = PackageReleaseNotes.txt
+		README.md = README.md
+		ReleaseNotes.md = ReleaseNotes.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CEFF40B4-4435-408E-B0B9-F93903A8B470}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.Extensions.SemanticKernel", "src\McpDotNet.Extensions.SemanticKernel\McpDotNet.Extensions.SemanticKernel.csproj", "{11EBC1C0-D211-A398-BA4E-652525E893E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.Extensions.SemanticKernel.Tests", "test\McpDotNet.Extensions.SemanticKernel.Tests\McpDotNet.Extensions.SemanticKernel.Tests.csproj", "{8C85F035-A84F-47D6-8376-042538DBA6A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.SemanticKernel.Stdio.Example", "examples\McpDotNet.SemanticKernel.Stdio.Example\McpDotNet.SemanticKernel.Stdio.Example.csproj", "{4CE6D33C-AB94-4789-8348-80F003BAF1CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.SemanticKernel.Sse.Example", "examples\McpDotNet.SemanticKernel.Sse.Example\McpDotNet.SemanticKernel.Sse.Example.csproj", "{F7557642-BEF3-E293-46BA-D1BF186130BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11EBC1C0-D211-A398-BA4E-652525E893E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11EBC1C0-D211-A398-BA4E-652525E893E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11EBC1C0-D211-A398-BA4E-652525E893E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11EBC1C0-D211-A398-BA4E-652525E893E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C85F035-A84F-47D6-8376-042538DBA6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C85F035-A84F-47D6-8376-042538DBA6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C85F035-A84F-47D6-8376-042538DBA6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C85F035-A84F-47D6-8376-042538DBA6A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CE6D33C-AB94-4789-8348-80F003BAF1CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CE6D33C-AB94-4789-8348-80F003BAF1CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CE6D33C-AB94-4789-8348-80F003BAF1CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CE6D33C-AB94-4789-8348-80F003BAF1CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{11EBC1C0-D211-A398-BA4E-652525E893E3} = {94D1D405-E9C2-4FB3-A220-1E5C4AB2C2B4}
+		{8C85F035-A84F-47D6-8376-042538DBA6A9} = {CEFF40B4-4435-408E-B0B9-F93903A8B470}
+		{4CE6D33C-AB94-4789-8348-80F003BAF1CC} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
+		{F7557642-BEF3-E293-46BA-D1BF186130BE} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45F31459-D6F5-441C-890A-F02A1328053D}
+	EndGlobalSection
+EndGlobal

@@ -1,26 +1,6 @@
 ﻿# McpDotNet.Extensions.SemanticKernel
-[Microsoft SemanticKernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) integration for the [Model Context Protocol](https://modelcontextprotocol.io) using [mcpdotnet](https://github.com/PederHP/mcpdotnet).
+Microsoft SemanticKernel integration for the [Model Context Protocol](https://modelcontextprotocol.io) using [mcpdotnet](https://github.com/PederHP/mcpdotnet).
 Enables seamless use of MCP tools as AI functions.
-
-## NuGet
-[![NuGet Badge](https://img.shields.io/nuget/v/McpDotNet.Extensions.SemanticKernel)](https://www.nuget.org/packages/McpDotNet.Extensions.SemanticKernel) 
-
-## Overview
-``` mermaid
----
-title: "Overview"
----
-
-graph LR;
-    SK[Semantic Kernel<br>'OpenAI'] 
-    MCPClient[MCPClient<br>'Function Calling']
-    MCPServer[Local MCP Server<br>'server-github'] 
-    GitHub[GitHub]
-
-    SK <-- C# --> MCPClient
-    MCPClient <-- MCP Protocol --> MCPServer
-    MCPServer <-- Web API --> GitHub
-```
 
 ## 💻 Stdio Example
 ### Code
@@ -38,7 +18,7 @@ var kernel = builder.Build();
 var transportOptions = new Dictionary<string, string>
 {
     ["command"] = "npx",
-    ["arguments"] = "-y @modelcontextprotocol/server-everything"
+    ["arguments"] = "-y --verbose @modelcontextprotocol/server-everything"
 };
 // 💡 Add this line to enable MCP functions from a Stdio server named "Everything"
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", transportOptions);
@@ -84,7 +64,7 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-var prompt = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
+var prompt = "Summarize the last 3 commits to the StefH/FluentBuilder repository?";
 var result = await kernel.InvokePromptAsync(prompt, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{prompt}\n{result}");
 ```
@@ -111,9 +91,3 @@ Here are the summaries of the last three commits to the `StefH/FluentBuilder` re
 
 All three commits involve updates to the README.md file, reflecting ongoing improvements or changes to the documentation.
 ```
-
-
-## 📖 References
-- https://github.com/PederHP/mcpdotnet
-- https://modelcontextprotocol.io
-- https://devblogs.microsoft.com/semantic-kernel/integrating-model-context-protocol-tools-with-semantic-kernel-a-step-by-step-guide/
