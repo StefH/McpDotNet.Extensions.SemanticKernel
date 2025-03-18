@@ -67,7 +67,7 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-var prompt = "Summarize the last 3 commits to the StefH/FluentBuilder repository?";
+var prompt = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
 var result = await kernel.InvokePromptAsync(prompt, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{prompt}\n{result}");
 ```

@@ -9,6 +9,9 @@ using Stef.Validation;
 
 namespace McpDotNet.Extensions.SemanticKernel.Extensions;
 
+/// <summary>
+/// Extension methods for KernelPlugin
+/// </summary>
 public static class KernelExtensions
 {
     private static readonly ConcurrentDictionary<string, KernelPlugin> StdioMap = new();
@@ -96,5 +99,4 @@ public static class KernelExtensions
 
         return await factory.GetClientAsync(config.Id).ConfigureAwait(false);
     }
-
 }

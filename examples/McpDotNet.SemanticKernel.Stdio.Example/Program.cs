@@ -14,12 +14,21 @@ builder.Services.AddOpenAIChatCompletion(
 
 var kernel = builder.Build();
 
-var transportOptions = new Dictionary<string, string>
+
+var everyThingTransportOptions = new Dictionary<string, string>
 {
     ["command"] = "npx",
     ["arguments"] = "-y --verbose @modelcontextprotocol/server-everything"
 };
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", transportOptions);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", everyThingTransportOptions);
+
+var githubTransportOptions = new Dictionary<string, string>
+{
+    ["command"] = "npx",
+    ["arguments"] = "-y --verbose @modelcontextprotocol/server-github"
+};
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", githubTransportOptions);
+
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {
@@ -27,6 +36,10 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-var prompt = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
-var result = await kernel.InvokePromptAsync(prompt, new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\n{prompt}\n{result}");
+var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
+var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{prompt1}\n{result1}");
+
+var prompt2 = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
+var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{prompt2}\n{result2}");

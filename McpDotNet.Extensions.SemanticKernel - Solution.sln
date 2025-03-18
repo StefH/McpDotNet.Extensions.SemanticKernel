@@ -24,8 +24,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CEFF40B4-4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.Extensions.SemanticKernel", "src\McpDotNet.Extensions.SemanticKernel\McpDotNet.Extensions.SemanticKernel.csproj", "{11EBC1C0-D211-A398-BA4E-652525E893E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SemanticKernelAndModelContextProtocol", "src\SemanticKernelAndModelContextProtocol\SemanticKernelAndModelContextProtocol.csproj", "{6A129A7C-ECA5-8389-BE5E-061DAE46C2B0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.Extensions.SemanticKernel.Tests", "test\McpDotNet.Extensions.SemanticKernel.Tests\McpDotNet.Extensions.SemanticKernel.Tests.csproj", "{8C85F035-A84F-47D6-8376-042538DBA6A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpDotNet.SemanticKernel.Stdio.Example", "examples\McpDotNet.SemanticKernel.Stdio.Example\McpDotNet.SemanticKernel.Stdio.Example.csproj", "{4CE6D33C-AB94-4789-8348-80F003BAF1CC}"
@@ -42,10 +40,6 @@ Global
 		{11EBC1C0-D211-A398-BA4E-652525E893E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11EBC1C0-D211-A398-BA4E-652525E893E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11EBC1C0-D211-A398-BA4E-652525E893E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A129A7C-ECA5-8389-BE5E-061DAE46C2B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A129A7C-ECA5-8389-BE5E-061DAE46C2B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A129A7C-ECA5-8389-BE5E-061DAE46C2B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A129A7C-ECA5-8389-BE5E-061DAE46C2B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C85F035-A84F-47D6-8376-042538DBA6A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C85F035-A84F-47D6-8376-042538DBA6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C85F035-A84F-47D6-8376-042538DBA6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,7 +58,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{11EBC1C0-D211-A398-BA4E-652525E893E3} = {94D1D405-E9C2-4FB3-A220-1E5C4AB2C2B4}
-		{6A129A7C-ECA5-8389-BE5E-061DAE46C2B0} = {94D1D405-E9C2-4FB3-A220-1E5C4AB2C2B4}
 		{8C85F035-A84F-47D6-8376-042538DBA6A9} = {CEFF40B4-4435-408E-B0B9-F93903A8B470}
 		{4CE6D33C-AB94-4789-8348-80F003BAF1CC} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 		{F7557642-BEF3-E293-46BA-D1BF186130BE} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
