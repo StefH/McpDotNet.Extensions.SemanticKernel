@@ -13,8 +13,13 @@
     <PackageReference Include="AwesomeAssertions" Version="8.0.2" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="WireMock.Net" Version="1.7.4" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\McpDotNet.Extensions.SemanticKernel\McpDotNet.Extensions.SemanticKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
