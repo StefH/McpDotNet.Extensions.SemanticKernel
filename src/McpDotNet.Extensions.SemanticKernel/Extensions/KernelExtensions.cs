@@ -48,7 +48,7 @@ public static class KernelExtensions
     /// <param name="endpoint">The endpoint (location).</param>
     /// <param name="loggerFactory">Optional <see cref="ILoggerFactory"/>.</param>
     /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
-    public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, string serverName, string endpoint, ILoggerFactory? loggerFactory = null)
+    public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, string serverName, string endpoint, ILoggerFactory? loggerFactory = null)
     {
         Guard.NotNull(plugins);
         Guard.NotNullOrWhiteSpace(serverName);

@@ -14,12 +14,7 @@ builder.Services.AddOpenAIChatCompletion(
 
 var kernel = builder.Build();
 
-var transportOptions = new Dictionary<string, string>
-{
-    ["command"] = "npx",
-    ["arguments"] = "-y --verbose @modelcontextprotocol/server-github"
-};
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", transportOptions);
+await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", "http://localhost:12345");
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {
