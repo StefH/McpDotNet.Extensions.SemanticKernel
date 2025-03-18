@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.0.1-preview-02</Version>
+    <Version>0.0.1-preview-03</Version>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
     <Copyright>Copyright © 2025 Stef Heyenrath</Copyright>

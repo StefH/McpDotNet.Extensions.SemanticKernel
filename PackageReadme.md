@@ -56,7 +56,7 @@ var kernel = builder.Build();
 
 // 💡 Add this line to enable MCP functions from a Sse server named "Github"
 // - Note that a server must be running at the specified URL
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "http://localhost:12345");
+await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", "http://localhost:12345");
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {
