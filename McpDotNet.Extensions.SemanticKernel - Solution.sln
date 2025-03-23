@@ -36,6 +36,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub - Actions", "GitHub 
 		.github\workflows\CreateRelease.yml = .github\workflows\CreateRelease.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol.Extensions.SemanticKernel", "src\ModelContextProtocol.Extensions.SemanticKernel\ModelContextProtocol.Extensions.SemanticKernel.csproj", "{B574F31A-9B51-1747-276A-3D3616DFAEBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol.SemanticKernel.Stdio.Example", "examples\ModelContextProtocol.SemanticKernel.Stdio.Example\ModelContextProtocol.SemanticKernel.Stdio.Example.csproj", "{1770369F-0E3A-D588-D82C-1B50FC3A38AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +62,14 @@ Global
 		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B574F31A-9B51-1747-276A-3D3616DFAEBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B574F31A-9B51-1747-276A-3D3616DFAEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B574F31A-9B51-1747-276A-3D3616DFAEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B574F31A-9B51-1747-276A-3D3616DFAEBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1770369F-0E3A-D588-D82C-1B50FC3A38AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1770369F-0E3A-D588-D82C-1B50FC3A38AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1770369F-0E3A-D588-D82C-1B50FC3A38AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1770369F-0E3A-D588-D82C-1B50FC3A38AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +80,8 @@ Global
 		{4CE6D33C-AB94-4789-8348-80F003BAF1CC} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 		{F7557642-BEF3-E293-46BA-D1BF186130BE} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {6A9880FB-CAF7-4373-8877-3EFA092736C0}
+		{B574F31A-9B51-1747-276A-3D3616DFAEBA} = {94D1D405-E9C2-4FB3-A220-1E5C4AB2C2B4}
+		{1770369F-0E3A-D588-D82C-1B50FC3A38AF} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45F31459-D6F5-441C-890A-F02A1328053D}
