@@ -19,5 +19,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: 'Tests'
+    - name: 'Test ModelContextProtocol'
+      run: dotnet test './test/ModelContextProtocol-SemanticKernel.Tests/ModelContextProtocol-SemanticKernel.Tests.csproj' -c Release
+
+    - name: 'Test McpDotNet'
       run: dotnet test './test/McpDotNet.Extensions.SemanticKernel.Tests/McpDotNet.Extensions.SemanticKernel.Tests.csproj' -c Release
