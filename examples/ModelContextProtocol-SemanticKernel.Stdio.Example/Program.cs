@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
-using ModelContextProtocol.Extensions.SemanticKernel.Extensions;
+using ModelContextProtocol.SemanticKernel.Extensions;
 
 var builder = Kernel.CreateBuilder();
 builder.Services.AddLogging(c => c.AddDebug().SetMinimumLevel(LogLevel.Trace));

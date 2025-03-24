@@ -36,9 +36,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub - Actions", "GitHub 
 		.github\workflows\CreateRelease.yml = .github\workflows\CreateRelease.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol.Extensions.SemanticKernel", "src\ModelContextProtocol.Extensions.SemanticKernel\ModelContextProtocol.Extensions.SemanticKernel.csproj", "{B574F31A-9B51-1747-276A-3D3616DFAEBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol-SemanticKernel", "src\ModelContextProtocol-SemanticKernel\ModelContextProtocol-SemanticKernel.csproj", "{B983463E-5AED-7BE0-036A-BBDEFB1FF88A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol.SemanticKernel.Stdio.Example", "examples\ModelContextProtocol.SemanticKernel.Stdio.Example\ModelContextProtocol.SemanticKernel.Stdio.Example.csproj", "{1770369F-0E3A-D588-D82C-1B50FC3A38AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol-SemanticKernel.Stdio.Example", "examples\ModelContextProtocol-SemanticKernel.Stdio.Example\ModelContextProtocol-SemanticKernel.Stdio.Example.csproj", "{97D0B511-01D2-9C60-F21F-4DB57BCFA634}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol-SemanticKernel.Tests", "test\ModelContextProtocol-SemanticKernel.Tests\ModelContextProtocol-SemanticKernel.Tests.csproj", "{F5EBA730-287E-1CCD-2943-734E858BB678}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol-SemanticKernel.Sse.Example", "examples\ModelContextProtocol-SemanticKernel.Sse.Example\ModelContextProtocol-SemanticKernel.Sse.Example.csproj", "{801B72A5-BBD1-0FBA-CBB4-134411118920}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,14 +66,22 @@ Global
 		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7557642-BEF3-E293-46BA-D1BF186130BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B574F31A-9B51-1747-276A-3D3616DFAEBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B574F31A-9B51-1747-276A-3D3616DFAEBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B574F31A-9B51-1747-276A-3D3616DFAEBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B574F31A-9B51-1747-276A-3D3616DFAEBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1770369F-0E3A-D588-D82C-1B50FC3A38AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1770369F-0E3A-D588-D82C-1B50FC3A38AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1770369F-0E3A-D588-D82C-1B50FC3A38AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1770369F-0E3A-D588-D82C-1B50FC3A38AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B983463E-5AED-7BE0-036A-BBDEFB1FF88A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B983463E-5AED-7BE0-036A-BBDEFB1FF88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B983463E-5AED-7BE0-036A-BBDEFB1FF88A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B983463E-5AED-7BE0-036A-BBDEFB1FF88A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97D0B511-01D2-9C60-F21F-4DB57BCFA634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D0B511-01D2-9C60-F21F-4DB57BCFA634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97D0B511-01D2-9C60-F21F-4DB57BCFA634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97D0B511-01D2-9C60-F21F-4DB57BCFA634}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5EBA730-287E-1CCD-2943-734E858BB678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5EBA730-287E-1CCD-2943-734E858BB678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5EBA730-287E-1CCD-2943-734E858BB678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5EBA730-287E-1CCD-2943-734E858BB678}.Release|Any CPU.Build.0 = Release|Any CPU
+		{801B72A5-BBD1-0FBA-CBB4-134411118920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{801B72A5-BBD1-0FBA-CBB4-134411118920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{801B72A5-BBD1-0FBA-CBB4-134411118920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{801B72A5-BBD1-0FBA-CBB4-134411118920}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,8 +92,10 @@ Global
 		{4CE6D33C-AB94-4789-8348-80F003BAF1CC} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 		{F7557642-BEF3-E293-46BA-D1BF186130BE} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {6A9880FB-CAF7-4373-8877-3EFA092736C0}
-		{B574F31A-9B51-1747-276A-3D3616DFAEBA} = {94D1D405-E9C2-4FB3-A220-1E5C4AB2C2B4}
-		{1770369F-0E3A-D588-D82C-1B50FC3A38AF} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
+		{B983463E-5AED-7BE0-036A-BBDEFB1FF88A} = {94D1D405-E9C2-4FB3-A220-1E5C4AB2C2B4}
+		{97D0B511-01D2-9C60-F21F-4DB57BCFA634} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
+		{F5EBA730-287E-1CCD-2943-734E858BB678} = {CEFF40B4-4435-408E-B0B9-F93903A8B470}
+		{801B72A5-BBD1-0FBA-CBB4-134411118920} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45F31459-D6F5-441C-890A-F02A1328053D}
