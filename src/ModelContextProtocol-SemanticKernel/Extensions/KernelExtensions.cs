@@ -5,7 +5,9 @@ using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Configuration;
 using ModelContextProtocol.Protocol.Transport;
+using ModelContextProtocol.SemanticKernel.Options;
 using Stef.Validation;
+using Stef.Validation.Options;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
 
@@ -26,18 +28,55 @@ public static class KernelExtensions
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
-    public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, string serverName, Dictionary<string, string> transportOptions, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
+    public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, string serverName, Dictionary<string, string> transportOptions, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
+    {
+        return AddMcpFunctionsFromStdioServerAsync(plugins, new ModelContextProtocolSemanticKernelStdioOptions
+        {
+            Name = serverName,
+            TransportOptions = transportOptions,
+            LoggerFactory = loggerFactory
+        }, cancellationToken);
+    }
+
+    /// <summary>
+    /// Creates a Model Content Protocol plugin from a Stdio server that contains the specified MCP functions and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelStdioOptions"/> callback.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, Action<ModelContextProtocolSemanticKernelStdioOptions> optionsCallback, CancellationToken cancellationToken = default)
+    {
+        Guard.NotNull(optionsCallback);
+
+        var options = new ModelContextProtocolSemanticKernelStdioOptions();
+        optionsCallback(options);
+
+        return AddMcpFunctionsFromStdioServerAsync(plugins, options, cancellationToken);
+    }
+
+    /// <summary>
+    /// Creates a Model Content Protocol plugin from a Stdio server that contains the specified MCP functions and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="options">The <see cref="ModelContextProtocolSemanticKernelStdioOptions"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelStdioOptions options, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
-        Guard.NotNullOrWhiteSpace(serverName);
-        Guard.NotNull(transportOptions);
+        Guard.NotNull(options);
+
+        DataAnnotationOptionsValidator<ModelContextProtocolSemanticKernelStdioOptions>.ValidateAndThrow(options);
+
+        var serverName = options.Name;
 
         if (StdioMap.TryGetValue(serverName, out var stdioKernelPlugin))
         {
             return stdioKernelPlugin;
         }
 
-        var mcpClient = await GetClientAsync(serverName, null, transportOptions, loggerFactory, cancellationToken).ConfigureAwait(false);
+        var mcpClient = await GetClientAsync(serverName, null, options.TransportOptions, options.LoggerFactory, cancellationToken).ConfigureAwait(false);
         var functions = await mcpClient.MapToFunctionsAsync(cancellationToken).ConfigureAwait(false);
 
         stdioKernelPlugin = plugins.AddFromFunctions(serverName, functions);
