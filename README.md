@@ -1,9 +1,13 @@
 ﻿# McpDotNet.Extensions.SemanticKernel
-[Microsoft SemanticKernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) integration for the [Model Context Protocol](https://modelcontextprotocol.io) using [mcpdotnet](https://github.com/PederHP/mcpdotnet).
+[Microsoft SemanticKernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) integration for the [Model Context Protocol](https://modelcontextprotocol.io) using the [csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk).
 Enables seamless use of MCP tools as AI functions.
 
 ## NuGet
-[![NuGet Badge](https://img.shields.io/nuget/v/McpDotNet.Extensions.SemanticKernel)](https://www.nuget.org/packages/McpDotNet.Extensions.SemanticKernel) 
+### ModelContextProtocol
+[![NuGet Badge](https://img.shields.io/nuget/v/ModelContextProtocol-SemanticKernel)](https://www.nuget.org/packages/ModelContextProtocol-SemanticKernel)
+
+### McpDotNet (obsolete)
+[![NuGet Badge](https://img.shields.io/nuget/v/McpDotNet.Extensions.SemanticKernel)](https://www.nuget.org/packages/McpDotNet.Extensions.SemanticKernel)
 
 ## Overview
 ``` mermaid
@@ -114,6 +118,7 @@ All three commits involve updates to the README.md file, reflecting ongoing impr
 
 
 ## 📖 References
-- https://github.com/PederHP/mcpdotnet
 - https://modelcontextprotocol.io
+- https://github.com/PederHP/mcpdotnet
+- https://github.com/modelcontextprotocol/csharp-sdk
 - https://devblogs.microsoft.com/semantic-kernel/integrating-model-context-protocol-tools-with-semantic-kernel-a-step-by-step-guide/
