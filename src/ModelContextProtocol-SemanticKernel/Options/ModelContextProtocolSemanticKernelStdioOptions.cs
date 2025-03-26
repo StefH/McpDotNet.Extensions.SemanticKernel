@@ -10,5 +10,5 @@ public class ModelContextProtocolSemanticKernelStdioOptions : ModelContextProtoc
     /// Additional transport-specific configuration.
     /// </summary>
     [Required]
-    public Dictionary<string, string>? TransportOptions { get; init; }
+    public Dictionary<string, string> TransportOptions { get; init; } = [];
 }
