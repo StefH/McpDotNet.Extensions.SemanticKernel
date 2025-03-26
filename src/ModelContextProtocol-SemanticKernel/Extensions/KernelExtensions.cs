@@ -98,7 +98,7 @@ public static class KernelExtensions
     {
         Guard.NotNull(plugins);
         Guard.NotNullOrWhiteSpace(serverName);
-        Guard.NotNull(endpoint);
+        Guard.NotNullOrWhiteSpace(endpoint);
 
         if (SseMap.TryGetValue(serverName, out var sseKernelPlugin))
         {
