@@ -1,6 +1,4 @@
 # 0.0.1-preview-02 (26 March 2025)
-- #1 Add code [enhancement]
-- #2 Integrate with new ModelContextProtocol C# SDK [enhancement]
 - #3 Add Options [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md
