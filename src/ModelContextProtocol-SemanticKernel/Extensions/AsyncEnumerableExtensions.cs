@@ -1,4 +1,6 @@
-﻿namespace ModelContextProtocol.SemanticKernel.Extensions;
+﻿// Copyright (c) Stef Heyenrath.
+
+namespace ModelContextProtocol.SemanticKernel.Extensions;
 
 internal static class AsyncEnumerableExtensions
 {

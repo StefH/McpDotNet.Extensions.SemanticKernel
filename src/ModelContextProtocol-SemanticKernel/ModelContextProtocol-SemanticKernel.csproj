@@ -16,6 +16,7 @@
     <PackageTags>mcp;ai;ModelContextProtocol;LLM;Microsoft-SemanticKernel;SemanticKernel;prompt</PackageTags>
     <Description>Microsoft SemanticKernel integration for the ModelContextProtocol (official C# SDK). Enables seamless use of MCP tools as AI functions.</Description>
     <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
+    <UserSecretsId>16581209-7e82-4c54-a4a0-d3350139703e</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -28,9 +29,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="IsExternalInit" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.41.0" />
     <PackageReference Include="ModelContextProtocol" Version="0.1.0-preview.1.25171.12" />
-    <PackageReference Include="Stef.Validation" Version="0.1.1" />
+    <PackageReference Include="Stef.Validation.Options" Version="0.1.1" />
   </ItemGroup>
 
   <ItemGroup>
