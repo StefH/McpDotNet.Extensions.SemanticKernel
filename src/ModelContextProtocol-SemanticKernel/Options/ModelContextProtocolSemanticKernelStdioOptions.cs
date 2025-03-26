@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// Copyright (c) Stef Heyenrath
+
+using System.ComponentModel.DataAnnotations;
 
 namespace ModelContextProtocol.SemanticKernel.Options;
 
