@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Server;
 
 namespace ModelContextProtocolServer.OpenXml.Stdio;
@@ -14,8 +13,6 @@ public static class WeatherTools
         HttpClient client,
         [Description("The US state to get alerts for.")] string state)
     {
-        //logger.LogInformation("Get weather alerts for a US state. {state}", state);
-
         var jsonElement = await client.GetFromJsonAsync<JsonElement>($"/alerts/active/area/{state}");
         var alerts = jsonElement.GetProperty("features").EnumerateArray();
 

@@ -81,6 +81,11 @@ public static class KernelExtensions
         var mcpClient = await GetClientAsync(serverName, null, options.TransportOptions, options.LoggerFactory, cancellationToken).ConfigureAwait(false);
         var functions = await mcpClient.MapToFunctionsAsync(cancellationToken).ConfigureAwait(false);
 
+        cancellationToken.Register(() =>
+        {
+            mcpClient.DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        });
+
         stdioKernelPlugin = plugins.AddFromFunctions(serverName, functions);
         return StdioMap[serverName] = stdioKernelPlugin;
     }
@@ -149,6 +154,8 @@ public static class KernelExtensions
 
         var mcpClient = await GetClientAsync(serverName, options.Endpoint, null, options.LoggerFactory, cancellationToken).ConfigureAwait(false);
         var functions = await mcpClient.MapToFunctionsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+
+        cancellationToken.Register(() => mcpClient.DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult());
 
         sseKernelPlugin = plugins.AddFromFunctions(serverName, functions);
         return SseMap[serverName] = sseKernelPlugin;
