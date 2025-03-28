@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Microsoft.
 
+using System.Collections.ObjectModel;
 using System.Text.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
@@ -21,7 +22,7 @@ internal static class ModelContextProtocolExtensions
     internal static async Task<IReadOnlyList<KernelFunction>> MapToFunctionsAsync(this IMcpClient mcpClient, CancellationToken cancellationToken = default)
     {
         var functions = new List<KernelFunction>();
-        await foreach (var tool in mcpClient.ListToolsAsync(cancellationToken: cancellationToken).ConfigureAwait(false))
+        foreach (var tool in await mcpClient.ListToolsAsync(cancellationToken).ConfigureAwait(false))
         {
             functions.Add(tool.ToKernelFunction(mcpClient));
         }
@@ -29,14 +30,14 @@ internal static class ModelContextProtocolExtensions
         return functions;
     }
 
-    private static KernelFunction ToKernelFunction(this Tool tool, IMcpClient mcpClient)
+    private static KernelFunction ToKernelFunction(this McpClientTool tool, IMcpClient mcpClient)
     {
         async Task<string> InvokeToolAsync(Kernel kernel, KernelFunction function, KernelArguments arguments, CancellationToken cancellationToken)
         {
             try
             {
                 // Convert arguments to dictionary format expected by ModelContextProtocol
-                Dictionary<string, object> mcpArguments = [];
+                Dictionary<string, object?> mcpArguments = [];
                 foreach (var arg in arguments)
                 {
                     if (arg.Value is not null)
@@ -48,7 +49,7 @@ internal static class ModelContextProtocolExtensions
                 // Call the tool through ModelContextProtocol
                 var result = await mcpClient.CallToolAsync(
                     tool.Name,
-                    mcpArguments,
+                    new ReadOnlyDictionary<string, object?>(mcpArguments),
                     cancellationToken: cancellationToken
                 ).ConfigureAwait(false);
 
@@ -112,9 +113,9 @@ internal static class ModelContextProtocolExtensions
         return value;
     }
 
-    private static List<KernelParameterMetadata>? ToParameters(this Tool tool)
+    private static List<KernelParameterMetadata>? ToParameters(this McpClientTool tool)
     {
-        var inputSchema = JsonSerializer.Deserialize<JsonSchema>(tool.InputSchema.GetRawText());
+        var inputSchema = JsonSerializer.Deserialize<JsonSchema>(tool.JsonSchema.GetRawText());
         var properties = inputSchema?.Properties;
         if (properties == null)
         {
