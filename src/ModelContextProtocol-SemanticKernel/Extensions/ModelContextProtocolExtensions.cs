@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Text.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
-using ModelContextProtocol.Protocol.Types;
 using ModelContextProtocol.SemanticKernel.Types;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
