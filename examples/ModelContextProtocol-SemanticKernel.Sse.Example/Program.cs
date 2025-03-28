@@ -16,7 +16,10 @@ builder.Services.AddOpenAIChatCompletion(
     apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY")!);
 
 var kernel = builder.Build();
-await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", wireMockServer.Url!);
+
+// await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", wireMockServer.Url!);
+
+await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("Echo", "http://localhost:3001/sse");
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {
@@ -24,9 +27,13 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-var prompt = "Summarize the last commit to the StefH/FluentBuilder repository";
-var result = await kernel.InvokePromptAsync(prompt, new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\n{prompt}\n{result}");
+var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
+var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{prompt1}\n{result1}");
+
+//var prompt2 = "Summarize the last commit to the StefH/FluentBuilder repository";
+//var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\n{prompt2}\n{result2}");
 
 return;
 

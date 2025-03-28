@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.OpenXml.Stdio", "wip\ModelContextProtocolServer.OpenXml.Stdio\ModelContextProtocolServer.OpenXml.Stdio.csproj", "{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.OpenXml.Sse", "wip\ModelContextProtocolServer.OpenXml.Sse\ModelContextProtocolServer.OpenXml.Sse.csproj", "{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,10 @@ Global
 		{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
