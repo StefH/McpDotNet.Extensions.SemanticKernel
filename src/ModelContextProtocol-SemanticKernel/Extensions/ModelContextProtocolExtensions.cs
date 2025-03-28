@@ -48,7 +48,7 @@ internal static class ModelContextProtocolExtensions
                 // Call the tool through ModelContextProtocol
                 var result = await mcpClient.CallToolAsync(
                     tool.Name,
-                    new ReadOnlyDictionary<string, object?>(mcpArguments),
+                    mcpArguments.AsReadOnly(),
                     cancellationToken: cancellationToken
                 ).ConfigureAwait(false);
 
