@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Configuration;
 using ModelContextProtocol.Protocol.Transport;
-using ModelContextProtocol.SemanticKernel.Extensions;
 using WireMock.Server;
 
 namespace ModelContextProtocol.SemanticKernel.Tests;

@@ -20,8 +20,13 @@ internal static class ModelContextProtocolExtensions
     /// </summary>
     internal static async Task<IReadOnlyList<KernelFunction>> MapToFunctionsAsync(this IMcpClient mcpClient, CancellationToken cancellationToken = default)
     {
-        var tools = await mcpClient.ListToolsAsync(cancellationToken: cancellationToken).ToListAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
-        return tools.Select(t => t.ToKernelFunction(mcpClient)).ToList();
+        var functions = new List<KernelFunction>();
+        await foreach (var tool in mcpClient.ListToolsAsync(cancellationToken: cancellationToken).ConfigureAwait(false))
+        {
+            functions.Add(tool.ToKernelFunction(mcpClient));
+        }
+
+        return functions;
     }
 
     private static KernelFunction ToKernelFunction(this Tool tool, IMcpClient mcpClient)
