@@ -71,7 +71,7 @@ Console.WriteLine($"\n\nTools:\n{result}");
 //var result3 = await kernel.InvokePromptAsync(prompt3, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt3}\n{result3}");
 
-var promptAzureDevops = "Give me a list of the 5 most recent Azure DevOps projects and include all details.";
+var promptAzureDevops = "Give me a list of the 5 most recent Azure DevOps projects, order by Last Update Date and include all details.";
 var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
