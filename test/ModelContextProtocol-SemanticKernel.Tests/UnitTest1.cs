@@ -16,7 +16,7 @@ public sealed class UnitTest1
         var mcpClient = tuple.Item1;
 
         // Assert
-        var tools = await tuple.Item1.ListToolsAsync().ToListAsync();
+        var tools = await tuple.Item1.ListToolsAsync();
         tools.Should().HaveCount(17);
 
         var commits = await mcpClient.CallToolAsync("list_commits", new Dictionary<string, object> { { "owner", "StefH" }, { "repo", "FluentBuilder" } });
