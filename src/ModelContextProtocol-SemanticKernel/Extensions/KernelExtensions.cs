@@ -94,22 +94,18 @@ public static class KernelExtensions
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
-    public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, string serverName, string endpoint, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
+    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, string serverName, string endpoint, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNullOrWhiteSpace(serverName);
         Guard.NotNullOrWhiteSpace(endpoint);
 
-        if (SseMap.TryGetValue(serverName, out var sseKernelPlugin))
+        return AddMcpFunctionsFromSseServerAsync(plugins, new ModelContextProtocolSemanticKernelSseOptions
         {
-            return sseKernelPlugin;
-        }
-
-        var mcpClient = await GetClientAsync(serverName, endpoint, null, loggerFactory, cancellationToken).ConfigureAwait(false);
-        var functions = await mcpClient.MapToFunctionsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
-
-        sseKernelPlugin = plugins.AddFromFunctions(serverName, functions);
-        return SseMap[serverName] = sseKernelPlugin;
+            Name = serverName,
+            Endpoint = endpoint,
+            LoggerFactory = loggerFactory
+        }, cancellationToken);
     }
 
     /// <summary>
