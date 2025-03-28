@@ -24,6 +24,13 @@ var everyThingTransportOptions = new Dictionary<string, string>
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", everyThingTransportOptions, cancellationToken: cts.Token);
 
+//var fileSystemTransportOptions = new Dictionary<string, string>
+//{
+//    ["command"] = "npx",
+//    ["arguments"] = "-y @modelcontextprotocol/server-filesystem c:/temp"
+//};
+//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("FileSystem", fileSystemTransportOptions, cancellationToken: cts.Token);
+
 var githubTransportOptions = new Dictionary<string, string>
 {
     ["command"] = "npx",
@@ -49,6 +56,13 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps", azureDev
 //};
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Weather", weatherTransportOptions, cancellationToken: cts.Token);
 
+var fileSystemTransportOptions = new Dictionary<string, string>
+{
+    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.FileSystem.Stdio\bin\Release\net8.0\ModelContextProtocolServer.FileSystem.Stdio.exe",
+    ["arguments"] = "allowedPath=c:\\temp"
+};
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("FileSystem", fileSystemTransportOptions, cancellationToken: cts.Token);
+
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {
@@ -56,8 +70,12 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\nTools:\n{result}");
+//var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\nTools:\n{result}");
+
+var promptReadFile = "Read the file 'Doc1.docx'";
+var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
 //var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
@@ -71,9 +89,9 @@ Console.WriteLine($"\n\nTools:\n{result}");
 //var result3 = await kernel.InvokePromptAsync(prompt3, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt3}\n{result3}");
 
-var promptAzureDevops = "Give me a list of the 5 most recent Azure DevOps projects, order by Last Update Date and include all details.";
-var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
+//var promptAzureDevops = "Give me a list of the 5 most recent Azure DevOps projects, order by Last Update Date and include all details.";
+//var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
 await cts.CancelAsync().ConfigureAwait(false);
 cts.Dispose();
