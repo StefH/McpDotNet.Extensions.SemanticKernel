@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
-    <PackageReference Include="ModelContextProtocol" Version="0.1.0-preview.2" />
+    <ProjectReference Include="..\ModelContextProtocolServer.OpenXml\ModelContextProtocolServer.OpenXml.csproj" />
   </ItemGroup>
 
 </Project>
