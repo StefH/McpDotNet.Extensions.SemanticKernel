@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.
 
-using System.Collections.ObjectModel;
 using System.Text.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
