@@ -31,11 +31,23 @@ var githubTransportOptions = new Dictionary<string, string>
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", githubTransportOptions, cancellationToken: cts.Token);
 
-var weatherTransportOptions = new Dictionary<string, string>
+// https://github.com/Tiberriver256/mcp-server-azure-devops
+var azureDevOpsTransportOptions = new Dictionary<string, string>
 {
-    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.OpenXml.Stdio\bin\Release\net8.0\ModelContextProtocolServer.OpenXml.Stdio.exe"
+    ["command"] = "npx",
+    ["arguments"] = "-y @tiberriver256/mcp-server-azure-devops",
+    ["env:AZURE_DEVOPS_ORG_URL"] = "https://dev.azure.com/mstack",
+    ["env:AZURE_DEVOPS_AUTH_METHOD"] = "pat",
+    ["env:AZURE_DEVOPS_PAT"] = Environment.GetEnvironmentVariable("MCP_PAT")!,
+    ["env:AZURE_DEVOPS_DEFAULT_PROJECT"] = "AzureExampleProjects"
 };
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Weather", weatherTransportOptions, cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps", azureDevOpsTransportOptions, cancellationToken: cts.Token);
+
+//var weatherTransportOptions = new Dictionary<string, string>
+//{
+//    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.OpenXml.Stdio\bin\Release\net8.0\ModelContextProtocolServer.OpenXml.Stdio.exe"
+//};
+//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Weather", weatherTransportOptions, cancellationToken: cts.Token);
 
 
 var executionSettings = new OpenAIPromptExecutionSettings
@@ -55,9 +67,13 @@ Console.WriteLine($"\n\nTools:\n{result}");
 //var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt2}\n{result2}");
 
-var prompt3 = "Give me all weather alerts for FL";
-var result3 = await kernel.InvokePromptAsync(prompt3, new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\n{prompt3}\n{result3}");
+//var prompt3 = "Give me all weather alerts for FL";
+//var result3 = await kernel.InvokePromptAsync(prompt3, new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\n{prompt3}\n{result3}");
+
+var promptAzureDevops = "Give me a list of the 5 most recent Azure DevOps projects and include all details.";
+var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
 await cts.CancelAsync().ConfigureAwait(false);
 cts.Dispose();
