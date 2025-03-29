@@ -1,9 +1,7 @@
 ﻿using System.Text;
-using DocumentFormat.OpenXml.Packaging;
-using Stef.Validation;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml;
 
 namespace ModelContextProtocolServer.OpenXml.Stdio;
 
@@ -71,12 +69,6 @@ public static class WordDocumentReader
 
     private static string GetTextFromElement(OpenXmlCompositeElement? element)
     {
-        if (element == null)
-        {
-            return string.Empty;
-        }
-
-        // Get the text from all runs in the element
-        return string.Join("", element.Descendants<Text>().Select(t => t.Text));
+        return element == null ? string.Empty : string.Join("", element.Descendants<Text>().Select(t => t.Text));
     }
 }

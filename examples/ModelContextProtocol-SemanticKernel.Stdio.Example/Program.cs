@@ -54,7 +54,7 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps", azureDev
 var openXmlTransportOptions = new Dictionary<string, string>
 {
     //["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.OpenXml.Stdio\bin\Release\net8.0\ModelContextProtocolServer.OpenXml.Stdio.exe",
-    ["command"] = "mcp-server-openxml-stdio",
+    ["command"] = "dotnet-mcpserver.openxml.stdio",
     ["arguments"] = "allowedPath=c:\\temp"
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", openXmlTransportOptions, cancellationToken: cts.Token);
