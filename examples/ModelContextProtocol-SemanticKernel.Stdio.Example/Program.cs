@@ -50,18 +50,19 @@ var azureDevOpsTransportOptions = new Dictionary<string, string>
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps", azureDevOpsTransportOptions, cancellationToken: cts.Token);
 
-//var weatherTransportOptions = new Dictionary<string, string>
-//{
-//    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.OpenXml.Stdio\bin\Release\net8.0\ModelContextProtocolServer.OpenXml.Stdio.exe"
-//};
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Weather", weatherTransportOptions, cancellationToken: cts.Token);
-
-var fileSystemTransportOptions = new Dictionary<string, string>
+var openXmlTransportOptions = new Dictionary<string, string>
 {
-    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.FileSystem.Stdio\bin\Release\net8.0\ModelContextProtocolServer.FileSystem.Stdio.exe",
+    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.OpenXml.Stdio\bin\Release\net8.0\ModelContextProtocolServer.OpenXml.Stdio.exe",
     ["arguments"] = "allowedPath=c:\\temp"
 };
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("FileSystem", fileSystemTransportOptions, cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", openXmlTransportOptions, cancellationToken: cts.Token);
+
+//var fileSystemTransportOptions = new Dictionary<string, string>
+//{
+//    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.FileSystem.Stdio\bin\Release\net8.0\ModelContextProtocolServer.FileSystem.Stdio.exe",
+//    ["arguments"] = "allowedPath=c:\\temp"
+//};
+//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("FileSystem", fileSystemTransportOptions, cancellationToken: cts.Token);
 
 
 var executionSettings = new OpenAIPromptExecutionSettings

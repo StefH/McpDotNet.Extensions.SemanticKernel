@@ -21,4 +21,8 @@
     <PackageReference Include="ModelContextProtocol" Version="0.1.0-preview.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ModelContextProtocolServer.OpenXml\ModelContextProtocolServer.OpenXml.csproj" />
+  </ItemGroup>
+
 </Project>

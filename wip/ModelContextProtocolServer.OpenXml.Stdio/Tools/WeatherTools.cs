@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using ModelContextProtocol.Server;
 
-namespace ModelContextProtocolServer.OpenXml.Stdio;
+namespace ModelContextProtocolServer.OpenXml.Stdio.Tools;
 
 [McpServerToolType]
 public static class WeatherTools

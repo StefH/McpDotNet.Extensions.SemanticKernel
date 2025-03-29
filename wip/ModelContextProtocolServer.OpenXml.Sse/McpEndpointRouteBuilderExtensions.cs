@@ -1,10 +1,10 @@
-﻿using ModelContextProtocol.Protocol.Messages;
+﻿using Microsoft.Extensions.Options;
+using ModelContextProtocol.Protocol.Messages;
+using ModelContextProtocol.Protocol.Transport;
 using ModelContextProtocol.Server;
 using ModelContextProtocol.Utils.Json;
-using Microsoft.Extensions.Options;
-using ModelContextProtocol.Protocol.Transport;
 
-namespace AspNetCoreSseServer;
+namespace ModelContextProtocolServer.OpenXml.Sse;
 
 public static class McpEndpointRouteBuilderExtensions
 {

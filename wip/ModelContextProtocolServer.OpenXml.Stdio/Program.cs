@@ -1,12 +1,29 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Net.Http.Headers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ModelContextProtocol;
-using System.Net.Http.Headers;
+using ModelContextProtocol.Protocol.Types;
 
-var builder = Host.CreateEmptyApplicationBuilder(settings: null);
+const string applicationName = "openxml-server";
+const string version = "0.0.1";
+
+var builder = Host.CreateEmptyApplicationBuilder(settings: new HostApplicationBuilderSettings
+{
+    ApplicationName = applicationName,
+    Args = args
+});
+
+builder.Configuration
+    .AddCommandLine(args)
+    .AddEnvironmentVariables();
 
 builder.Services
-    .AddMcpServer()
+    .AddMcpServer(o => o.ServerInfo = new Implementation
+    {
+        Name = applicationName,
+        Version = version
+    })
     .WithStdioServerTransport()
     .WithToolsFromAssembly();
 

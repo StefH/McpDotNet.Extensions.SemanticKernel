@@ -1,5 +1,5 @@
 using ModelContextProtocol;
-using AspNetCoreSseServer;
+using ModelContextProtocolServer.OpenXml.Sse;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMcpServer().WithToolsFromAssembly();
