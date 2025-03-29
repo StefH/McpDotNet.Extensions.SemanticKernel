@@ -20,7 +20,7 @@
     <RepositoryType>git</RepositoryType>
     <!--<RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>-->
     <PackageTags>MCP;ModelContextProtocol;AI;LLM;Server;Stdio;Everything;echo;add</PackageTags>
-    <Description>An Stdio MCP server for read .docx files.</Description>
+    <Description>An Stdio MCP server with some features of the MCP protocol: echo and add.</Description>
     <!--<PackageReadmeFile>PackageReadme.md</PackageReadmeFile>-->
   </PropertyGroup>
 
