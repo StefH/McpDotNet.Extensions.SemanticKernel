@@ -8,11 +8,16 @@ namespace ModelContextProtocolServer.OpenXml.Stdio.Tools;
 public static class OpenXmlTools
 {
     [McpServerTool, Description("Read a .docx file and return the content as plain text.")]
-    public static string ReadWordDocument(IConfiguration config, [Description("The name of the .docx file.")] string filename)
+    public static string ReadWordDocument(IConfiguration config, string filename)
     {
+        if (string.IsNullOrEmpty(filename))
+        {
+            return "Filename is null or empty";
+        }
+
         var allowedPath = config.GetValue<string>("allowedPath")!;
         var filePath = Path.Combine(allowedPath, filename);
 
-        return WordReader.ReadWordDocument(filePath);
+        return WordDocumentReader.GetTextFromWordDocument(filePath);
     }
 }

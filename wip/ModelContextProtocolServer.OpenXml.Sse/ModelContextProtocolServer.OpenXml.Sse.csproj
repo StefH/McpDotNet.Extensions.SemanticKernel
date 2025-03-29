@@ -10,8 +10,4 @@
     <Compile Remove="Tools\SampleLlmTool.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ModelContextProtocolServer.OpenXml\ModelContextProtocolServer.OpenXml.csproj" />
-  </ItemGroup>
-
 </Project>

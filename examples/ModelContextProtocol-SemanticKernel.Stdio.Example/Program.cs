@@ -4,6 +4,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using ModelContextProtocol.SemanticKernel.Extensions;
 
+var txt = ModelContextProtocolServer.OpenXml.Stdio.WordDocumentReader.GetTextFromWordDocument("c:\\temp\\cv.docx");
 var cts = new CancellationTokenSource();
 
 var builder = Kernel.CreateBuilder();
@@ -52,7 +53,8 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps", azureDev
 
 var openXmlTransportOptions = new Dictionary<string, string>
 {
-    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.OpenXml.Stdio\bin\Release\net8.0\ModelContextProtocolServer.OpenXml.Stdio.exe",
+    //["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.OpenXml.Stdio\bin\Release\net8.0\ModelContextProtocolServer.OpenXml.Stdio.exe",
+    ["command"] = "mcp-server-openxml-stdio",
     ["arguments"] = "allowedPath=c:\\temp"
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", openXmlTransportOptions, cancellationToken: cts.Token);
@@ -67,14 +69,14 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", openXmlTrans
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {
-    Temperature = 0,
+    Temperature = 0.1,
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
 //var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\nTools:\n{result}");
 
-var promptReadFile = "Read the file 'Doc1.docx'";
+var promptReadFile = "Read the file 'CV.docx' and return all text and format as markdown.";
 var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
