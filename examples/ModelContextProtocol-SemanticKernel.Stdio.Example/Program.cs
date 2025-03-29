@@ -4,7 +4,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using ModelContextProtocol.SemanticKernel.Extensions;
 
-var txt = ModelContextProtocolServer.OpenXml.Stdio.WordDocumentReader.GetTextFromWordDocument("c:\\temp\\cv.docx");
+//var txt = ModelContextProtocolServer.OpenXml.Stdio.WordDocumentReader.GetTextFromWordDocument("c:\\temp\\cv.docx");
 var cts = new CancellationTokenSource();
 
 var builder = Kernel.CreateBuilder();

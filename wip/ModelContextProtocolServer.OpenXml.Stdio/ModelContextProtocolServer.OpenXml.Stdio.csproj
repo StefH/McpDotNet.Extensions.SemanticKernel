@@ -4,6 +4,7 @@
     <Version>0.0.1-preview-01</Version>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
     <PackageId>dotnet-mcpserver.openxml.stdio</PackageId>
     <ToolCommandName>dotnet-mcpserver.openxml.stdio</ToolCommandName>
@@ -19,7 +20,7 @@
     <RepositoryType>git</RepositoryType>
     <!--<RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>-->
     <PackageTags>MCP;ModelContextProtocol;AI;LLM;Server;Stdio;OpenXML;Word;docx</PackageTags>
-    <Description>An MCP server for read .docx files.</Description>
+    <Description>An Stdio MCP server for read .docx files.</Description>
     <!--<PackageReadmeFile>PackageReadme.md</PackageReadmeFile>-->
   </PropertyGroup>
 

@@ -27,13 +27,6 @@ builder.Services
     .WithStdioServerTransport()
     .WithToolsFromAssembly();
 
-builder.Services.AddSingleton(_ =>
-{
-    var client = new HttpClient { BaseAddress = new Uri("https://api.weather.gov") };
-    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("weather-tool", "1.0"));
-    return client;
-});
-
 var host = builder.Build();
 
 var cts = new CancellationTokenSource();

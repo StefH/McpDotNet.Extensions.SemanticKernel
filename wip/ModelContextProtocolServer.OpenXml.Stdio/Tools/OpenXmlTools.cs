@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Microsoft.Extensions.Configuration;
 using ModelContextProtocol.Server;
+using ModelContextProtocolServer.OpenXml.Stdio.Services;
 
 namespace ModelContextProtocolServer.OpenXml.Stdio.Tools;
 

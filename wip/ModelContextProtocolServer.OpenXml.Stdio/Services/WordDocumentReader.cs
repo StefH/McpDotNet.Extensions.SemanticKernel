@@ -3,9 +3,9 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace ModelContextProtocolServer.OpenXml.Stdio;
+namespace ModelContextProtocolServer.OpenXml.Stdio.Services;
 
-public static class WordDocumentReader
+internal static class WordDocumentReader
 {
     public static string GetTextFromWordDocument(string filePath)
     {
