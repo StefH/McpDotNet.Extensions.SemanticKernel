@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ModelContextProtocolServer.FileSystem.Stdio": {
+      "commandName": "Project",
+      "commandLineArgs": "allowedPath=c:\\temp"
+    }
+  }
+}

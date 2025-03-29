@@ -44,6 +44,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol-Semant
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocol-SemanticKernel.Sse.Example", "examples\ModelContextProtocol-SemanticKernel.Sse.Example\ModelContextProtocol-SemanticKernel.Sse.Example.csproj", "{801B72A5-BBD1-0FBA-CBB4-134411118920}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.OpenXml.Stdio", "wip\ModelContextProtocolServer.OpenXml.Stdio\ModelContextProtocolServer.OpenXml.Stdio.csproj", "{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.OpenXml.Sse", "wip\ModelContextProtocolServer.OpenXml.Sse\ModelContextProtocolServer.OpenXml.Sse.csproj", "{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wip", "wip", "{4143E130-8398-4B75-8C39-56FDEA0CF3CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.FileSystem.Stdio", "wip\ModelContextProtocolServer.FileSystem.Stdio\ModelContextProtocolServer.FileSystem.Stdio.csproj", "{C4B32B46-AB7D-10AF-2C89-1191353335F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +90,18 @@ Global
 		{801B72A5-BBD1-0FBA-CBB4-134411118920}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{801B72A5-BBD1-0FBA-CBB4-134411118920}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{801B72A5-BBD1-0FBA-CBB4-134411118920}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B32B46-AB7D-10AF-2C89-1191353335F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B32B46-AB7D-10AF-2C89-1191353335F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B32B46-AB7D-10AF-2C89-1191353335F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B32B46-AB7D-10AF-2C89-1191353335F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +116,9 @@ Global
 		{97D0B511-01D2-9C60-F21F-4DB57BCFA634} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
 		{F5EBA730-287E-1CCD-2943-734E858BB678} = {CEFF40B4-4435-408E-B0B9-F93903A8B470}
 		{801B72A5-BBD1-0FBA-CBB4-134411118920} = {6F341AD1-BB1C-4CCF-91B7-F55688619CEE}
+		{6DFF578C-E5EE-3711-B0B7-D1B23FFA808B} = {4143E130-8398-4B75-8C39-56FDEA0CF3CF}
+		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B} = {4143E130-8398-4B75-8C39-56FDEA0CF3CF}
+		{C4B32B46-AB7D-10AF-2C89-1191353335F0} = {4143E130-8398-4B75-8C39-56FDEA0CF3CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45F31459-D6F5-441C-890A-F02A1328053D}

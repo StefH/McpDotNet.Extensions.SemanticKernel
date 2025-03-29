@@ -16,7 +16,6 @@
     <PackageTags>mcp;ai;ModelContextProtocol;LLM;Microsoft-SemanticKernel;SemanticKernel;prompt</PackageTags>
     <Description>Microsoft SemanticKernel integration for the ModelContextProtocol (official C# SDK). Enables seamless use of MCP tools as AI functions.</Description>
     <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
-    <UserSecretsId>16581209-7e82-4c54-a4a0-d3350139703e</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
