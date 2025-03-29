@@ -1,11 +1,9 @@
-﻿using System.Net.Http.Headers;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using ModelContextProtocol;
 using ModelContextProtocol.Protocol.Types;
 
-const string applicationName = "openxml-server";
+const string applicationName = "mcpserver.openxml.stdio";
 const string version = "0.0.1";
 
 var builder = Host.CreateEmptyApplicationBuilder(settings: new HostApplicationBuilderSettings

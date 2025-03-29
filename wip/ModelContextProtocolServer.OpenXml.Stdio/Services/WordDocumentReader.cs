@@ -48,9 +48,7 @@ internal static class WordDocumentReader
         }
         catch (Exception ex)
         {
-            // Handle any exceptions here
-            Console.WriteLine($"Error reading document: {ex.Message}");
-            return string.Empty;
+            return $"Error reading document: {ex.Message}";
         }
     }
 

@@ -6,8 +6,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
-    <PackageId>dotnet-mcpserver.openxml.sse</PackageId>
-    <ToolCommandName>dotnet-mcpserver.openxml.sse</ToolCommandName>
+    <PackageId>mcpserver.openxml.sse</PackageId>
+    <ToolCommandName>mcpserver.openxml.sse</ToolCommandName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
