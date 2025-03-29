@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.Everything.Stdio", "wip\ModelContextProtocolServer.Everything.Stdio\ModelContextProtocolServer.Everything.Stdio.csproj", "{ECDDCFDA-ADA8-B494-6065-3053B676C2F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelContextProtocolServer.Stdio", "wip\ModelContextProtocolServer.Stdio\ModelContextProtocolServer.Stdio.csproj", "{C3B74527-240B-59A3-3AC4-B7DA90AC5F84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,10 @@ Global
 		{ECDDCFDA-ADA8-B494-6065-3053B676C2F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECDDCFDA-ADA8-B494-6065-3053B676C2F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECDDCFDA-ADA8-B494-6065-3053B676C2F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3B74527-240B-59A3-3AC4-B7DA90AC5F84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3B74527-240B-59A3-3AC4-B7DA90AC5F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3B74527-240B-59A3-3AC4-B7DA90AC5F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3B74527-240B-59A3-3AC4-B7DA90AC5F84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{26BFFB9F-1AD6-1B21-FACC-BC2477F7706B} = {4143E130-8398-4B75-8C39-56FDEA0CF3CF}
 		{C4B32B46-AB7D-10AF-2C89-1191353335F0} = {4143E130-8398-4B75-8C39-56FDEA0CF3CF}
 		{ECDDCFDA-ADA8-B494-6065-3053B676C2F7} = {4143E130-8398-4B75-8C39-56FDEA0CF3CF}
+		{C3B74527-240B-59A3-3AC4-B7DA90AC5F84} = {4143E130-8398-4B75-8C39-56FDEA0CF3CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45F31459-D6F5-441C-890A-F02A1328053D}
