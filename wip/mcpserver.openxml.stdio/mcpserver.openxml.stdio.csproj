@@ -1,13 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Version>0.0.1-preview-01</Version>
+    <PackageId>mcpserver.openxml.stdio</PackageId>
+    <ToolCommandName>mcpserver.openxml.stdio</ToolCommandName>
+    <RootNamespace>ModelContextProtocolServer.OpenXml.Stdio</RootNamespace>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
-    <PackageId>mcpserver.openxml.sse</PackageId>
-    <ToolCommandName>mcpserver.openxml.sse</ToolCommandName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
@@ -20,18 +21,9 @@
     <RepositoryType>git</RepositoryType>
     <!--<RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>-->
     <PackageTags>MCP;ModelContextProtocol;AI;LLM;Server;Stdio;OpenXML;Word;docx</PackageTags>
-    <Description>An SSE MCP server for read .docx files.</Description>
+    <Description>An Stdio MCP server for read .docx files.</Description>
     <!--<PackageReadmeFile>PackageReadme.md</PackageReadmeFile>-->
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Tools\EchoTool.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\ModelContextProtocolServer.OpenXml.Stdio\Services\WordDocumentReader.cs" Link="Services\WordDocumentReader.cs" />
-    <Compile Include="..\ModelContextProtocolServer.OpenXml.Stdio\Tools\OpenXmlTools.cs" Link="Tools\OpenXmlTools.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
@@ -43,14 +35,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
     <PackageReference Include="ModelContextProtocol" Version="0.1.0-preview.2" />
     <PackageReference Include="Stef.Validation" Version="0.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Tools\" />
+    <ProjectReference Include="..\ModelContextProtocolServer.Stdio\ModelContextProtocolServer.Stdio.csproj" />
   </ItemGroup>
 
 </Project>

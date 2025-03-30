@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ModelContextProtocol-SemanticKernel\ModelContextProtocol-SemanticKernel.csproj" />
-    <ProjectReference Include="..\..\wip\ModelContextProtocolServer.OpenXml.Stdio\ModelContextProtocolServer.OpenXml.Stdio.csproj" />
   </ItemGroup>
 
 </Project>

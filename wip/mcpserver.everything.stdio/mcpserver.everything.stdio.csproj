@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <Version>0.0.1-preview-01</Version>
+    <PackageId>mcpserver.everything.stdio</PackageId>
+    <ToolCommandName>mcpserver.everything.stdio</ToolCommandName>
+    <RootNamespace>ModelContextProtocolServer.Everything.Stdio</RootNamespace>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
-    <PackageId>mcpserver.openxml.stdio</PackageId>
-    <ToolCommandName>mcpserver.openxml.stdio</ToolCommandName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
@@ -19,8 +20,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <!--<RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>-->
-    <PackageTags>MCP;ModelContextProtocol;AI;LLM;Server;Stdio;OpenXML;Word;docx</PackageTags>
-    <Description>An Stdio MCP server for read .docx files.</Description>
+    <PackageTags>MCP;ModelContextProtocol;AI;LLM;Server;Stdio;Everything;echo;add</PackageTags>
+    <Description>An Stdio MCP server with some features of the MCP protocol: echo and add.</Description>
     <!--<PackageReadmeFile>PackageReadme.md</PackageReadmeFile>-->
   </PropertyGroup>
 
@@ -35,9 +36,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
     <PackageReference Include="ModelContextProtocol" Version="0.1.0-preview.2" />
-    <PackageReference Include="Stef.Validation" Version="0.1.1" />
+    <!--<PackageReference Include="Stef.Validation" Version="0.1.1" />-->
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ModelContextProtocolServer.Stdio\ModelContextProtocolServer.Stdio.csproj" />
   </ItemGroup>
 
 </Project>

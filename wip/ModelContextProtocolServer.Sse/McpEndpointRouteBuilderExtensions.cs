@@ -1,14 +1,19 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ModelContextProtocol.Protocol.Messages;
 using ModelContextProtocol.Protocol.Transport;
 using ModelContextProtocol.Server;
 using ModelContextProtocol.Utils.Json;
 
-namespace ModelContextProtocolServer.OpenXml.Sse;
+namespace ModelContextProtocolServer.Sse;
 
 public static class McpEndpointRouteBuilderExtensions
 {
-    public static IEndpointConventionBuilder MapMcpSse(this IEndpointRouteBuilder endpoints)
+    public static IEndpointConventionBuilder MapMcpSse(this IEndpointRouteBuilder endpoints, string sseEndpoint)
     {
         SseResponseStreamTransport? transport = null;
         var loggerFactory = endpoints.ServiceProvider.GetRequiredService<ILoggerFactory>();
@@ -16,7 +21,7 @@ public static class McpEndpointRouteBuilderExtensions
 
         var routeGroup = endpoints.MapGroup("");
 
-        routeGroup.MapGet("/sse", async (HttpResponse response, CancellationToken requestAborted) =>
+        routeGroup.MapGet(sseEndpoint, async (HttpResponse response, CancellationToken requestAborted) =>
         {
             await using var localTransport = transport = new SseResponseStreamTransport(response.Body);
             await using var localServer = McpServerFactory.Create(transport, mcpServerOptions.Value, loggerFactory, endpoints.ServiceProvider);

@@ -1,33 +1,35 @@
-﻿using System.Reflection;
+using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using ModelContextProtocol;
 using ModelContextProtocol.Protocol.Types;
 
-namespace ModelContextProtocolServer.Stdio;
+namespace ModelContextProtocolServer.Sse;
 
-public static class StdioServer
+public static class SseServer
 {
     public static Task RunAsync(params string[] args)
     {
-        var assembly = Assembly.GetEntryAssembly();
-        var applicationName = assembly?.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? $"mcpserver.{Guid.NewGuid()}.stdio";
-        var version = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "1.0.0";
-
-        return RunAsync(applicationName, version, args);
+        return RunAsync("/sse", args);
     }
 
-    public static Task RunAsync(string applicationName, string version, params string[] args)
+    public static Task RunAsync(string sseEndpoint, params string[] args)
     {
-        var builder = Host.CreateEmptyApplicationBuilder(settings: new HostApplicationBuilderSettings
+        var assembly = Assembly.GetEntryAssembly();
+        var applicationName = assembly?.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? $"mcpserver.{Guid.NewGuid()}.sse";
+        var version = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "1.0.0";
+
+        return RunAsync(applicationName, version, sseEndpoint, args);
+    }
+
+    public static Task RunAsync(string applicationName, string version, string sseEndpoint, params string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
         {
             ApplicationName = applicationName,
             Args = args
         });
-
-        builder.Configuration
-            .AddCommandLine(args)
-            .AddEnvironmentVariables();
 
         builder.Services
             .AddMcpServer(o => o.ServerInfo = new Implementation
@@ -35,10 +37,14 @@ public static class StdioServer
                 Name = applicationName,
                 Version = version
             })
-            .WithStdioServerTransport()
-            .WithToolsFromAssembly();
+            .WithToolsFromAssembly(Assembly.GetEntryAssembly());
 
-        var host = builder.Build();
+        builder.Configuration
+            .AddCommandLine(args)
+            .AddEnvironmentVariables();
+
+        var app = builder.Build();
+        app.MapMcpSse(sseEndpoint);
 
         var cts = new CancellationTokenSource();
 
@@ -53,6 +59,6 @@ public static class StdioServer
             cts.Cancel();
         };
 
-        return host.RunAsync(cts.Token);
+        return app.RunAsync(cts.Token);
     }
 }
