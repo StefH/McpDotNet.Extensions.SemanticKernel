@@ -47,16 +47,16 @@ var githubTransportOptions = new Dictionary<string, string>
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", githubTransportOptions, cancellationToken: cts.Token);
 
 // https://github.com/Tiberriver256/mcp-server-azure-devops
-var azureDevOpsTransportOptions = new Dictionary<string, string>
-{
-    ["command"] = "npx",
-    ["arguments"] = "-y @tiberriver256/mcp-server-azure-devops",
-    ["env:AZURE_DEVOPS_ORG_URL"] = "https://dev.azure.com/mstack",
-    ["env:AZURE_DEVOPS_AUTH_METHOD"] = "pat",
-    ["env:AZURE_DEVOPS_PAT"] = Environment.GetEnvironmentVariable("MCP_PAT")!,
-    ["env:AZURE_DEVOPS_DEFAULT_PROJECT"] = "AzureExampleProjects"
-};
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps2", azureDevOpsTransportOptions, cancellationToken: cts.Token);
+//var azureDevOpsTransportOptions = new Dictionary<string, string>
+//{
+//    ["command"] = "npx",
+//    ["arguments"] = "-y @tiberriver256/mcp-server-azure-devops",
+//    ["env:AZURE_DEVOPS_ORG_URL"] = "https://dev.azure.com/mstack",
+//    ["env:AZURE_DEVOPS_AUTH_METHOD"] = "pat",
+//    ["env:AZURE_DEVOPS_PAT"] = Environment.GetEnvironmentVariable("MCP_PAT")!,
+//    ["env:AZURE_DEVOPS_DEFAULT_PROJECT"] = "AzureExampleProjects"
+//};
+//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps2", azureDevOpsTransportOptions, cancellationToken: cts.Token);
 
 //var openXmlTransportOptions = new Dictionary<string, string>
 //{
@@ -87,7 +87,7 @@ Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 //var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt2}\n{result2}");
 
-var promptAzureDevops = "Give me a list of the 5 most recent Azure DevOps projects.";
+var promptAzureDevops = "get the 3 latest projects in azure devops";
 var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
