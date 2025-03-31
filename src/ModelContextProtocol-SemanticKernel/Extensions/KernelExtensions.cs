@@ -1,15 +1,19 @@
 ﻿// Copyright (c) Stef Heyenrath
 
 using System.Collections.Concurrent;
+using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
-using ModelContextProtocol.Configuration;
 using ModelContextProtocol.Protocol.Transport;
 using ModelContextProtocol.SemanticKernel.Options;
+using ModelContextProtocol.SemanticKernel.Types;
 using Stef.Validation;
 using Stef.Validation.Options;
+using McpServerConfig = ModelContextProtocol.Configuration.McpServerConfig;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
 
@@ -20,6 +24,34 @@ public static class KernelExtensions
 {
     private static readonly ConcurrentDictionary<string, KernelPlugin> StdioMap = new();
     private static readonly ConcurrentDictionary<string, KernelPlugin> SseMap = new();
+
+    public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromClaudeDesktopConfigAsync(this KernelPluginCollection plugins, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
+    {
+        var appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var configPath = Path.Combine(appDataRoaming, "Claude", "claude_desktop_config.json");
+        if (!File.Exists(configPath))
+        {
+            return [];
+        }
+        
+        var config = JsonSerializer.Deserialize<ClaudeConfig>(File.OpenRead(configPath));
+        if (config == null)
+        {
+            return [];
+        }
+
+        var registeredPlugins = new List<KernelPlugin>();
+        foreach (var kvp in config.McpServers.Where(s => !s.Value.Disabled))
+        {
+            registeredPlugins.Add(await AddMcpFunctionsFromStdioServerAsync(plugins, options =>
+            {
+                options.Name = kvp.Key;
+                options.TransportOptions = kvp.Value.ToTransportOptions();
+            }, cancellationToken));
+        }
+
+        return registeredPlugins;
+    }
 
     /// <summary>
     /// Creates a Model Content Protocol plugin from a Stdio server that contains the specified MCP functions and adds it into the plugin collection.
@@ -72,8 +104,9 @@ public static class KernelExtensions
         DataAnnotationOptionsValidator<ModelContextProtocolSemanticKernelStdioOptions>.ValidateAndThrow(options);
 
         var serverName = options.Name;
+        var key = ToSafePluginName(serverName);
 
-        if (StdioMap.TryGetValue(serverName, out var stdioKernelPlugin))
+        if (StdioMap.TryGetValue(key, out var stdioKernelPlugin))
         {
             return stdioKernelPlugin;
         }
@@ -81,8 +114,13 @@ public static class KernelExtensions
         var mcpClient = await GetClientAsync(serverName, null, options.TransportOptions, options.LoggerFactory, cancellationToken).ConfigureAwait(false);
         var functions = await mcpClient.MapToFunctionsAsync(cancellationToken).ConfigureAwait(false);
 
-        stdioKernelPlugin = plugins.AddFromFunctions(serverName, functions);
-        return StdioMap[serverName] = stdioKernelPlugin;
+        cancellationToken.Register(() =>
+        {
+            mcpClient.DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        });
+
+        stdioKernelPlugin = plugins.AddFromFunctions(key, functions);
+        return StdioMap[key] = stdioKernelPlugin;
     }
 
     /// <summary>
@@ -141,8 +179,9 @@ public static class KernelExtensions
         DataAnnotationOptionsValidator<ModelContextProtocolSemanticKernelSseOptions>.ValidateAndThrow(options);
 
         var serverName = options.Name;
+        var key = ToSafePluginName(serverName);
 
-        if (SseMap.TryGetValue(serverName, out var sseKernelPlugin))
+        if (SseMap.TryGetValue(key, out var sseKernelPlugin))
         {
             return sseKernelPlugin;
         }
@@ -150,8 +189,10 @@ public static class KernelExtensions
         var mcpClient = await GetClientAsync(serverName, options.Endpoint, null, options.LoggerFactory, cancellationToken).ConfigureAwait(false);
         var functions = await mcpClient.MapToFunctionsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        sseKernelPlugin = plugins.AddFromFunctions(serverName, functions);
-        return SseMap[serverName] = sseKernelPlugin;
+        cancellationToken.Register(() => mcpClient.DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult());
+
+        sseKernelPlugin = plugins.AddFromFunctions(key, functions);
+        return SseMap[key] = sseKernelPlugin;
     }
 
     private static async Task<IMcpClient> GetClientAsync(string serverName, string? endpoint, Dictionary<string, string>? transportOptions, ILoggerFactory? loggerFactory, CancellationToken cancellationToken)
@@ -177,5 +218,11 @@ public static class KernelExtensions
         };
 
         return await McpClientFactory.CreateAsync(config, options, loggerFactory: loggerFactory ?? NullLoggerFactory.Instance, cancellationToken: cancellationToken);
+    }
+
+    // A plugin name can contain only ASCII letters, digits, and underscores.
+    private static string ToSafePluginName(string serverName)
+    {
+        return Regex.Replace(serverName, @"[^\w]", "_");
     }
 }

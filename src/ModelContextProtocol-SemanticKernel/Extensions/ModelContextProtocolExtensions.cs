@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Microsoft.
 
-using System.Collections.ObjectModel;
 using System.Text.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
@@ -23,15 +22,15 @@ internal static class ModelContextProtocolExtensions
         var functions = new List<KernelFunction>();
         foreach (var tool in await mcpClient.ListToolsAsync(cancellationToken).ConfigureAwait(false))
         {
-            functions.Add(tool.ToKernelFunction(mcpClient));
+            functions.Add(tool.ToKernelFunction(mcpClient, cancellationToken));
         }
 
         return functions;
     }
 
-    private static KernelFunction ToKernelFunction(this McpClientTool tool, IMcpClient mcpClient)
+    private static KernelFunction ToKernelFunction(this McpClientTool tool, IMcpClient mcpClient, CancellationToken cancellationToken)
     {
-        async Task<string> InvokeToolAsync(Kernel kernel, KernelFunction function, KernelArguments arguments, CancellationToken cancellationToken)
+        async Task<string> InvokeToolAsync(Kernel kernel, KernelFunction function, KernelArguments arguments, CancellationToken ct)
         {
             try
             {
@@ -49,7 +48,7 @@ internal static class ModelContextProtocolExtensions
                 var result = await mcpClient.CallToolAsync(
                     tool.Name,
                     mcpArguments.AsReadOnly(),
-                    cancellationToken: cancellationToken
+                    cancellationToken: ct
                 ).ConfigureAwait(false);
 
                 // Extract the text content from the result

@@ -12,7 +12,7 @@ public abstract class ModelContextProtocolSemanticKernelOptions
     /// Display name for the MCP server.
     /// </summary>
     [Required]
-    public string Name { get; init; } = null!;
+    public string Name { get; set; } = null!;
 
     /// <summary>
     /// A logger factory for creating loggers for clients.
