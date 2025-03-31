@@ -46,7 +46,7 @@ var githubTransportOptions = new Dictionary<string, string>
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", githubTransportOptions, cancellationToken: cts.Token);
 
-https://github.com/Tiberriver256/mcp-server-azure-devops
+// https://github.com/Tiberriver256/mcp-server-azure-devops
 var azureDevOpsTransportOptions = new Dictionary<string, string>
 {
     ["command"] = "npx",
@@ -54,7 +54,7 @@ var azureDevOpsTransportOptions = new Dictionary<string, string>
     ["env:AZURE_DEVOPS_ORG_URL"] = "https://dev.azure.com/mstack",
     ["env:AZURE_DEVOPS_AUTH_METHOD"] = "pat",
     ["env:AZURE_DEVOPS_PAT"] = Environment.GetEnvironmentVariable("MCP_PAT")!,
-    //["env:AZURE_DEVOPS_DEFAULT_PROJECT"] = "AzureExampleProjects"
+    ["env:AZURE_DEVOPS_DEFAULT_PROJECT"] = "AzureExampleProjects"
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps2", azureDevOpsTransportOptions, cancellationToken: cts.Token);
 
