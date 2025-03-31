@@ -11,7 +11,7 @@ builder.Services.AddLogging(c => c.AddDebug().SetMinimumLevel(LogLevel.Trace));
 
 builder.Services.AddOpenAIChatCompletion(
     serviceId: "openai",
-    modelId: "gpt-4o-mini",
+    modelId: "gpt-4o",
     apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY")!);
 
 var kernel = builder.Build();
@@ -46,7 +46,7 @@ var githubTransportOptions = new Dictionary<string, string>
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", githubTransportOptions, cancellationToken: cts.Token);
 
-// https://github.com/Tiberriver256/mcp-server-azure-devops
+https://github.com/Tiberriver256/mcp-server-azure-devops
 var azureDevOpsTransportOptions = new Dictionary<string, string>
 {
     ["command"] = "npx",
@@ -54,7 +54,7 @@ var azureDevOpsTransportOptions = new Dictionary<string, string>
     ["env:AZURE_DEVOPS_ORG_URL"] = "https://dev.azure.com/mstack",
     ["env:AZURE_DEVOPS_AUTH_METHOD"] = "pat",
     ["env:AZURE_DEVOPS_PAT"] = Environment.GetEnvironmentVariable("MCP_PAT")!,
-    ["env:AZURE_DEVOPS_DEFAULT_PROJECT"] = "AzureExampleProjects"
+    //["env:AZURE_DEVOPS_DEFAULT_PROJECT"] = "AzureExampleProjects"
 };
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps2", azureDevOpsTransportOptions, cancellationToken: cts.Token);
 
@@ -66,26 +66,18 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps2", azureDe
 //};
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", openXmlTransportOptions, cancellationToken: cts.Token);
 
-//var fileSystemTransportOptions = new Dictionary<string, string>
-//{
-//    ["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.FileSystem.Stdio\bin\Release\net8.0\ModelContextProtocolServer.FileSystem.Stdio.exe",
-//    ["arguments"] = "allowedPath=c:\\temp"
-//};
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("FileSystem", fileSystemTransportOptions, cancellationToken: cts.Token);
-
-
 var executionSettings = new OpenAIPromptExecutionSettings
 {
     Temperature = 0.1,
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-//var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
-//Console.WriteLine($"\n\nTools:\n{result}");
+var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\nTools:\n{result}");
 
-//var promptReadFile = "Read the file 'CV.docx' and return all text and format as markdown.";
-//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
-//Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
+var promptReadFile = "Read the file 'CV.docx' and return all text and format as markdown.";
+var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
 //var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
@@ -95,7 +87,7 @@ var executionSettings = new OpenAIPromptExecutionSettings
 //var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt2}\n{result2}");
 
-var promptAzureDevops = "Give me a list of the 5 most recent Azure DevOps projects, order by Last Update Date and include all details.";
+var promptAzureDevops = "Give me a list of the 5 most recent Azure DevOps projects.";
 var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
