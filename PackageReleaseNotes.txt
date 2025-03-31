@@ -1,5 +1,4 @@
-# 0.0.1-preview-03 (28 March 2025)
-- #4 Update logic for calling ListToolsAsync and fixed handling options for Sse [enhancement]
-- #5 Upgrade ModelContextProtocol and Microsoft.SemanticKernel to latest version [enhancement]
+# 0.0.1-preview-04 (31 March 2025)
+- #6 Add Claude Desktop configuration [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md

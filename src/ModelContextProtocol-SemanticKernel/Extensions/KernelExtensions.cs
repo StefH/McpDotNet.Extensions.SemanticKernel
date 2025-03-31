@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Stef Heyenrath
 
 using System.Collections.Concurrent;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
@@ -25,6 +24,13 @@ public static class KernelExtensions
     private static readonly ConcurrentDictionary<string, KernelPlugin> StdioMap = new();
     private static readonly ConcurrentDictionary<string, KernelPlugin> SseMap = new();
 
+    /// <summary>
+    /// Adds Stdio Model Content Protocol plugins from a Claude Desktop configuration file (<c>claude_desktop_config.json</c>) and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
     public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromClaudeDesktopConfigAsync(this KernelPluginCollection plugins, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
     {
         var appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -33,7 +39,7 @@ public static class KernelExtensions
         {
             return [];
         }
-        
+
         var config = JsonSerializer.Deserialize<ClaudeConfig>(File.OpenRead(configPath));
         if (config == null)
         {
@@ -61,7 +67,7 @@ public static class KernelExtensions
     /// <param name="transportOptions">Additional transport-specific configuration.</param>
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, string serverName, Dictionary<string, string> transportOptions, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
     {
         return AddMcpFunctionsFromStdioServerAsync(plugins, new ModelContextProtocolSemanticKernelStdioOptions
@@ -78,7 +84,7 @@ public static class KernelExtensions
     /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
     /// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelStdioOptions"/> callback.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, Action<ModelContextProtocolSemanticKernelStdioOptions> optionsCallback, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(optionsCallback);
@@ -95,7 +101,7 @@ public static class KernelExtensions
     /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
     /// <param name="options">The <see cref="ModelContextProtocolSemanticKernelStdioOptions"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelStdioOptions options, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
@@ -131,7 +137,7 @@ public static class KernelExtensions
     /// <param name="endpoint">The endpoint (location).</param>
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, string serverName, string endpoint, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
@@ -152,7 +158,7 @@ public static class KernelExtensions
     /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
     /// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/> callback.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
@@ -170,7 +176,7 @@ public static class KernelExtensions
     /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
     /// <param name="options">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A Microsoft.SemanticKernel.KernelPlugin containing the functions provided in functions.</returns>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelSseOptions options, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
