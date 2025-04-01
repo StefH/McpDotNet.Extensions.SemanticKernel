@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Client;
+using ModelContextProtocol.Configuration;
 using ModelContextProtocol.Protocol.Transport;
 using WireMock.Matchers;
 using WireMock.Server;
