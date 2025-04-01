@@ -1,8 +1,8 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using ModelContextProtocol.Client;
-using ModelContextProtocol.Configuration;
 using ModelContextProtocol.Protocol.Transport;
+using WireMock.Matchers;
 using WireMock.Server;
 
 namespace ModelContextProtocol.SemanticKernel.Tests;
@@ -40,6 +40,16 @@ public sealed class UnitTest1
             Location = server.Url
         };
 
+        try
+        {
+            var client2 = await McpClientFactory.CreateAsync(config, options, null, LoggerFactory.Create(c => c.AddConsole()), cancellationToken);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
         var client = await McpClientFactory.CreateAsync(config, options, null, LoggerFactory.Create(c => c.AddConsole()), cancellationToken);
 
         return new(client, server);
@@ -52,11 +62,6 @@ public sealed class UnitTest1
         var commitsSent = false;
         var tscTools = new TaskCompletionSource(false);
         var tscListCommits = new TaskCompletionSource(false);
-
-        var initializeResponse =
-            """
-            {"jsonrpc":"2.0","id":2,"result":{"protocolVersion":"2024-11-05","capabilities":{"logging":{},"prompts":{"listChanged":true},"resources":{"subscribe":true,"listChanged":true},"tools":{"listChanged":true}},"serverInfo":{"name":"ExampleServer","version":"1.0.0"}}}
-            """;
 
         var toolsResponse =
             """
@@ -103,16 +108,26 @@ public sealed class UnitTest1
                 })
             );
 
+        var initializeMatcher = new JsonPartialWildcardMatcher(new { method = "initialize", id = "^[a-f0-9]{32}-[0-9]$" }, regex: true);
+        //var initializeResponse =
+        //    """
+        //    {"jsonrpc":"2.0","id":"{{id}}","result":{"protocolVersion":"2024-11-05","capabilities":{"logging":{},"prompts":{"listChanged":true},"resources":{"subscribe":true,"listChanged":true},"tools":{"listChanged":true}},"serverInfo":{"name":"ExampleServer","version":"1.0.0"}}}
+        //    """;
         server
             .WhenRequest(r => r
                 .UsingPost()
                 .WithPath("/sse")
                 .WithHeader("Content-Type", "application/json*")
-                .WithBody("{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2024-11-05\",\"capabilities\":{},\"clientInfo\":{\"name\":\"GitHub Test\",\"version\":\"1.0.0\"}}}")
+                //          {"jsonrpc":"2.0","id":"ec475f56d4694b48bc737500ba575b35-1","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"GitHub Test","version":"1.0.0"}}}
+                //.WithBody("{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2024-11-05\",\"capabilities\":{},\"clientInfo\":{\"name\":\"GitHub Test\",\"version\":\"1.0.0\"}}}")
+                .WithBody(initializeMatcher)
             )
             .ThenRespondWith(r => r
                 .WithHeader("Content-Type", "application/json")
-                .WithBody(initializeResponse)
+                .WithBody("""
+                          {"jsonrpc":"2.0","id":"{{request.bodyAsJson.id}}","result":{"protocolVersion":"2024-11-05","capabilities":{"logging":{},"prompts":{"listChanged":true},"resources":{"subscribe":true,"listChanged":true},"tools":{"listChanged":true}},"serverInfo":{"name":"ExampleServer","version":"1.0.0"}}}
+                          """)
+                .WithTransformer()
             );
 
         server
