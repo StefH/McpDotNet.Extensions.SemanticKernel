@@ -70,8 +70,6 @@ public sealed class UnitTest1
 
                     var commitsResponse = await tscListCommits.Task;
                     q.Write($"event: message\r\ndata: {commitsResponse}\r\n\r\n");
-
-                    q.Flush();
                 })
             );
 
