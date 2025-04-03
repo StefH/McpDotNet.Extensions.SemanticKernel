@@ -6,7 +6,7 @@ Enables seamless use of MCP tools as AI functions.
 ### ModelContextProtocol
 [![NuGet Badge](https://img.shields.io/nuget/v/ModelContextProtocol-SemanticKernel)](https://www.nuget.org/packages/ModelContextProtocol-SemanticKernel)
 
-### McpDotNet (obsolete)
+#### McpDotNet (obsolete)
 [![NuGet Badge](https://img.shields.io/nuget/v/McpDotNet.Extensions.SemanticKernel)](https://www.nuget.org/packages/McpDotNet.Extensions.SemanticKernel)
 
 ## Overview
@@ -26,7 +26,34 @@ graph LR;
     MCPServer <-- Web API --> GitHub
 ```
 
-## 💻 Stdio Example
+## ⚙️ Usage
+Use an extension method to register a specific MCP function/tool
+
+### Register single function or tool
+``` csharp
+// 💡Stdio
+var transportOptions = new Dictionary<string, string>
+{
+    ["command"] = "npx",
+    ["arguments"] = "-y @modelcontextprotocol/server-everything"
+};
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", transportOptions);
+
+
+// 💡SSE
+await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", "http://localhost:12345");
+```
+
+### Register MCP Server(s) from Claude Desktop configuration
+It's also possible to register all Stdio MCP Servers which are registered in Claude Desktop:
+``` csharp
+// 💡Stdio MCP Tools defined in claude_desktop_config.json
+await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
+```
+
+<br>
+
+## 💻 Full Stdio Example
 ### Code
 ``` csharp
 var builder = Kernel.CreateBuilder();
@@ -64,8 +91,9 @@ Please call the echo tool with the string 'Hello Stef!' and give me the response
 Echo: Hello Stef!
 ```
 
+<br>
 
-## 💻 SSE (Server Side Events) Example
+## 💻 Full SSE (Server-Sent Events) Example
 ### Code
 ``` csharp
 var builder = Kernel.CreateBuilder();
@@ -95,7 +123,7 @@ Console.WriteLine($"\n\n{prompt}\n{result}");
 
 ### Result
 ```
-Summarize the last 3 commits to the StefH/FluentBuilder repository?
+Summarize the last 3 commits to the StefH/FluentBuilder repository.
 Here are the summaries of the last three commits to the `StefH/FluentBuilder` repository:
 
 1. **Commit [2293880](https://github.com/StefH/FluentBuilder/commit/229388090f50a39f489e30cb535f67f3705cf61f)** (January 30, 2025)
