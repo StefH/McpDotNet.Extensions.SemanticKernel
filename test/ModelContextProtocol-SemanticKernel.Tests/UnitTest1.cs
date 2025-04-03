@@ -67,9 +67,10 @@ public sealed class UnitTest1
                     var toolsResponse = await tscTools.Task;
                     q.Write($"event: message\r\ndata: {toolsResponse}\r\n\r\n");
 
-
                     var commitsResponse = await tscListCommits.Task;
                     q.Write($"event: message\r\ndata: {commitsResponse}\r\n\r\n");
+
+                    q.Close();
                 })
             );
 
