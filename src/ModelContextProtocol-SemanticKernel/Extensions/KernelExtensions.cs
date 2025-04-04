@@ -12,7 +12,6 @@ using ModelContextProtocol.SemanticKernel.Options;
 using ModelContextProtocol.SemanticKernel.Types;
 using Stef.Validation;
 using Stef.Validation.Options;
-using McpServerConfig = ModelContextProtocol.Configuration.McpServerConfig;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
 

@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="mcpdotnet" Version="1.1.0.1" />
-    <PackageReference Include="Microsoft.SemanticKernel" Version="1.41.0" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.44.0" />
     <PackageReference Include="Stef.Validation" Version="0.1.1" />
   </ItemGroup>
 
