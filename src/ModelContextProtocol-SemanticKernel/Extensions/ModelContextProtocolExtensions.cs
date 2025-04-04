@@ -20,15 +20,15 @@ internal static class ModelContextProtocolExtensions
     internal static async Task<IReadOnlyList<KernelFunction>> MapToFunctionsAsync(this IMcpClient mcpClient, CancellationToken cancellationToken = default)
     {
         var functions = new List<KernelFunction>();
-        foreach (var tool in await mcpClient.ListToolsAsync(cancellationToken).ConfigureAwait(false))
+        foreach (var tool in await mcpClient.ListToolsAsync(cancellationToken: cancellationToken).ConfigureAwait(false))
         {
-            functions.Add(tool.ToKernelFunction(mcpClient, cancellationToken));
+            functions.Add(tool.ToKernelFunction(mcpClient));
         }
 
         return functions;
     }
 
-    private static KernelFunction ToKernelFunction(this McpClientTool tool, IMcpClient mcpClient, CancellationToken cancellationToken)
+    private static KernelFunction ToKernelFunction(this McpClientTool tool, IMcpClient mcpClient)
     {
         async Task<string> InvokeToolAsync(Kernel kernel, KernelFunction function, KernelArguments arguments, CancellationToken ct)
         {
@@ -113,7 +113,7 @@ internal static class ModelContextProtocolExtensions
 
     private static List<KernelParameterMetadata>? ToParameters(this McpClientTool tool)
     {
-        var inputSchema = JsonSerializer.Deserialize<JsonSchema>(tool.JsonSchema.GetRawText());
+        var inputSchema = tool.JsonSchema.Deserialize<JsonSchema>();
         var properties = inputSchema?.Properties;
         if (properties == null)
         {
