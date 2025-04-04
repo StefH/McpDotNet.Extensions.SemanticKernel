@@ -1,3 +1,7 @@
+# 0.0.1-preview-05 (04 April 2025)
+- [#8](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/8) - Upgrade ModelContextProtocol to 0.1.0-preview.4 [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#9](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/9) - Update ModelContextProtocol to 0.1.0-preview.5 [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.0.1-preview-04 (31 March 2025)
 - [#6](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/6) - Add Claude Desktop configuration [enhancement] contributed by [StefH](https://github.com/StefH)
 

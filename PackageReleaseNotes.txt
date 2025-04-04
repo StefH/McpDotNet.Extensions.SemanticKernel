@@ -1,4 +1,5 @@
-# 0.0.1-preview-04 (31 March 2025)
-- #6 Add Claude Desktop configuration [enhancement]
+# 0.0.1-preview-05 (04 April 2025)
+- #8 Upgrade ModelContextProtocol to 0.1.0-preview.4 [enhancement]
+- #9 Update ModelContextProtocol to 0.1.0-preview.5 [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md
