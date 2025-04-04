@@ -13,14 +13,16 @@ public sealed class UnitTest1
     [Fact]
     public async Task Test1()
     {
-        await using var tuple = await GetMcpClientAsync();
+        // Arrange
+        var ct = TestContext.Current.CancellationToken;
+        await using var tuple = await GetMcpClientAsync(ct);
         var mcpClient = tuple.Item1;
 
         // Assert
-        var tools = await tuple.Item1.ListToolsAsync();
+        var tools = await tuple.Item1.ListToolsAsync(cancellationToken: ct);
         tools.Should().HaveCount(17);
 
-        var commits = await mcpClient.CallToolAsync("list_commits", new Dictionary<string, object?> { { "owner", "StefH" }, { "repo", "FluentBuilder" } });
+        var commits = await mcpClient.CallToolAsync("list_commits", new Dictionary<string, object?> { { "owner", "StefH" }, { "repo", "FluentBuilder" } }, cancellationToken: ct);
         commits.Content.SelectMany(c => c.Text ?? string.Empty).Should().Contain("229388090f50a39f489e30cb535f67f3705cf61f");
     }
 
