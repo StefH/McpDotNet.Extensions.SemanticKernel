@@ -16,8 +16,7 @@ builder.Services.AddOpenAIChatCompletion(
 
 var kernel = builder.Build();
 
-
-await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
+// await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
 
 //var everyThingTransportOptions = new Dictionary<string, string>
 //{
@@ -70,9 +69,9 @@ var executionSettings = new OpenAIPromptExecutionSettings
 var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\nTools:\n{result}");
 
-var promptReadFile = "Read the file 'CV.docx' and return all text and format as markdown.";
-var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
+//var promptReadFile = "Read the file 'CV.docx' and return all text and format as markdown.";
+//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
 //var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
@@ -86,5 +85,5 @@ var promptAzureDevops = "get the 3 latest projects in azure devops";
 var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
-await cts.CancelAsync().ConfigureAwait(false);
-cts.Dispose();
+//await cts.CancelAsync().ConfigureAwait(false);
+//cts.Dispose();
