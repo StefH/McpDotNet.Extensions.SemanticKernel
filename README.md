@@ -32,16 +32,10 @@ Use an extension method to register a specific MCP function/tool
 ### Register single function or tool
 ``` csharp
 // 💡Stdio
-var transportOptions = new Dictionary<string, string>
-{
-    ["command"] = "npx",
-    ["arguments"] = "-y @modelcontextprotocol/server-everything"
-};
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", transportOptions);
-
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
 // 💡SSE
-await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", "http://localhost:12345");
+await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", new Uri("http://localhost:12345"));
 ```
 
 ### Register MCP Server(s) from Claude Desktop configuration
@@ -66,13 +60,8 @@ builder.Services.AddOpenAIChatCompletion(
 
 var kernel = builder.Build();
 
-var transportOptions = new Dictionary<string, string>
-{
-    ["command"] = "npx",
-    ["arguments"] = "-y @modelcontextprotocol/server-everything"
-};
 // 💡 Add this line to enable MCP functions from a Stdio server named "Everything"
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", transportOptions);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "npx", ["-y", "@modelcontextprotocol/server-github"]);
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {

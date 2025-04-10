@@ -15,27 +15,4 @@ public class ClaudeMcpServer
 
     [JsonPropertyName("disabled")]
     public bool Disabled { get; set; }
-
-    public Dictionary<string, string> ToTransportOptions()
-    {
-        var transportOptions = new Dictionary<string, string>
-        {
-            ["command"] = Command
-        };
-
-        if (Args != null)
-        {
-            transportOptions["arguments"] = string.Join(" ", Args);
-        }
-
-        if (Env != null)
-        {
-            foreach (var env in Env)
-            {
-                transportOptions[$"env:{env.Key}"] = env.Value;
-            }
-        }
-
-        return transportOptions;
-    }
 }
