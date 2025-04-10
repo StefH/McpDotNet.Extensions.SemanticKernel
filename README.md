@@ -60,13 +60,8 @@ builder.Services.AddOpenAIChatCompletion(
 
 var kernel = builder.Build();
 
-var transportOptions = new Dictionary<string, string>
-{
-    ["command"] = "npx",
-    ["arguments"] = "-y @modelcontextprotocol/server-everything"
-};
 // 💡 Add this line to enable MCP functions from a Stdio server named "Everything"
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", transportOptions);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "npx", ["-y", "@modelcontextprotocol/server-github"]);
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {

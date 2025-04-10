@@ -15,6 +15,5 @@ public class ModelContextProtocolSemanticKernelSseOptions : ModelContextProtocol
     /// <summary>
     /// Additional headers.
     /// </summary>
-    [Required]
     public Dictionary<string, string>? AdditionalHeaders { get; init; }
 }
