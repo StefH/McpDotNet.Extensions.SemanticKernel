@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Stef Heyenrath
 
 using System.Collections.Concurrent;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
@@ -51,7 +52,9 @@ public static class KernelExtensions
             registeredPlugins.Add(await AddMcpFunctionsFromStdioServerAsync(plugins, options =>
             {
                 options.Name = kvp.Key;
-                options.TransportOptions = kvp.Value.ToTransportOptions();
+                options.Command = kvp.Value.Command;
+                options.Arguments = kvp.Value.Args;
+                options.EnvironmentVariables = kvp.Value.Env;
             }, cancellationToken));
         }
 
@@ -63,16 +66,27 @@ public static class KernelExtensions
     /// </summary>
     /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
     /// <param name="serverName">The MCP Server name.</param>
-    /// <param name="transportOptions">Additional transport-specific configuration.</param>
+    /// <param name="command">Command.</param>
+    /// <param name="arguments">Arguments to pass to the server process (optional).</param>
+    /// <param name="environmentVariables">Environment variables to set for the server process (optional).</param>
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, string serverName, Dictionary<string, string> transportOptions, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
+    public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(
+        this KernelPluginCollection plugins,
+        string serverName,
+        string command,
+        IList<string>? arguments = null,
+        Dictionary<string, string>? environmentVariables = null,
+        ILoggerFactory? loggerFactory = null, 
+        CancellationToken cancellationToken = default)
     {
         return AddMcpFunctionsFromStdioServerAsync(plugins, new ModelContextProtocolSemanticKernelStdioOptions
         {
             Name = serverName,
-            TransportOptions = transportOptions,
+            Command = command,
+            Arguments = arguments,
+            EnvironmentVariables = environmentVariables,
             LoggerFactory = loggerFactory
         }, cancellationToken);
     }
@@ -84,7 +98,10 @@ public static class KernelExtensions
     /// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelStdioOptions"/> callback.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, Action<ModelContextProtocolSemanticKernelStdioOptions> optionsCallback, CancellationToken cancellationToken = default)
+    public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(
+        this KernelPluginCollection plugins, 
+        Action<ModelContextProtocolSemanticKernelStdioOptions> optionsCallback, 
+        CancellationToken cancellationToken = default)
     {
         Guard.NotNull(optionsCallback);
 
@@ -101,7 +118,10 @@ public static class KernelExtensions
     /// <param name="options">The <see cref="ModelContextProtocolSemanticKernelStdioOptions"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelStdioOptions options, CancellationToken cancellationToken = default)
+    public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(
+        this KernelPluginCollection plugins, 
+        ModelContextProtocolSemanticKernelStdioOptions options, 
+        CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNull(options);
@@ -116,7 +136,7 @@ public static class KernelExtensions
             return stdioKernelPlugin;
         }
 
-        var mcpClient = await GetClientAsync(serverName, null, options.TransportOptions, options.LoggerFactory, cancellationToken).ConfigureAwait(false);
+        var mcpClient = await GetStdioClientAsync(serverName, options, cancellationToken).ConfigureAwait(false);
         var functions = await mcpClient.MapToFunctionsAsync(cancellationToken).ConfigureAwait(false);
 
         cancellationToken.Register(() =>
@@ -137,11 +157,16 @@ public static class KernelExtensions
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, string serverName, string endpoint, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
+    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+        this KernelPluginCollection plugins, 
+        string serverName, 
+        Uri endpoint, 
+        ILoggerFactory? loggerFactory = null, 
+        CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNullOrWhiteSpace(serverName);
-        Guard.NotNullOrWhiteSpace(endpoint);
+        Guard.NotNull(endpoint);
 
         return AddMcpFunctionsFromSseServerAsync(plugins, new ModelContextProtocolSemanticKernelSseOptions
         {
@@ -191,7 +216,7 @@ public static class KernelExtensions
             return sseKernelPlugin;
         }
 
-        var mcpClient = await GetClientAsync(serverName, options.Endpoint, null, options.LoggerFactory, cancellationToken).ConfigureAwait(false);
+        var mcpClient = await GetSseClientAsync(serverName, options, cancellationToken).ConfigureAwait(false);
         var functions = await mcpClient.MapToFunctionsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
         cancellationToken.Register(() => mcpClient.DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult());
@@ -200,34 +225,60 @@ public static class KernelExtensions
         return SseMap[key] = sseKernelPlugin;
     }
 
-    private static async Task<IMcpClient> GetClientAsync(string serverName, string? endpoint, Dictionary<string, string>? transportOptions, ILoggerFactory? loggerFactory, CancellationToken cancellationToken)
+    private static async Task<IMcpClient> GetStdioClientAsync(string serverName, ModelContextProtocolSemanticKernelStdioOptions options, CancellationToken cancellationToken)
     {
-        var transportType = !string.IsNullOrEmpty(endpoint) ? TransportTypes.Sse : TransportTypes.StdIo;
+        var clientOptions = GetMcpClientOptions(serverName, "stdio");
 
-        McpClientOptions options = new()
+        var loggerFactory = options.LoggerFactory ?? NullLoggerFactory.Instance;
+
+        var stdioOptions = new StdioClientTransportOptions
         {
-            ClientInfo = new()
-            {
-                Name = $"{serverName} {transportType}Client",
-                Version = "1.0.0"
-            }
+            Command = options.Command,
+            Arguments = options.Arguments,
+            EnvironmentVariables = options.EnvironmentVariables,
+            Name = clientOptions.ClientInfo?.Name
         };
+        var clientTransport = new StdioClientTransport(stdioOptions, loggerFactory);
 
-        var config = new McpServerConfig
+        return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
+    }
+
+    private static async Task<IMcpClient> GetSseClientAsync(string serverName, ModelContextProtocolSemanticKernelSseOptions options, CancellationToken cancellationToken)
+    {
+        var clientOptions = GetMcpClientOptions(serverName, "sse");
+
+        var loggerFactory = options.LoggerFactory ?? NullLoggerFactory.Instance;
+
+        var sseOptions = new SseClientTransportOptions
         {
-            Id = serverName.ToLowerInvariant(),
-            Name = serverName,
-            Location = endpoint,
-            TransportType = transportType,
-            TransportOptions = transportOptions
+            Endpoint = options.Endpoint,
+            AdditionalHeaders = options.AdditionalHeaders,
+            Name = clientOptions.ClientInfo?.Name
         };
+        var clientTransport = new SseClientTransport(sseOptions, loggerFactory);
 
-        return await McpClientFactory.CreateAsync(config, options, loggerFactory: loggerFactory ?? NullLoggerFactory.Instance, cancellationToken: cancellationToken);
+        return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
     }
 
     // A plugin name can contain only ASCII letters, digits, and underscores.
     private static string ToSafePluginName(string serverName)
     {
         return Regex.Replace(serverName, @"[^\w]", "_");
+    }
+
+    private static McpClientOptions GetMcpClientOptions(string serverName, string type)
+    {
+        var assembly = Assembly.GetEntryAssembly();
+        var name = assembly?.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? $"ModelContextProtocol-SemanticKernel.{type}Client";
+        var version = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "1.0.0";
+        return new McpClientOptions
+
+        {
+            ClientInfo = new()
+            {
+                Name = $"{serverName} {name}",
+                Version = version
+            }
+        };
     }
 }

@@ -39,12 +39,7 @@ await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts
 //};
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("FileSystem", fileSystemTransportOptions, cancellationToken: cts.Token);
 
-var githubTransportOptions = new Dictionary<string, string>
-{
-    ["command"] = "npx",
-    ["arguments"] = "-y @modelcontextprotocol/server-github"
-};
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", githubTransportOptions, cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
 // https://github.com/Tiberriver256/mcp-server-azure-devops
 //var azureDevOpsTransportOptions = new Dictionary<string, string>

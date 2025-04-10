@@ -7,8 +7,18 @@ namespace ModelContextProtocol.SemanticKernel.Options;
 public class ModelContextProtocolSemanticKernelStdioOptions : ModelContextProtocolSemanticKernelOptions
 {
     /// <summary>
-    /// Additional transport-specific configuration.
+    /// Command.
     /// </summary>
     [Required]
-    public Dictionary<string, string> TransportOptions { get; set; } = [];
+    public string Command { get; set; } = null!;
+
+    /// <summary>
+    /// Arguments to pass to the server process.
+    /// </summary>
+    public IList<string>? Arguments { get; set; }
+
+    /// <summary>
+    /// Environment variables to set for the server process.
+    /// </summary>
+    public Dictionary<string, string>? EnvironmentVariables { get; set; }
 }

@@ -10,5 +10,11 @@ public class ModelContextProtocolSemanticKernelSseOptions : ModelContextProtocol
     /// The base URL of the server.
     /// </summary>
     [Required]
-    public string Endpoint { get; init; } = null!;
+    public Uri Endpoint { get; init; } = null!;
+
+    /// <summary>
+    /// Additional headers.
+    /// </summary>
+    [Required]
+    public Dictionary<string, string>? AdditionalHeaders { get; init; }
 }

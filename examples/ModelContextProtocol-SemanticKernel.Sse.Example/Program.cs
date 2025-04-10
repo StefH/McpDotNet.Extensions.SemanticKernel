@@ -19,7 +19,7 @@ builder.Services.AddOpenAIChatCompletion(
 
 var kernel = builder.Build();
 
-await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", wireMockServer.Url!);
+await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", new Uri(wireMockServer.Url!));
 
 // await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("OpenXml", "http://localhost:5002/sse");
 
