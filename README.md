@@ -32,7 +32,7 @@ Use an extension method to register a specific MCP function/tool
 ### Register single function or tool
 ``` csharp
 // 💡Stdio
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"]);
 
 // 💡SSE
 await kernel.Plugins.AddMcpFunctionsFromSseServerAsync("GitHub", new Uri("http://localhost:12345"));
