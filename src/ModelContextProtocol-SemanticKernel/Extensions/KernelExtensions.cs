@@ -31,7 +31,10 @@ public static class KernelExtensions
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
-    public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromClaudeDesktopConfigAsync(this KernelPluginCollection plugins, ILoggerFactory? loggerFactory = null, CancellationToken cancellationToken = default)
+    public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromClaudeDesktopConfigAsync(
+        this KernelPluginCollection plugins, 
+        ILoggerFactory? loggerFactory = null, 
+        CancellationToken cancellationToken = default)
     {
         var appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var configPath = Path.Combine(appDataRoaming, "Claude", "claude_desktop_config.json");
@@ -158,6 +161,25 @@ public static class KernelExtensions
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+        this KernelPluginCollection plugins,
+        string serverName,
+        string endpoint,
+        ILoggerFactory? loggerFactory = null,
+        CancellationToken cancellationToken = default)
+    {
+        return AddMcpFunctionsFromSseServerAsync(plugins, serverName, new Uri(endpoint), loggerFactory, cancellationToken);
+    }
+
+    /// <summary>
+    /// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="serverName">The MCP Server name.</param>
+    /// <param name="endpoint">The endpoint (location).</param>
+    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
+    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins, 
         string serverName, 
         Uri endpoint, 
@@ -183,7 +205,10 @@ public static class KernelExtensions
     /// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/> callback.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback, CancellationToken cancellationToken = default)
+    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+        this KernelPluginCollection plugins, 
+        Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback, 
+        CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNull(optionsCallback);

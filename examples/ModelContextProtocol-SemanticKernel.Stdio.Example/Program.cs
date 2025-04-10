@@ -18,39 +18,21 @@ var kernel = builder.Build();
 
 // await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
 
-//var everyThingTransportOptions = new Dictionary<string, string>
-//{
-//    ["command"] = "npx",
-//    ["arguments"] = "-y @modelcontextprotocol/server-everything"
-//};
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", everyThingTransportOptions, cancellationToken: cts.Token);
-
-//var everyThingTransportOptions = new Dictionary<string, string>
-//{
-//    ["command"] = "mcpserver.everything.stdio"
-//};
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", everyThingTransportOptions, cancellationToken: cts.Token);
-
-//var fileSystemTransportOptions = new Dictionary<string, string>
-//{
-//    ["command"] = "npx",
-//    ["arguments"] = "-y @modelcontextprotocol/server-filesystem c:/temp"
-//};
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("FileSystem", fileSystemTransportOptions, cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "npx", ["-y", "@modelcontextprotocol/server-everything"], cancellationToken: cts.Token);
 
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
-// https://github.com/Tiberriver256/mcp-server-azure-devops
-//var azureDevOpsTransportOptions = new Dictionary<string, string>
-//{
-//    ["command"] = "npx",
-//    ["arguments"] = "-y @tiberriver256/mcp-server-azure-devops",
-//    ["env:AZURE_DEVOPS_ORG_URL"] = "https://dev.azure.com/mstack",
-//    ["env:AZURE_DEVOPS_AUTH_METHOD"] = "pat",
-//    ["env:AZURE_DEVOPS_PAT"] = Environment.GetEnvironmentVariable("MCP_PAT")!,
-//    ["env:AZURE_DEVOPS_DEFAULT_PROJECT"] = "AzureExampleProjects"
-//};
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("AzureDevOps2", azureDevOpsTransportOptions, cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
+    "AzureDevOpsStef",
+    "dotnet run --project",
+    [@"C:\dev\GitHub\mcpserver.azuredevops\src\mcpserver.azuredevops.stdio\mcpserver.azuredevops.stdio.csproj"],
+    new Dictionary<string, string>
+    {
+        { "AZURE_DEVOPS_ORG_URL", "https://dev.azure.com/mstack" },
+        { "AZURE_DEVOPS_AUTH_METHOD", "pat" },
+        { "AZURE_DEVOPS_PAT", Environment.GetEnvironmentVariable("MCP_PAT")! }
+    },
+    cancellationToken: cts.Token);
 
 //var openXmlTransportOptions = new Dictionary<string, string>
 //{
@@ -81,9 +63,9 @@ Console.WriteLine($"\n\nTools:\n{result}");
 //var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt2}\n{result2}");
 
-var promptAzureDevops = "get the 3 latest projects in azure devops";
+var promptAzureDevops = "Get 2 commits from the azure devops repository 'mstack-skills-blazor'";
 var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
-//await cts.CancelAsync().ConfigureAwait(false);
-//cts.Dispose();
+await cts.CancelAsync().ConfigureAwait(false);
+cts.Dispose();

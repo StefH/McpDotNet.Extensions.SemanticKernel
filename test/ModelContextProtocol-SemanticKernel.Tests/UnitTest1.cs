@@ -1,5 +1,7 @@
+using Azure.Core;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Testing.Platform.Logging;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol.Transport;
 using Newtonsoft.Json.Linq;
@@ -35,15 +37,14 @@ public sealed class UnitTest1
             ClientInfo = new() { Name = "GitHub Test", Version = "1.0.0" }
         };
 
-        var config = new McpServerConfig
+        var sseOptions = new SseClientTransportOptions
         {
-            Id = "github",
-            Name = "GitHub",
-            TransportType = TransportTypes.Sse,
-            Location = server.Url
+            Endpoint = new Uri(server.Url!),
+            Name = "GitHub"
         };
+        var clientTransport = new SseClientTransport(sseOptions);
 
-        var client = await McpClientFactory.CreateAsync(config, options, null, LoggerFactory.Create(c => c.AddConsole()), cancellationToken);
+        var client = await McpClientFactory.CreateAsync(clientTransport, options, cancellationToken: cancellationToken);
 
         return new(client, server);
     }
