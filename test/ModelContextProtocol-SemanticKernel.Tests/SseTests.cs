@@ -1,7 +1,4 @@
-using Azure.Core;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
-using Microsoft.Testing.Platform.Logging;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol.Transport;
 using Newtonsoft.Json.Linq;
@@ -10,27 +7,32 @@ using WireMock.Server;
 
 namespace ModelContextProtocol.SemanticKernel.Tests;
 
-public sealed class UnitTest1
+public sealed class SseTests
 {
     [Fact]
-    public async Task Test1()
+    public async Task ListToolsAndCallTool()
     {
         // Arrange
         var ct = TestContext.Current.CancellationToken;
-        await using var tuple = await GetMcpClientAsync(ct);
+        await using var tuple = await GetSseMcpClientAsync(ct);
         var mcpClient = tuple.Item1;
 
-        // Assert
+        // Act 1
         var tools = await tuple.Item1.ListToolsAsync(cancellationToken: ct);
+
+        // Assert 1
         tools.Should().HaveCount(17);
 
+        // Act 2
         var commits = await mcpClient.CallToolAsync("list_commits", new Dictionary<string, object?> { { "owner", "StefH" }, { "repo", "FluentBuilder" } }, cancellationToken: ct);
+
+        // Assert 2
         commits.Content.SelectMany(c => c.Text ?? string.Empty).Should().Contain("229388090f50a39f489e30cb535f67f3705cf61f");
     }
 
-    private static async Task<AsyncDisposableTuple<IMcpClient, WireMockServer>> GetMcpClientAsync(CancellationToken cancellationToken = default)
+    private static async Task<AsyncDisposableTuple<IMcpClient, WireMockServer>> GetSseMcpClientAsync(CancellationToken cancellationToken)
     {
-        var server = InitWireMockServer();
+        var server = InitWireMockServer(cancellationToken);
 
         McpClientOptions options = new()
         {
@@ -49,7 +51,7 @@ public sealed class UnitTest1
         return new(client, server);
     }
 
-    private static WireMockServer InitWireMockServer()
+    private static WireMockServer InitWireMockServer(CancellationToken cancellationToken)
     {
         var tscTools = new TaskCompletionSource<string>();
         var tscListCommits = new TaskCompletionSource<string>();
@@ -67,10 +69,10 @@ public sealed class UnitTest1
                 {
                     q.Write($"event: endpoint\r\ndata: {server.Url}/sse\r\n\r\n");
 
-                    var toolsResponse = await tscTools.Task;
+                    var toolsResponse = await tscTools.Task.WaitAsync(cancellationToken);
                     q.Write($"event: message\r\ndata: {toolsResponse}\r\n\r\n");
 
-                    var commitsResponse = await tscListCommits.Task;
+                    var commitsResponse = await tscListCommits.Task.WaitAsync(cancellationToken);
                     q.Write($"event: message\r\ndata: {commitsResponse}\r\n\r\n");
 
                     q.Close();

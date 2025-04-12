@@ -32,8 +32,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SemanticKernel" Version="1.45.0" />
-    <PackageReference Include="ModelContextProtocol" Version="0.1.0-preview.7" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.46.0" />
+    <PackageReference Include="ModelContextProtocol" Version="0.1.0-preview.8" />
     <PackageReference Include="Stef.Validation.Options" Version="0.1.1" />
   </ItemGroup>
 
