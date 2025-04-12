@@ -63,7 +63,7 @@ Console.WriteLine($"\n\nTools:\n{result}");
 //var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt2}\n{result2}");
 
-var promptAzureDevops = "Get 2 commits from the azure devops repository 'mstack-skills-blazor'";
+var promptAzureDevops = "For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.";
 var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
