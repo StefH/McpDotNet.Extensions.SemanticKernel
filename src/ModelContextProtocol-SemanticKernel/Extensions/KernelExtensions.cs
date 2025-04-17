@@ -136,6 +136,15 @@ public static class KernelExtensions
 
         if (StdioMap.TryGetValue(key, out var stdioKernelPlugin))
         {
+            try
+            {
+                plugins.AddFromFunctions(key, stdioKernelPlugin.ToArray());
+            }
+            catch
+            {
+                // one or more functions have been added to plugins.
+            }
+
             return stdioKernelPlugin;
         }
 
@@ -238,6 +247,15 @@ public static class KernelExtensions
 
         if (SseMap.TryGetValue(key, out var sseKernelPlugin))
         {
+            try
+            {
+                plugins.AddFromFunctions(key, sseKernelPlugin.ToArray());
+            }
+            catch
+            {
+                // one or more functions have been added to plugins.
+            }
+
             return sseKernelPlugin;
         }
 
