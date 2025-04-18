@@ -1,4 +1,4 @@
-# 0.0.1-preview-08 (12 April 2025)
-- #12 Update ModelContextProtocol to 0.1.0-preview.8 and Microsoft.SemanticKernel to 1.46.0 [enhancement]
+# 0.0.1-preview-09 (18 April 2025)
+- #13 fix: try add plugin(functions) when SseMap and StdioMap cache hits [bug]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md
