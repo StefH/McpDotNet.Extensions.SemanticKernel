@@ -10,6 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\src\ModelContextProtocol-SemanticKernel\Types\JsonSchema.cs" Link="Types\JsonSchema.cs" />
+    <Compile Include="..\..\src\ModelContextProtocol-SemanticKernel\Types\JsonSchemaProperty.cs" Link="Types\JsonSchemaProperty.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AwesomeAssertions" Version="8.0.2" />
     <PackageReference Include="coverlet.collector" Version="6.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -30,6 +35,10 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Types\" />
   </ItemGroup>
 
 </Project>

@@ -16,8 +16,11 @@ jobs:
       matrix:
         os: [windows-2022, ubuntu-latest]
 
-    steps:
-    - uses: actions/checkout@v4
+    steps:  
+       - uses: actions/checkout@v4  
 
-    - name: 'Test'
-      run: dotnet test './test/ModelContextProtocol-SemanticKernel.Tests/ModelContextProtocol-SemanticKernel.Tests.csproj' -c Release
+       - name: 'Install mcpserver.everything.stdio Tool'
+         run: dotnet tool install -g mcpserver.everything.stdio --version 0.0.1-preview-04
+
+       - name: 'Test'  
+         run: dotnet test './test/ModelContextProtocol-SemanticKernel.Tests/ModelContextProtocol-SemanticKernel.Tests.csproj' -c Release
