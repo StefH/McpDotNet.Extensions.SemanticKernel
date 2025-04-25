@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Collections;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
@@ -15,6 +16,14 @@ builder.Services.AddOpenAIChatCompletion(
     apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY")!);
 
 var kernel = builder.Build();
+
+var env = Environment
+    .GetEnvironmentVariables()
+    .Cast<DictionaryEntry>()
+    .ToDictionary(
+        entry => entry.Key.ToString()!,
+        entry => entry.Value?.ToString() ?? string.Empty
+    );
 
 // await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
 
@@ -34,13 +43,28 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
     },
     cancellationToken: cts.Token);
 
-//var openXmlTransportOptions = new Dictionary<string, string>
-//{
-//    //["command"] = @"C:\dev\GitHub\McpDotNet.Extensions.SemanticKernel\wip\ModelContextProtocolServer.OpenXml.Stdio\bin\Release\net8.0\ModelContextProtocolServer.OpenXml.Stdio.exe",
-//    ["command"] = "mcpserver.openxml.stdio",
-//    ["arguments"] = "allowedPath=c:\\temp"
-//};
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", openXmlTransportOptions, cancellationToken: cts.Token);
+// await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "mcpserver.openxml.stdio", ["allowedPath=c:\\Temp"], cancellationToken: cts.Token);
+
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("gordon", "docker", ["ai", "mcpserver"], cancellationToken: cts.Token);
+
+var markitdownArguments = new[]
+{
+    "run",
+
+    // Automatically remove the container after it exits (no need to clean up manually).
+    "--rm",
+
+    // -i: Keep STDIN open (interactive mode)
+    "-i",
+
+    // Mounts the local host directory C:\temp into the container at /workdir.
+    "-v",
+    "C:\\\\temp:/workdir",
+
+    // The name (and tag) of the Docker image to use.
+    "sheyenrath/markitdown-mcp:latest"
+};
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("MarkItDown-MCP", "docker", markitdownArguments, cancellationToken: cts.Token);
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {
@@ -48,12 +72,12 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\nTools:\n{result}");
+//var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\nTools:\n{result}");
 
-//var promptReadFile = "Read the file 'CV.docx' and return all text and format as markdown.";
-//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
-//Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
+var promptReadFile = "Convert the file '/workdir/CV.docx' to Markdown.";
+var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
 //var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
@@ -63,9 +87,9 @@ Console.WriteLine($"\n\nTools:\n{result}");
 //var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt2}\n{result2}");
 
-var promptAzureDevops = "For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.";
-var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
+//var promptAzureDevops = "For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.";
+//var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
 await cts.CancelAsync().ConfigureAwait(false);
 cts.Dispose();
