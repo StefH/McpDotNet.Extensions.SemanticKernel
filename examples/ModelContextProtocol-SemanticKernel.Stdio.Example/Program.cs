@@ -17,17 +17,10 @@ builder.Services.AddOpenAIChatCompletion(
 
 var kernel = builder.Build();
 
-var env = Environment
-    .GetEnvironmentVariables()
-    .Cast<DictionaryEntry>()
-    .ToDictionary(
-        entry => entry.Key.ToString()!,
-        entry => entry.Value?.ToString() ?? string.Empty
-    );
-
 // await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
 
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "npx", ["-y", "@modelcontextprotocol/server-everything"], cancellationToken: cts.Token);
+IDictionary every = new Dictionary<string, string> { { "e", "x" } };
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "npx", ["-y", "@modelcontextprotocol/server-everything"], every, cancellationToken: cts.Token);
 
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
@@ -45,7 +38,7 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
 
 // await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "mcpserver.openxml.stdio", ["allowedPath=c:\\Temp"], cancellationToken: cts.Token);
 
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("gordon", "docker", ["ai", "mcpserver"], cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("gordon", "docker", ["ai", "mcpserver"], new Dictionary<string,string> { { "a", "b" } }, cancellationToken: cts.Token);
 
 var markitdownArguments = new[]
 {
@@ -64,7 +57,7 @@ var markitdownArguments = new[]
     // The name (and tag) of the Docker image to use.
     "sheyenrath/markitdown-mcp:latest"
 };
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("MarkItDown-MCP", "docker", markitdownArguments, cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("MarkItDown-MCP", "docker", markitdownArguments, Environment.GetEnvironmentVariables(), cancellationToken: cts.Token);
 
 var executionSettings = new OpenAIPromptExecutionSettings
 {
