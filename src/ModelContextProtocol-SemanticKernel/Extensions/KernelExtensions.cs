@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Stef Heyenrath
 
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.Json;
@@ -32,8 +33,8 @@ public static class KernelExtensions
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
     public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromClaudeDesktopConfigAsync(
-        this KernelPluginCollection plugins, 
-        ILoggerFactory? loggerFactory = null, 
+        this KernelPluginCollection plugins,
+        ILoggerFactory? loggerFactory = null,
         CancellationToken cancellationToken = default)
     {
         var appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -80,8 +81,8 @@ public static class KernelExtensions
         string serverName,
         string command,
         IList<string>? arguments = null,
-        Dictionary<string, string>? environmentVariables = null,
-        ILoggerFactory? loggerFactory = null, 
+        IDictionary? environmentVariables = null,
+        ILoggerFactory? loggerFactory = null,
         CancellationToken cancellationToken = default)
     {
         return AddMcpFunctionsFromStdioServerAsync(plugins, new ModelContextProtocolSemanticKernelStdioOptions
@@ -102,8 +103,8 @@ public static class KernelExtensions
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(
-        this KernelPluginCollection plugins, 
-        Action<ModelContextProtocolSemanticKernelStdioOptions> optionsCallback, 
+        this KernelPluginCollection plugins,
+        Action<ModelContextProtocolSemanticKernelStdioOptions> optionsCallback,
         CancellationToken cancellationToken = default)
     {
         Guard.NotNull(optionsCallback);
@@ -122,8 +123,8 @@ public static class KernelExtensions
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(
-        this KernelPluginCollection plugins, 
-        ModelContextProtocolSemanticKernelStdioOptions options, 
+        this KernelPluginCollection plugins,
+        ModelContextProtocolSemanticKernelStdioOptions options,
         CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
@@ -189,10 +190,10 @@ public static class KernelExtensions
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
-        this KernelPluginCollection plugins, 
-        string serverName, 
-        Uri endpoint, 
-        ILoggerFactory? loggerFactory = null, 
+        this KernelPluginCollection plugins,
+        string serverName,
+        Uri endpoint,
+        ILoggerFactory? loggerFactory = null,
         CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
@@ -215,8 +216,8 @@ public static class KernelExtensions
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
     public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
-        this KernelPluginCollection plugins, 
-        Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback, 
+        this KernelPluginCollection plugins,
+        Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback,
         CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
@@ -274,11 +275,18 @@ public static class KernelExtensions
 
         var loggerFactory = options.LoggerFactory ?? NullLoggerFactory.Instance;
 
+        var environmentVariables = options.EnvironmentVariables switch
+        {
+            Dictionary<string, string> genericDictionary => genericDictionary,
+            { } dictionary => dictionary.ToStringStringDictionary(),
+            _ => null
+        };
+
         var stdioOptions = new StdioClientTransportOptions
         {
             Command = options.Command,
             Arguments = options.Arguments,
-            EnvironmentVariables = options.EnvironmentVariables,
+            EnvironmentVariables = environmentVariables,
             Name = clientOptions.ClientInfo?.Name
         };
         var clientTransport = new StdioClientTransport(stdioOptions, loggerFactory);

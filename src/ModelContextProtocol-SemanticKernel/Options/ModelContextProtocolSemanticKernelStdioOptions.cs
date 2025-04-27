@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Stef Heyenrath
 
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
 namespace ModelContextProtocol.SemanticKernel.Options;
@@ -20,5 +21,5 @@ public class ModelContextProtocolSemanticKernelStdioOptions : ModelContextProtoc
     /// <summary>
     /// Environment variables to set for the server process.
     /// </summary>
-    public Dictionary<string, string>? EnvironmentVariables { get; set; }
+    public IDictionary? EnvironmentVariables { get; set; }
 }
