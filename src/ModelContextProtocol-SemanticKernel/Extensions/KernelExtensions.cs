@@ -278,7 +278,7 @@ public static class KernelExtensions
         var environmentVariables = options.EnvironmentVariables switch
         {
             Dictionary<string, string> genericDictionary => genericDictionary,
-            { } dictionary => dictionary.Cast<DictionaryEntry>().ToDictionary(entry => entry.Key.ToString()!, entry => entry.Value?.ToString() ?? string.Empty),
+            { } dictionary => dictionary.ToStringStringDictionary(),
             _ => null
         };
 
