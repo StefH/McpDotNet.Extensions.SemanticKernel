@@ -43,7 +43,7 @@ public sealed class SseTests
         var sseOptions = new SseClientTransportOptions
         {
             Endpoint = new Uri(server.Url!),
-            Name = "GitHub",
+            Name = "GitHub"
         };
         var clientTransport = new SseClientTransport(sseOptions);
 
@@ -54,6 +54,7 @@ public sealed class SseTests
 
     private static WireMockServer InitWireMockServer(CancellationToken cancellationToken)
     {
+        var tscInitialize = new TaskCompletionSource<string>();
         var tscTools = new TaskCompletionSource<string>();
         var tscListCommits = new TaskCompletionSource<string>();
 
@@ -69,6 +70,9 @@ public sealed class SseTests
                 .WithSseBody(async (_, q) =>
                 {
                     q.Write($"event: endpoint\r\ndata: {server.Url}/sse\r\n\r\n");
+
+                    var initializeResponse = await tscInitialize.Task.WaitAsync(cancellationToken);
+                    q.Write($"event: message\r\ndata: {initializeResponse}\r\n\r\n");
 
                     var toolsResponse = await tscTools.Task.WaitAsync(cancellationToken);
                     q.Write($"event: message\r\ndata: {toolsResponse}\r\n\r\n");
@@ -89,9 +93,15 @@ public sealed class SseTests
             )
             .ThenRespondWith(r => r
                 .WithHeader("Content-Type", "application/json")
-                .WithBody("""
-                          {"jsonrpc":"2.0","id":{{request.bodyAsJson.id}},"result":{"protocolVersion":"2024-11-05","capabilities":{"logging":{},"prompts":{"listChanged":true},"resources":{"subscribe":true,"listChanged":true},"tools":{"listChanged":true}},"serverInfo":{"name":"ExampleServer","version":"1.0.0"}}}
-                          """)
+                .WithBody(req =>
+                {
+                    const string response =
+                        """
+                        {"jsonrpc":"2.0","id":$ID$,"result":{"protocolVersion":"2024-11-05","capabilities":{"logging":{},"prompts":{"listChanged":true},"resources":{"subscribe":true,"listChanged":true},"tools":{"listChanged":true}},"serverInfo":{"name":"ExampleServer","version":"1.0.0"}}}
+                        """;
+                    tscInitialize.SetResult(response.Replace("$ID$", ((JObject)req.BodyAsJson!)["id"]!.Value<string>()));
+                    return "accepted";
+                })
                 .WithTransformer()
             );
 
@@ -100,7 +110,7 @@ public sealed class SseTests
                 .UsingPost()
                 .WithPath("/sse")
                 .WithHeader("Content-Type", "application/json*")
-                .WithBody(b => b?.Contains("\"method\":\"notifications/initialized\"") == true)
+                .WithBody(new JsonPartialWildcardMatcher(new { method = "notifications/initialized" }))
             )
             .ThenRespondWith(r => r
                 .WithBody("accepted")
