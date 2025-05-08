@@ -1,3 +1,7 @@
+# 0.0.1-preview-12 (08 May 2025)
+- [#17](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/17) - Upgrade ModelContextProtocol to 0.1.0-preview.12 [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#16](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/issues/16) - Run error: Method not found: set_Description [bug]
+
 # 0.0.1-preview-10 (27 April 2025)
 - [#15](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/15) - Upgrade ModelContextProtocol to 0.1.0-preview.11 [enhancement] contributed by [StefH](https://github.com/StefH)
 
