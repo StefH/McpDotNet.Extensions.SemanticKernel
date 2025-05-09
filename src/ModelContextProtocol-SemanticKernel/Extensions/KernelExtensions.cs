@@ -161,44 +161,44 @@ public static class KernelExtensions
         return StdioMap[key] = stdioKernelPlugin;
     }
 
-	/// <summary>
-	/// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
-	/// </summary>
-	/// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
-	/// <param name="serverName">The MCP Server name.</param>
-	/// <param name="endpoint">The endpoint (location).</param>
-	/// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
-	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name="httpClient" > The optional<see cref = "HttpClient" />.</ param >
-	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+    /// <summary>
+    /// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="serverName">The MCP Server name.</param>
+    /// <param name="endpoint">The endpoint (location).</param>
+    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
+    /// <param name="httpClient">The optional <see cref="HttpClient"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
+    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
         string serverName,
         string endpoint,
         ILoggerFactory? loggerFactory = null,
-        CancellationToken cancellationToken = default,
-        HttpClient? httpClient = default)
+        HttpClient? httpClient = null,
+        CancellationToken cancellationToken = default)
     {
-        return AddMcpFunctionsFromSseServerAsync(plugins, serverName, new Uri(endpoint), loggerFactory, cancellationToken, httpClient);
+        return AddMcpFunctionsFromSseServerAsync(plugins, serverName, new Uri(endpoint), loggerFactory, httpClient, cancellationToken);
     }
 
-	/// <summary>
-	/// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
-	/// </summary>
-	/// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
-	/// <param name="serverName">The MCP Server name.</param>
-	/// <param name="endpoint">The endpoint (location).</param>
-	/// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
-	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name="httpClient" > The optional<see cref = "HttpClient" />.</ param >
-	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+    /// <summary>
+    /// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="serverName">The MCP Server name.</param>
+    /// <param name="endpoint">The endpoint (location).</param>
+    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
+    /// <param name="httpClient">The optional <see cref="HttpClient"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
+    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
         string serverName,
         Uri endpoint,
         ILoggerFactory? loggerFactory = null,
-        CancellationToken cancellationToken = default,
-        HttpClient? httpClient = null)
+        HttpClient? httpClient = null,
+        CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNullOrWhiteSpace(serverName);
@@ -208,23 +208,23 @@ public static class KernelExtensions
         {
             Name = serverName,
             Endpoint = endpoint,
-            LoggerFactory = loggerFactory
-        }, cancellationToken, httpClient);
+            LoggerFactory = loggerFactory,
+        }, httpClient, cancellationToken);
     }
 
-	/// <summary>
-	/// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
-	/// </summary>
-	/// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
-	/// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/> callback.</param>
-	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name="httpClient" > The optional<see cref = "HttpClient" />.</ param >
-	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+    /// <summary>
+    /// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/> callback.</param>
+    /// <param name="httpClient">The optional <see cref="HttpClient"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
+    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
         Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback,
-        CancellationToken cancellationToken = default, 
-        HttpClient? httpClient = null)
+        HttpClient? httpClient = null,
+        CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNull(optionsCallback);
@@ -232,18 +232,18 @@ public static class KernelExtensions
         var options = new ModelContextProtocolSemanticKernelSseOptions();
         optionsCallback(options);
 
-        return AddMcpFunctionsFromSseServerAsync(plugins, options, cancellationToken, httpClient);
-	}
+        return AddMcpFunctionsFromSseServerAsync(plugins, options, httpClient, cancellationToken);
+    }
 
-	/// <summary>
-	/// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
-	/// </summary>
-	/// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
-	/// <param name="options">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/>.</param>
-	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name="httpClient" > The optional<see cref = "HttpClient" />.</ param >
-	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-	public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelSseOptions options, CancellationToken cancellationToken = default, HttpClient? httpClient = null)
+    /// <summary>
+    /// Creates a Model Content Protocol plugin from an SSE server that contains the specified MCP functions and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="options">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/>.</param>
+    /// <param name="httpClient">The optional <see cref="HttpClient"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
+    public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelSseOptions options, HttpClient? httpClient = null, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNull(options);
@@ -313,17 +313,10 @@ public static class KernelExtensions
             AdditionalHeaders = options.AdditionalHeaders,
             Name = clientOptions.ClientInfo?.Name
         };
-		SseClientTransport clientTransport;
-		if (httpClient is null)
-		{
-			clientTransport = new SseClientTransport(sseOptions, loggerFactory);
-		}
-		else
-		{
-			clientTransport = new SseClientTransport(sseOptions, httpClient, loggerFactory);
-		}
 
-		return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
+        var clientTransport = httpClient == null ? new SseClientTransport(sseOptions, loggerFactory) : new SseClientTransport(sseOptions, httpClient, loggerFactory);
+
+        return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
     }
 
     // A plugin name can contain only ASCII letters, digits, and underscores.
@@ -337,8 +330,8 @@ public static class KernelExtensions
         var assembly = Assembly.GetEntryAssembly();
         var name = assembly?.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? $"ModelContextProtocol-SemanticKernel.{type}Client";
         var version = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "1.0.0";
-        return new McpClientOptions
 
+        return new McpClientOptions
         {
             ClientInfo = new()
             {

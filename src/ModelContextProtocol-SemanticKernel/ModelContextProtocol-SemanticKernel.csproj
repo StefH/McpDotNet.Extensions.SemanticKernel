@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.0.1-preview-12</Version>
+    <Version>0.0.1-preview-13</Version>
     <RootNamespace>ModelContextProtocol.SemanticKernel</RootNamespace>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>

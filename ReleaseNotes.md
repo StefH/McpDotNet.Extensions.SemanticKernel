@@ -1,3 +1,6 @@
+# 0.0.1-preview-13 (09 May 2025)
+- [#19](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/19) - Add abillity to provide HttpClient to MCP Tool calls. [enhancement] contributed by [KitsKlip](https://github.com/KitsKlip)
+
 # 0.0.1-preview-12 (08 May 2025)
 - [#17](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/17) - Upgrade ModelContextProtocol to 0.1.0-preview.12 [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#16](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/issues/16) - Run error: Method not found: set_Description [bug]
