@@ -169,7 +169,7 @@ public static class KernelExtensions
 	/// <param name="endpoint">The endpoint (location).</param>
 	/// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
 	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name = "httpClient" > The optional<see cref = "HttpClient" />.</ param >
+	/// <param name="httpClient" > The optional<see cref = "HttpClient" />.</ param >
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
 	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
@@ -190,7 +190,7 @@ public static class KernelExtensions
 	/// <param name="endpoint">The endpoint (location).</param>
 	/// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
 	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name = "httpClient" > The optional<see cref = "HttpClient" />.</ param >
+	/// <param name="httpClient" > The optional<see cref = "HttpClient" />.</ param >
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
 	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
@@ -218,7 +218,7 @@ public static class KernelExtensions
 	/// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
 	/// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/> callback.</param>
 	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name = "httpClient" > The optional<see cref = "HttpClient" />.</ param >
+	/// <param name="httpClient" > The optional<see cref = "HttpClient" />.</ param >
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
 	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
@@ -241,7 +241,7 @@ public static class KernelExtensions
 	/// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
 	/// <param name="options">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/>.</param>
 	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name = "httpClient" > The optional<see cref = "HttpClient" />.</ param >
+	/// <param name="httpClient" > The optional<see cref = "HttpClient" />.</ param >
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
 	public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelSseOptions options, CancellationToken cancellationToken = default, HttpClient? httpClient = null)
     {
