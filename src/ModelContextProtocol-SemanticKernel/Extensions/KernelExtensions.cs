@@ -169,8 +169,6 @@ public static class KernelExtensions
 	/// <param name="endpoint">The endpoint (location).</param>
 	/// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
 	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name="clientOptions">The <see cref="McpClientOptions"/>.</param>
-	/// <param name="sseOptions">The <see cref="SseClientTransportOptions"/>.</param>
 	/// <param name="httpClient">The <see cref="HttpClient"/>.</param>
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
 	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
@@ -179,11 +177,9 @@ public static class KernelExtensions
 		string endpoint,
 		ILoggerFactory? loggerFactory = null,
 		CancellationToken cancellationToken = default,
-		McpClientOptions? clientOptions = default,
-		SseClientTransportOptions? sseOptions = default,
 		HttpClient? httpClient = default)
 	{
-		return AddMcpFunctionsFromSseServerAsync(plugins, serverName, new Uri(endpoint), loggerFactory, cancellationToken, clientOptions, sseOptions, httpClient);
+		return AddMcpFunctionsFromSseServerAsync(plugins, serverName, new Uri(endpoint), loggerFactory, cancellationToken, httpClient);
 	}
 
 	/// <summary>
@@ -194,8 +190,6 @@ public static class KernelExtensions
 	/// <param name="endpoint">The endpoint (location).</param>
 	/// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
 	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name="clientOptions">The <see cref="McpClientOptions"/>.</param>
-	/// <param name="sseOptions">The <see cref="SseClientTransportOptions"/>.</param>
 	/// <param name="httpClient">The <see cref="HttpClient"/>.</param>
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
 	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
@@ -204,8 +198,6 @@ public static class KernelExtensions
 		Uri endpoint,
 		ILoggerFactory? loggerFactory = null,
 		CancellationToken cancellationToken = default,
-		McpClientOptions? clientOptions = default,
-		SseClientTransportOptions? sseOptions = default,
 		HttpClient? httpClient = default)
 	{
 		Guard.NotNull(plugins);
@@ -217,7 +209,7 @@ public static class KernelExtensions
 			Name = serverName,
 			Endpoint = endpoint,
 			LoggerFactory = loggerFactory
-		}, cancellationToken, clientOptions, sseOptions, httpClient);
+		}, cancellationToken, httpClient);
 	}
 
 	/// <summary>
@@ -225,17 +217,13 @@ public static class KernelExtensions
 	/// </summary>
 	/// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
 	/// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/> callback.</param>
-	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>	
-	/// <param name="clientOptions">The <see cref="McpClientOptions"/>.</param>
-	/// <param name="sseOptions">The <see cref="SseClientTransportOptions"/>.</param>
+	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
 	/// <param name="httpClient">The <see cref="HttpClient"/>.</param>
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
 	public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
 		this KernelPluginCollection plugins,
 		Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback,
 		CancellationToken cancellationToken = default,
-		McpClientOptions? clientOptions = default,
-		SseClientTransportOptions? sseOptions = default,
 		HttpClient? httpClient = default)
 	{
 		Guard.NotNull(plugins);
@@ -244,7 +232,7 @@ public static class KernelExtensions
 		var options = new ModelContextProtocolSemanticKernelSseOptions();
 		optionsCallback(options);
 
-		return AddMcpFunctionsFromSseServerAsync(plugins, options, cancellationToken, clientOptions, sseOptions, httpClient);
+		return AddMcpFunctionsFromSseServerAsync(plugins, options, cancellationToken, httpClient);
 	}
 
 	/// <summary>
@@ -253,16 +241,11 @@ public static class KernelExtensions
 	/// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
 	/// <param name="options">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/>.</param>
 	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-	/// <param name="clientOptions">The <see cref="McpClientOptions"/>.</param>
-	/// <param name="sseOptions">The <see cref="SseClientTransportOptions"/>.</param>
-	/// <param name="httpClient">The <see cref="HttpClient"/>.</param>
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
 	public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
 		this KernelPluginCollection plugins,
 		ModelContextProtocolSemanticKernelSseOptions options,
 		CancellationToken cancellationToken = default,
-		McpClientOptions? clientOptions = default,
-		SseClientTransportOptions? sseOptions = default,
 		HttpClient? httpClient = default)
 	{
 		Guard.NotNull(plugins);
@@ -287,100 +270,13 @@ public static class KernelExtensions
 			return sseKernelPlugin;
 		}
 
-		var mcpClient = await GetSseClientAsync(serverName, options, cancellationToken, clientOptions, sseOptions, httpClient).ConfigureAwait(false);
+		var mcpClient = await GetSseClientAsync(serverName, options, cancellationToken, httpClient).ConfigureAwait(false);
 		var functions = await mcpClient.MapToFunctionsAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
 		cancellationToken.Register(() => mcpClient.DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult());
 
 		sseKernelPlugin = plugins.AddFromFunctions(key, functions);
 		return SseMap[key] = sseKernelPlugin;
-	}
-
-	/// <summary>
-	/// Creates a <see cref="IMcpClient"/> instance
-	/// </summary>
-	/// <param name="serverName">The name of the server</param>
-	/// <param name="options">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/>.</param>
-	/// <param name="cancellationToken">The <see cref="CancellationToken"/>.</param>
-	/// <param name="clientOptions">The <see cref="McpClientOptions"/>.</param>
-	/// <param name="sseOptions">The <see cref="SseClientTransportOptions"/>.</param>
-	/// <param name="httpClient">The <see cref="HttpClient"/>.</param>
-	/// <returns>A <see cref="IMcpClient"/></returns>
-	public static async Task<IMcpClient> GetSseClientAsync(string serverName, ModelContextProtocolSemanticKernelSseOptions options, CancellationToken cancellationToken, McpClientOptions? clientOptions = default, SseClientTransportOptions? sseOptions = default, HttpClient? httpClient = default)
-	{
-		clientOptions = clientOptions ?? GetMcpClientOptions(serverName, "sse");
-		var clientTransport = GetSseClientTransport(clientOptions, options, sseOptions, httpClient, cancellationToken);
-		return await GetSseClientAsync(serverName, clientOptions, options, clientTransport, cancellationToken);
-	}
-
-	/// <summary>
-	/// Creates a <see cref="IMcpClient"/> instance
-	/// </summary>
-	/// <param name="serverName">The name of the server</param>
-	/// <param name="clientOptions">The <see cref="McpClientOptions"/>.</param>
-	/// <param name="options">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/>.</param>
-	/// <param name="sseOptions">The <see cref="SseClientTransportOptions"/>.</param>
-	/// <param name="httpClient">The <see cref="HttpClient"/>.</param>
-	/// <param name="cancellationToken">The <see cref="CancellationToken"/>.</param>
-	/// <returns>A <see cref="IMcpClient"/></returns>
-	public static async Task<IMcpClient> GetSseClientAsync(string serverName, McpClientOptions clientOptions, ModelContextProtocolSemanticKernelSseOptions options, SseClientTransport clientTransport, CancellationToken cancellationToken)
-	{
-		var loggerFactory = options.LoggerFactory ?? NullLoggerFactory.Instance;
-		return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
-	}
-
-	/// <summary>
-	/// Create a Sse Client Transport
-	/// </summary>
-	/// <param name="clientOptions">The <see cref="McpClientOptions"/>.</param>
-	/// <param name="options">The <see cref="ModelContextProtocolSemanticKernelSseOptions"/>.</param>
-	/// <param name="sseOptions">The <see cref="SseClientTransportOptions"/>.</param>
-	/// <param name="httpClient">The <see cref="HttpClient"/>.</param>
-	/// <param name="cancellationToken">The <see cref="CancellationToken"/>.</param>
-	/// <returns>A <see cref="SseClientTransport"/></returns>
-	public static SseClientTransport GetSseClientTransport(McpClientOptions clientOptions, ModelContextProtocolSemanticKernelSseOptions options, SseClientTransportOptions? sseOptions, HttpClient? httpClient, CancellationToken cancellationToken)
-	{
-		var loggerFactory = options.LoggerFactory ?? NullLoggerFactory.Instance;
-
-		sseOptions = sseOptions ?? new SseClientTransportOptions
-		{
-			Endpoint = options.Endpoint,
-			AdditionalHeaders = options.AdditionalHeaders,
-			Name = clientOptions.ClientInfo?.Name
-		};
-
-		if (httpClient is null)
-			return new SseClientTransport(sseOptions, loggerFactory);
-
-		return new SseClientTransport(sseOptions, httpClient, loggerFactory);
-	}
-
-	/// <summary>
-	/// Generates MCP Client Options
-	/// </summary>
-	/// <param name="serverName">Name of the MCP server</param>
-	/// <param name="type">Type of MCP server</param>
-	/// <returns></returns>
-	public static McpClientOptions GetMcpClientOptions(string serverName, string type)
-	{
-		var assembly = Assembly.GetEntryAssembly();
-		var name = assembly?.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? $"ModelContextProtocol-SemanticKernel.{type}Client";
-		var version = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "1.0.0";
-		return new McpClientOptions
-
-		{
-			ClientInfo = new()
-			{
-				Name = $"{serverName} {name}",
-				Version = version
-			}
-		};
-	}
-
-	// A plugin name can contain only ASCII letters, digits, and underscores.
-	private static string ToSafePluginName(string serverName)
-	{
-		return Regex.Replace(serverName, @"[^\w]", "_");
 	}
 
 	private static async Task<IMcpClient> GetStdioClientAsync(string serverName, ModelContextProtocolSemanticKernelStdioOptions options, CancellationToken cancellationToken)
@@ -406,5 +302,52 @@ public static class KernelExtensions
 		var clientTransport = new StdioClientTransport(stdioOptions, loggerFactory);
 
 		return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
+	}
+
+	private static async Task<IMcpClient> GetSseClientAsync(string serverName, ModelContextProtocolSemanticKernelSseOptions options, CancellationToken cancellationToken, HttpClient? httpClient = default)
+	{
+		var clientOptions = GetMcpClientOptions(serverName, "sse");
+
+		var loggerFactory = options.LoggerFactory ?? NullLoggerFactory.Instance;
+
+		var sseOptions = new SseClientTransportOptions
+		{
+			Endpoint = options.Endpoint,
+			AdditionalHeaders = options.AdditionalHeaders,
+			Name = clientOptions.ClientInfo?.Name
+		};
+		SseClientTransport clientTransport;
+		if (httpClient is null)
+		{
+			clientTransport = new SseClientTransport(sseOptions, loggerFactory);
+		}
+		else
+		{
+			clientTransport = new SseClientTransport(sseOptions, httpClient, loggerFactory);
+		}
+
+		return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
+	}
+
+	// A plugin name can contain only ASCII letters, digits, and underscores.
+	private static string ToSafePluginName(string serverName)
+	{
+		return Regex.Replace(serverName, @"[^\w]", "_");
+	}
+
+	private static McpClientOptions GetMcpClientOptions(string serverName, string type)
+	{
+		var assembly = Assembly.GetEntryAssembly();
+		var name = assembly?.GetCustomAttribute<AssemblyTitleAttribute>()?.Title ?? $"ModelContextProtocol-SemanticKernel.{type}Client";
+		var version = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0] ?? "1.0.0";
+		return new McpClientOptions
+
+		{
+			ClientInfo = new()
+			{
+				Name = $"{serverName} {name}",
+				Version = version
+			}
+		};
 	}
 }
