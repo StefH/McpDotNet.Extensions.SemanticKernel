@@ -179,7 +179,7 @@ public static class KernelExtensions
         CancellationToken cancellationToken = default,
 		HttpClient? httpClient = default)
     {
-        return AddMcpFunctionsFromSseServerAsync(plugins, serverName, new Uri(endpoint), loggerFactory, cancellationToken, httpClient));
+        return AddMcpFunctionsFromSseServerAsync(plugins, serverName, new Uri(endpoint), loggerFactory, cancellationToken, httpClient);
     }
 
 	/// <summary>
@@ -209,7 +209,7 @@ public static class KernelExtensions
             Name = serverName,
             Endpoint = endpoint,
             LoggerFactory = loggerFactory
-        }, cancellationToken, httpClient));
+        }, cancellationToken, httpClient);
     }
 
 	/// <summary>
@@ -224,7 +224,7 @@ public static class KernelExtensions
         this KernelPluginCollection plugins,
         Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback,
         CancellationToken cancellationToken = default,
-		HttpClient? httpClient = defaul)
+		HttpClient? httpClient = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNull(optionsCallback);
@@ -243,7 +243,7 @@ public static class KernelExtensions
 	/// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
 	/// <param name="httpClient">The <see cref="HttpClient"/>.</param>
 	/// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-	public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelSseOptions options, CancellationToken cancellationToken = default, HttpClient? httpClient = defaul)
+	public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelSseOptions options, CancellationToken cancellationToken = default, HttpClient? httpClient = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNull(options);
