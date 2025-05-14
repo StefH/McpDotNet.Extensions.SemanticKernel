@@ -1,4 +1,4 @@
-# 0.0.1-preview-13 (09 May 2025)
-- #19 Add abillity to provide HttpClient to MCP Tool calls. [enhancement]
+# 0.0.1-preview-14 (14 May 2025)
+- #20 Update dependencies (MCP to 0.1.0-preview.13 and SemanticKernel to 1.49.0) [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md
