@@ -1,6 +1,5 @@
 using FluentAssertions;
 using ModelContextProtocol.Client;
-using ModelContextProtocol.Protocol.Transport;
 using Newtonsoft.Json.Linq;
 using WireMock.Matchers;
 using WireMock.Server;

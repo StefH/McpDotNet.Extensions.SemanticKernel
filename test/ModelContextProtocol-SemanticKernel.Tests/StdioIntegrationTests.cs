@@ -1,7 +1,6 @@
 using System.Text.Json;
 using FluentAssertions;
 using ModelContextProtocol.Client;
-using ModelContextProtocol.Protocol.Transport;
 using ModelContextProtocol.SemanticKernel.Types;
 
 namespace ModelContextProtocol.SemanticKernel.Tests;
