@@ -1,3 +1,6 @@
+# 0.0.1-preview-15 (15 May 2025)
+- [#21](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/21) - Update dependencies (MCP to 0.1.0-preview.14 and SemanticKernel to 1.50.0) [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.0.1-preview-14 (14 May 2025)
 - [#20](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/20) - Update dependencies (MCP to 0.1.0-preview.13 and SemanticKernel to 1.49.0) [enhancement] contributed by [StefH](https://github.com/StefH)
 

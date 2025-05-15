@@ -1,4 +1,4 @@
-# 0.0.1-preview-14 (14 May 2025)
-- #20 Update dependencies (MCP to 0.1.0-preview.13 and SemanticKernel to 1.49.0) [enhancement]
+# 0.0.1-preview-15 (15 May 2025)
+- #21 Update dependencies (MCP to 0.1.0-preview.14 and SemanticKernel to 1.50.0) [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md
