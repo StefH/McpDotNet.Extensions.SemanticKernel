@@ -18,7 +18,7 @@ public sealed class StdioIntegrationTests
         var tools = await mcpClient.ListToolsAsync(cancellationToken: ct);
 
         // Assert
-        tools.Should().HaveCount(2);
+        tools.Should().HaveCount(3);
     }
 
     [Theory]
