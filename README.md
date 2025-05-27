@@ -6,7 +6,7 @@ Enables seamless use of MCP tools as AI functions.
 > This project is in preview; breaking changes can be introduced without prior notice.
 
 ## NuGet
-### ModelContextProtocol
+### ModelContextProtocol-SemanticKernel
 [![NuGet Badge](https://img.shields.io/nuget/v/ModelContextProtocol-SemanticKernel)](https://www.nuget.org/packages/ModelContextProtocol-SemanticKernel)
 
 #### McpDotNet (obsolete)
