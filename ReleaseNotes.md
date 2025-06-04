@@ -1,3 +1,9 @@
+# 0.0.1-preview-16 (04 June 2025)
+- [#23](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/23) - Add test for ComplexArguments [test] contributed by [StefH](https://github.com/StefH)
+- [#24](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/24) - Update ModelContextProtocol to 0.2.0-preview.1 [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#25](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/25) - Update mcp contributed by [StefH](https://github.com/StefH)
+- [#26](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/issues/26) - Is not working for v0.2.0-preview versions of modelcontextprotocol [bug]
+
 # 0.0.1-preview-15 (15 May 2025)
 - [#21](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/21) - Update dependencies (MCP to 0.1.0-preview.14 and SemanticKernel to 1.50.0) [enhancement] contributed by [StefH](https://github.com/StefH)
 

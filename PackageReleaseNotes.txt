@@ -1,4 +1,7 @@
-# 0.0.1-preview-15 (15 May 2025)
-- #21 Update dependencies (MCP to 0.1.0-preview.14 and SemanticKernel to 1.50.0) [enhancement]
+# 0.0.1-preview-16 (04 June 2025)
+- #23 Add test for ComplexArguments [test]
+- #24 Update ModelContextProtocol to 0.2.0-preview.1 [enhancement]
+- #25 Update mcp
+- #26 Is not working for v0.2.0-preview versions of modelcontextprotocol [bug]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md

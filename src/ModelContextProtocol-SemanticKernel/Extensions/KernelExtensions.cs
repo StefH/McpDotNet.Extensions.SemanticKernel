@@ -292,7 +292,7 @@ public static class KernelExtensions
         {
             Command = options.Command,
             Arguments = options.Arguments,
-            EnvironmentVariables = environmentVariables,
+            EnvironmentVariables = environmentVariables?.ToStringNullableStringDictionary(),
             Name = clientOptions.ClientInfo?.Name
         };
         var clientTransport = new StdioClientTransport(stdioOptions, loggerFactory);
