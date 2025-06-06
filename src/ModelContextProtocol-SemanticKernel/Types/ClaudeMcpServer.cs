@@ -2,9 +2,9 @@
 
 namespace ModelContextProtocol.SemanticKernel.Types;
 
-public class ClaudeMcpServer
+public class ClaudeMcpServer : IMcpServer
 {
-    [JsonPropertyName("command")] 
+    [JsonPropertyName("command")]
     public string Command { get; set; } = null!;
 
     [JsonPropertyName("args")]

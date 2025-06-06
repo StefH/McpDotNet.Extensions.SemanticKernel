@@ -2,9 +2,9 @@
 
 namespace ModelContextProtocol.SemanticKernel.Types;
 
-public class ClaudeConfig
+public class ClaudeConfig : McpConfig<ClaudeMcpServer>
 {
     [JsonRequired]
-    [JsonPropertyName("mcpServers")] 
-    public Dictionary<string, ClaudeMcpServer> McpServers { get; set; } = [];
+    [JsonPropertyName("mcpServers")]
+    public override Dictionary<string, ClaudeMcpServer> McpServers { get; set; } = [];
 }
