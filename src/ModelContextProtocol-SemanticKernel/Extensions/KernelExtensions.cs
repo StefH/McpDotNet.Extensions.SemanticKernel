@@ -65,6 +65,137 @@ public static class KernelExtensions
     }
 
     /// <summary>
+    /// Adds Model Content Protocol plugins from the Visual Studio settings file (<c>settings.json</c>) and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="path">Path to the workspace settings file, for user settings use alternative overload</param>
+    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
+    public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromVsCodeConfigAsync(
+        this KernelPluginCollection plugins,
+        string? path = null,
+        ILoggerFactory? loggerFactory = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (!File.Exists(path))
+        {
+            // TODO: Add logging that configuration file was not found
+            // TODO: Suggest user to use the alternative overload if User Settings (not workspace settings) file is used
+            return [];
+        }
+
+        var config = JsonSerializer.Deserialize<VisualStudioSettings>(File.OpenRead(path));
+        if (config == null)
+        {
+            return [];
+        }
+
+
+        // TODO: Ensure input variables are present
+        // TODO: Re-use code from the other overload to avoid code duplication
+        var registeredPlugins = new List<KernelPlugin>();
+        foreach (var kvp in config.McpSection.McpServers.Where(s => !s.Value.Disabled))
+        {
+            if (kvp.Value.Type == VSCodeServerType.Stdio)
+            {
+                registeredPlugins.Add(await AddMcpFunctionsFromStdioServerAsync(plugins, options =>
+                {
+                    options.Name = kvp.Key;
+                    options.Command = kvp.Value.Command;
+                    options.Arguments = kvp.Value.Args;
+                    options.EnvironmentVariables = kvp.Value.Env;
+                },
+                cancellationToken));
+                continue;
+
+            }
+            // TODO: See if args can be safely extracted from args
+            //else if (kvp.Value.Type == VSCodeServerType.SSE)
+            //{
+
+            //    continue;
+            //}
+            else
+            {
+                throw new NotSupportedException($"Server type {kvp.Value.Type} is not supported yet.");
+            }
+        }
+
+        return registeredPlugins;
+    }
+
+    /// <summary>
+    /// Adds Model Content Protocol plugins from the Visual Studio settings file (<c>settings.json</c>) and adds it into the plugin collection.
+    /// </summary>
+    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
+    /// <param name="instanceType">In case of VSCode Insiders, default can be overriden to auto-detect settings location</param>
+    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
+    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
+    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
+    public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromVsCodeConfigAsync(
+        this KernelPluginCollection plugins,
+        string? path = null,
+        VsCodeInstanceType instanceType = VsCodeInstanceType.VSCode,
+        ILoggerFactory? loggerFactory = null,
+        CancellationToken cancellationToken = default)
+    {
+        // https://code.visualstudio.com/docs/configure/settings#_user-settingsjson-location
+        var instancePath = instanceType switch
+        {
+            VsCodeInstanceType.VSCode => "Code",
+            VsCodeInstanceType.VSCodeInsiders => "Code - Insiders", // no docs for this, but it's the name on local machine (windows, including white spaces)
+            _ => throw new ArgumentException("Visual Studio Instance Type not supported yet.", nameof(instanceType))
+        };
+
+        var appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var configPath = Path.Combine(appDataRoaming, instancePath, "User", "settings.json");
+        if (!File.Exists(configPath))
+        {
+            // TODO: Add logging that configuration file was not found
+            return [];
+        }
+
+        var config = JsonSerializer.Deserialize<VisualStudioSettings>(File.OpenRead(configPath));
+        if (config == null)
+        {
+            return [];
+        }
+
+        // TODO: Ensure input variables are present
+        // TODO: Re-use code from the other overload to avoid code duplication
+        var registeredPlugins = new List<KernelPlugin>();
+        foreach (var kvp in config.McpSection.McpServers.Where(s => !s.Value.Disabled))
+        {
+            if(kvp.Value.Type == VSCodeServerType.Stdio)
+            {
+                registeredPlugins.Add(await AddMcpFunctionsFromStdioServerAsync(plugins, options =>
+                {
+                    options.Name = kvp.Key;
+                    options.Command = kvp.Value.Command;
+                    options.Arguments = kvp.Value.Args;
+                    options.EnvironmentVariables = kvp.Value.Env;
+                },
+                cancellationToken));
+                continue;
+
+            }
+            // TODO: See if args can be safely extracted from args
+            //else if (kvp.Value.Type == VSCodeServerType.SSE)
+            //{
+                
+            //    continue;
+            //}
+            else
+            {
+                throw new NotSupportedException($"Server type {kvp.Value.Type} is not supported yet.");
+            }
+        }
+
+        return registeredPlugins;
+    }
+
+    /// <summary>
     /// Creates a Model Content Protocol plugin from a Stdio server that contains the specified MCP functions and adds it into the plugin collection.
     /// </summary>
     /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
