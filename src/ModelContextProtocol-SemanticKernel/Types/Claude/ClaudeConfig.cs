@@ -2,7 +2,7 @@
 
 namespace ModelContextProtocol.SemanticKernel.Types;
 
-public class ClaudeConfig : McpConfig<ClaudeMcpServer>
+internal class ClaudeConfig : McpConfig<ClaudeMcpServer>
 {
     [JsonRequired]
     [JsonPropertyName("mcpServers")]

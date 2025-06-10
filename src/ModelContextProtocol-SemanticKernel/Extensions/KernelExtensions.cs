@@ -3,14 +3,12 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.SemanticKernel.Options;
-using ModelContextProtocol.SemanticKernel.Types;
 using Stef.Validation;
 using Stef.Validation.Options;
 
@@ -19,181 +17,10 @@ namespace ModelContextProtocol.SemanticKernel.Extensions;
 /// <summary>
 /// Extension methods for KernelPlugin
 /// </summary>
-public static class KernelExtensions
+public static partial class KernelExtensions
 {
     private static readonly ConcurrentDictionary<string, KernelPlugin> StdioMap = new();
     private static readonly ConcurrentDictionary<string, KernelPlugin> SseMap = new();
-
-    /// <summary>
-    /// Adds Stdio Model Content Protocol plugins from a Claude Desktop configuration file (<c>claude_desktop_config.json</c>) and adds it into the plugin collection.
-    /// </summary>
-    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
-    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
-    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
-    public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromClaudeDesktopConfigAsync(
-        this KernelPluginCollection plugins,
-        ILoggerFactory? loggerFactory = null,
-        CancellationToken cancellationToken = default)
-    {
-        var appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var configPath = Path.Combine(appDataRoaming, "Claude", "claude_desktop_config.json");
-        if (!File.Exists(configPath))
-        {
-            return [];
-        }
-
-        var config = JsonSerializer.Deserialize<ClaudeConfig>(File.OpenRead(configPath));
-        if (config == null)
-        {
-            return [];
-        }
-
-        var registeredPlugins = new List<KernelPlugin>();
-        foreach (var kvp in config.McpServers.Where(s => !s.Value.Disabled))
-        {
-            registeredPlugins.Add(await AddMcpFunctionsFromStdioServerAsync(plugins, options =>
-            {
-                options.Name = kvp.Key;
-                options.Command = kvp.Value.Command;
-                options.Arguments = kvp.Value.Args;
-                options.EnvironmentVariables = kvp.Value.Env;
-            }, cancellationToken));
-        }
-
-        return registeredPlugins;
-    }
-
-    /// <summary>
-    /// Adds Model Content Protocol plugins from the Visual Studio settings file (<c>settings.json</c>) and adds it into the plugin collection.
-    /// </summary>
-    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
-    /// <param name="path">Path to the workspace settings file, for user settings use alternative overload</param>
-    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
-    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
-    public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromVsCodeConfigAsync(
-        this KernelPluginCollection plugins,
-        string? path = null,
-        ILoggerFactory? loggerFactory = null,
-        CancellationToken cancellationToken = default)
-    {
-        if (!File.Exists(path))
-        {
-            // TODO: Add logging that configuration file was not found
-            // TODO: Suggest user to use the alternative overload if User Settings (not workspace settings) file is used
-            return [];
-        }
-
-        var config = JsonSerializer.Deserialize<VisualStudioSettings>(File.OpenRead(path));
-        if (config == null)
-        {
-            return [];
-        }
-
-
-        // TODO: Ensure input variables are present
-        // TODO: Re-use code from the other overload to avoid code duplication
-        var registeredPlugins = new List<KernelPlugin>();
-        foreach (var kvp in config.McpSection.McpServers.Where(s => !s.Value.Disabled))
-        {
-            if (kvp.Value.Type == VSCodeServerType.Stdio)
-            {
-                registeredPlugins.Add(await AddMcpFunctionsFromStdioServerAsync(plugins, options =>
-                {
-                    options.Name = kvp.Key;
-                    options.Command = kvp.Value.Command;
-                    options.Arguments = kvp.Value.Args;
-                    options.EnvironmentVariables = kvp.Value.Env;
-                },
-                cancellationToken));
-                continue;
-
-            }
-            // TODO: See if args can be safely extracted from args
-            //else if (kvp.Value.Type == VSCodeServerType.SSE)
-            //{
-
-            //    continue;
-            //}
-            else
-            {
-                throw new NotSupportedException($"Server type {kvp.Value.Type} is not supported yet.");
-            }
-        }
-
-        return registeredPlugins;
-    }
-
-    /// <summary>
-    /// Adds Model Content Protocol plugins from the Visual Studio settings file (<c>settings.json</c>) and adds it into the plugin collection.
-    /// </summary>
-    /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
-    /// <param name="instanceType">In case of VSCode Insiders, default can be overriden to auto-detect settings location</param>
-    /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
-    /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
-    public static async Task<IReadOnlyList<KernelPlugin>> AddToolsFromVsCodeConfigAsync(
-        this KernelPluginCollection plugins,
-        string? path = null,
-        VsCodeInstanceType instanceType = VsCodeInstanceType.VSCode,
-        ILoggerFactory? loggerFactory = null,
-        CancellationToken cancellationToken = default)
-    {
-        // https://code.visualstudio.com/docs/configure/settings#_user-settingsjson-location
-        var instancePath = instanceType switch
-        {
-            VsCodeInstanceType.VSCode => "Code",
-            VsCodeInstanceType.VSCodeInsiders => "Code - Insiders", // no docs for this, but it's the name on local machine (windows, including white spaces)
-            _ => throw new ArgumentException("Visual Studio Instance Type not supported yet.", nameof(instanceType))
-        };
-
-        var appDataRoaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var configPath = Path.Combine(appDataRoaming, instancePath, "User", "settings.json");
-        if (!File.Exists(configPath))
-        {
-            // TODO: Add logging that configuration file was not found
-            return [];
-        }
-
-        var config = JsonSerializer.Deserialize<VisualStudioSettings>(File.OpenRead(configPath));
-        if (config == null)
-        {
-            return [];
-        }
-
-        // TODO: Ensure input variables are present
-        // TODO: Re-use code from the other overload to avoid code duplication
-        var registeredPlugins = new List<KernelPlugin>();
-        foreach (var kvp in config.McpSection.McpServers.Where(s => !s.Value.Disabled))
-        {
-            if(kvp.Value.Type == VSCodeServerType.Stdio)
-            {
-                registeredPlugins.Add(await AddMcpFunctionsFromStdioServerAsync(plugins, options =>
-                {
-                    options.Name = kvp.Key;
-                    options.Command = kvp.Value.Command;
-                    options.Arguments = kvp.Value.Args;
-                    options.EnvironmentVariables = kvp.Value.Env;
-                },
-                cancellationToken));
-                continue;
-
-            }
-            // TODO: See if args can be safely extracted from args
-            //else if (kvp.Value.Type == VSCodeServerType.SSE)
-            //{
-                
-            //    continue;
-            //}
-            else
-            {
-                throw new NotSupportedException($"Server type {kvp.Value.Type} is not supported yet.");
-            }
-        }
-
-        return registeredPlugins;
-    }
 
     /// <summary>
     /// Creates a Model Content Protocol plugin from a Stdio server that contains the specified MCP functions and adds it into the plugin collection.
@@ -206,7 +33,7 @@ public static class KernelExtensions
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(
+    public static Task<KernelPluginCollection> AddMcpFunctionsFromStdioServerAsync(
         this KernelPluginCollection plugins,
         string serverName,
         string command,
@@ -232,7 +59,7 @@ public static class KernelExtensions
     /// <param name="optionsCallback">The <see cref="ModelContextProtocolSemanticKernelStdioOptions"/> callback.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(
+    public static Task<KernelPluginCollection> AddMcpFunctionsFromStdioServerAsync(
         this KernelPluginCollection plugins,
         Action<ModelContextProtocolSemanticKernelStdioOptions> optionsCallback,
         CancellationToken cancellationToken = default)
@@ -252,7 +79,7 @@ public static class KernelExtensions
     /// <param name="options">The <see cref="ModelContextProtocolSemanticKernelStdioOptions"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static async Task<KernelPlugin> AddMcpFunctionsFromStdioServerAsync(
+    public static async Task<KernelPluginCollection> AddMcpFunctionsFromStdioServerAsync(
         this KernelPluginCollection plugins,
         ModelContextProtocolSemanticKernelStdioOptions options,
         CancellationToken cancellationToken = default)
@@ -276,7 +103,7 @@ public static class KernelExtensions
                 // one or more functions have been added to plugins.
             }
 
-            return stdioKernelPlugin;
+            return plugins;
         }
 
         var mcpClient = await GetStdioClientAsync(serverName, options, cancellationToken).ConfigureAwait(false);
@@ -287,8 +114,8 @@ public static class KernelExtensions
             mcpClient.DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         });
 
-        stdioKernelPlugin = plugins.AddFromFunctions(key, functions);
-        return StdioMap[key] = stdioKernelPlugin;
+        StdioMap[key] = plugins.AddFromFunctions(key, functions);
+        return plugins;
     }
 
     /// <summary>
@@ -301,7 +128,7 @@ public static class KernelExtensions
     /// <param name="httpClient">The optional <see cref="HttpClient"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+    public static Task<KernelPluginCollection> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
         string serverName,
         string endpoint,
@@ -322,7 +149,7 @@ public static class KernelExtensions
     /// <param name="httpClient">The optional <see cref="HttpClient"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+    public static Task<KernelPluginCollection> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
         string serverName,
         Uri endpoint,
@@ -350,7 +177,7 @@ public static class KernelExtensions
     /// <param name="httpClient">The optional <see cref="HttpClient"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(
+    public static Task<KernelPluginCollection> AddMcpFunctionsFromSseServerAsync(
         this KernelPluginCollection plugins,
         Action<ModelContextProtocolSemanticKernelSseOptions> optionsCallback,
         HttpClient? httpClient = null,
@@ -373,7 +200,7 @@ public static class KernelExtensions
     /// <param name="httpClient">The optional <see cref="HttpClient"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// <returns>A <see cref="KernelPlugin"/> containing the functions.</returns>
-    public static async Task<KernelPlugin> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelSseOptions options, HttpClient? httpClient = null, CancellationToken cancellationToken = default)
+    public static async Task<KernelPluginCollection> AddMcpFunctionsFromSseServerAsync(this KernelPluginCollection plugins, ModelContextProtocolSemanticKernelSseOptions options, HttpClient? httpClient = null, CancellationToken cancellationToken = default)
     {
         Guard.NotNull(plugins);
         Guard.NotNull(options);
@@ -394,7 +221,7 @@ public static class KernelExtensions
                 // one or more functions have been added to plugins.
             }
 
-            return sseKernelPlugin;
+            return plugins;
         }
 
         var mcpClient = await GetSseClientAsync(serverName, options, httpClient, cancellationToken).ConfigureAwait(false);
@@ -402,8 +229,8 @@ public static class KernelExtensions
 
         cancellationToken.Register(() => mcpClient.DisposeAsync().ConfigureAwait(false).GetAwaiter().GetResult());
 
-        sseKernelPlugin = plugins.AddFromFunctions(key, functions);
-        return SseMap[key] = sseKernelPlugin;
+        SseMap[key] = plugins.AddFromFunctions(key, functions);
+        return plugins;
     }
 
     private static async Task<IMcpClient> GetStdioClientAsync(string serverName, ModelContextProtocolSemanticKernelStdioOptions options, CancellationToken cancellationToken)

@@ -1,0 +1,27 @@
+﻿{
+  "mcp": {
+    "inputs": [
+      {
+        "type": "promptString",
+        "id": "pat",
+        "description": "Personal Access Token",
+        "defaultValue": "",
+        "password": true
+      }
+    ],
+    "servers": {
+      "playwright": {
+        "command": "podman",
+        "args": [
+          "run",
+          "-i",
+          "--rm",
+          "--init",
+          "mcp/playwright"
+        ]
+      }
+    }
+  },
+
+  "github.copilot.chat.agent.thinkingTool": true
+}
