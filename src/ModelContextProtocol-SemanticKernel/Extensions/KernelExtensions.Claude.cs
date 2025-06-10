@@ -18,7 +18,7 @@ public static partial class KernelExtensions
     /// <param name="plugins">The plugin collection to which the new plugin should be added.</param>
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
+    /// <returns><see cref="KernelPluginCollection"/> containing the functions provided in plugins.</returns>
     public static async Task<KernelPluginCollection> AddToolsFromClaudeDesktopConfigAsync(
         this KernelPluginCollection plugins,
         ILoggerFactory? loggerFactory = null,

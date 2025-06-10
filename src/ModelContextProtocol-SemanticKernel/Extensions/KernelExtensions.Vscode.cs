@@ -20,7 +20,7 @@ public static partial class KernelExtensions
     /// <param name="inputs">Provide non-interactive values for inputs, VS Code would prompt user for it</param>
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
+    /// <returns><see cref="KernelPluginCollection"/> containing the functions provided in plugins.</returns>
     public static async Task<KernelPluginCollection> AddToolsFromVsCodeConfigAsync(
         this KernelPluginCollection plugins,
         string path,
@@ -40,7 +40,7 @@ public static partial class KernelExtensions
     /// <param name="inputs">Provide non-interactive values for inputs, VS Code would prompt user for it</param>
     /// <param name="loggerFactory">The optional <see cref="ILoggerFactory"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
-    /// <returns>A list of <see cref="KernelPlugin"/> containing the functions provided in plugins.</returns>
+    /// <returns><see cref="KernelPluginCollection"/> containing the functions provided in plugins.</returns>
     public static async Task<KernelPluginCollection> AddToolsFromVsCodeConfigAsync(
         this KernelPluginCollection plugins,
         VsCodeInstanceType instanceType = VsCodeInstanceType.VisualStudioCode,
