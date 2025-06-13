@@ -1,14 +1,14 @@
-﻿# ModelContextProtocol-SemanticKernel
+﻿## ModelContextProtocol-SemanticKernel
 [Microsoft SemanticKernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) integration for the [Model Context Protocol](https://modelcontextprotocol.io) using the [csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk).
 Enables seamless use of MCP tools as AI functions.
 
 > [!NOTE]
 > This project is in preview; breaking changes can be introduced without prior notice.
 
-## ⚙️ Usage
+### ⚙️ Usage
 Use an extension method to register a specific MCP function/tool
 
-### Register single function or tool
+#### Register single function or tool
 ``` csharp
 // 💡Stdio
 await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"]);
@@ -26,8 +26,8 @@ await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync();
 
 <br>
 
-## 💻 Full Stdio Example
-### Code
+### 💻 Full Stdio Example
+#### Code
 ``` csharp
 var builder = Kernel.CreateBuilder();
 builder.Services.AddLogging(c => c.AddDebug().SetMinimumLevel(LogLevel.Trace));
@@ -53,7 +53,7 @@ var result = await kernel.InvokePromptAsync(prompt, new(executionSettings)).Conf
 Console.WriteLine($"\n\n{prompt}\n{result}");
 ```
 
-### Result
+#### Result
 ```
 Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.
 Echo: Hello Stef!
@@ -61,8 +61,8 @@ Echo: Hello Stef!
 
 <br>
 
-## 💻 Full SSE (Server-Sent Events) Example
-### Code
+### 💻 Full SSE (Server-Sent Events) Example
+#### Code
 ``` csharp
 var builder = Kernel.CreateBuilder();
 builder.Services.AddLogging(c => c.AddDebug().SetMinimumLevel(LogLevel.Trace));
@@ -89,7 +89,7 @@ var result = await kernel.InvokePromptAsync(prompt, new(executionSettings)).Conf
 Console.WriteLine($"\n\n{prompt}\n{result}");
 ```
 
-### Result
+#### Result
 ```
 Summarize the last 3 commits to the StefH/FluentBuilder repository.
 Here are the summaries of the last three commits to the `StefH/FluentBuilder` repository:
@@ -113,8 +113,17 @@ All three commits involve updates to the README.md file, reflecting ongoing impr
 ```
 
 
-## 📖 References
+### 📖 References
 - https://modelcontextprotocol.io
 - https://github.com/PederHP/mcpdotnet
 - https://github.com/modelcontextprotocol/csharp-sdk
 - https://devblogs.microsoft.com/semantic-kernel/integrating-model-context-protocol-tools-with-semantic-kernel-a-step-by-step-guide/
+
+
+### Sponsors
+
+[Entity Framework Extensions](https://entityframework-extensions.net/?utm_source=StefH) and [Dapper Plus](https://dapper-plus.net/?utm_source=StefH) are major sponsors and proud to contribute to the development of **ModelContextProtocol-SemanticKernel**.
+
+[![Entity Framework Extensions](https://raw.githubusercontent.com/StefH/resources/main/sponsor/entity-framework-extensions-sponsor.png)](https://entityframework-extensions.net/bulk-insert?utm_source=StefH)
+
+[![Dapper Plus](https://raw.githubusercontent.com/StefH/resources/main/sponsor/dapper-plus-sponsor.png)](https://dapper-plus.net/bulk-insert?utm_source=StefH)

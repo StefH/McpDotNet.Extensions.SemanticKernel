@@ -5,12 +5,8 @@ Enables seamless use of MCP tools as AI functions.
 > [!NOTE]
 > This project is in preview; breaking changes can be introduced without prior notice.
 
-## NuGet
-### ModelContextProtocol-SemanticKernel
+## 📦 NuGet
 [![NuGet Badge](https://img.shields.io/nuget/v/ModelContextProtocol-SemanticKernel)](https://www.nuget.org/packages/ModelContextProtocol-SemanticKernel)
-
-#### McpDotNet (obsolete)
-[![NuGet Badge](https://img.shields.io/nuget/v/McpDotNet.Extensions.SemanticKernel)](https://www.nuget.org/packages/McpDotNet.Extensions.SemanticKernel)
 
 ## Overview
 ``` mermaid
@@ -142,3 +138,12 @@ All three commits involve updates to the README.md file, reflecting ongoing impr
 - https://github.com/PederHP/mcpdotnet
 - https://github.com/modelcontextprotocol/csharp-sdk
 - https://devblogs.microsoft.com/semantic-kernel/integrating-model-context-protocol-tools-with-semantic-kernel-a-step-by-step-guide/
+
+
+## Sponsors
+
+[Entity Framework Extensions](https://entityframework-extensions.net/?utm_source=StefH) and [Dapper Plus](https://dapper-plus.net/?utm_source=StefH) are major sponsors and proud to contribute to the development of **ModelContextProtocol-SemanticKernel**.
+
+[![Entity Framework Extensions](https://raw.githubusercontent.com/StefH/resources/main/sponsor/entity-framework-extensions-sponsor.png)](https://entityframework-extensions.net/bulk-insert?utm_source=StefH)
+
+[![Dapper Plus](https://raw.githubusercontent.com/StefH/resources/main/sponsor/dapper-plus-sponsor.png)](https://dapper-plus.net/bulk-insert?utm_source=StefH)
