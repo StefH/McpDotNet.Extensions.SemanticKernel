@@ -19,8 +19,11 @@ var kernel = builder.Build();
 
 // await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
 
-//IDictionary every = new Dictionary<string, string> { { "e", "x" } };
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "npx", ["-y", "@modelcontextprotocol/server-everything"], every, cancellationToken: cts.Token);
+IDictionary everything1 = new Dictionary<string, string> { { "e", "x" } };
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything1", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything1, cancellationToken: cts.Token);
+
+IDictionary everything2 = Environment.GetEnvironmentVariables();
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything2", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything2, cancellationToken: cts.Token);
 
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
