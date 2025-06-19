@@ -30,7 +30,7 @@ internal static class DictionaryExtensions
         return dictionary switch
         {
             Dictionary<string, string?> genericStringNullableStringDictionary => genericStringNullableStringDictionary,
-            { } nonGenericDictionary => dictionary.Cast<DictionaryEntry>().Where(entry => entry.Key is string).ToDictionary(entry => (string)entry.Key, entry => entry.Value?.ToString()),
+            not null => dictionary.Cast<DictionaryEntry>().Where(entry => entry.Key is string).ToDictionary(entry => (string)entry.Key, entry => entry.Value?.ToString()),
             _ => null
         };
     }
