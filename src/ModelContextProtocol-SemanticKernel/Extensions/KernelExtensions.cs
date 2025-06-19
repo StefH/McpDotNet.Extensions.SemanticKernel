@@ -281,18 +281,11 @@ public static class KernelExtensions
 
         var loggerFactory = options.LoggerFactory ?? NullLoggerFactory.Instance;
 
-        var environmentVariables = options.EnvironmentVariables switch
-        {
-            Dictionary<string, string> genericDictionary => genericDictionary,
-            { } dictionary => dictionary.ToStringStringDictionary(),
-            _ => null
-        };
-
         var stdioOptions = new StdioClientTransportOptions
         {
             Command = options.Command,
             Arguments = options.Arguments,
-            EnvironmentVariables = environmentVariables?.ToStringNullableStringDictionary(),
+            EnvironmentVariables = options.EnvironmentVariables?.ToStringNullableStringDictionary(),
             Name = clientOptions.ClientInfo?.Name
         };
         var clientTransport = new StdioClientTransport(stdioOptions, loggerFactory);
