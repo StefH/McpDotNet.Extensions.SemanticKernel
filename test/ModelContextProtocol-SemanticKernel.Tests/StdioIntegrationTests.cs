@@ -1,6 +1,7 @@
 using System.Text.Json;
 using FluentAssertions;
 using ModelContextProtocol.Client;
+using ModelContextProtocol.Protocol;
 using ModelContextProtocol.SemanticKernel.Types;
 
 namespace ModelContextProtocol.SemanticKernel.Tests;
@@ -42,7 +43,7 @@ public sealed class StdioIntegrationTests
         var result = await mcpClient.CallToolAsync(tool.Name, arguments, cancellationToken: ct);
 
         // Assert
-        string.Concat(result.Content.Select(c => c.Text)).Should().Be(expectedResult);
+        result.GetAllText().Should().Be(expectedResult);
     }
 
     [Fact]
@@ -65,7 +66,7 @@ public sealed class StdioIntegrationTests
         var result = await mcpClient.CallToolAsync(tool.Name, arguments, cancellationToken: ct);
 
         // Assert
-        string.Concat(result.Content.Select(c => c.Text)).Should().Be("The sum of 1 + 2i and 9 - 7i is 10 - 5i.");
+        result.GetAllText().Should().Be("The sum of 1 + 2i and 9 - 7i is 10 - 5i.");
     }
 
     private static Task<IMcpClient> GetStdioEveryThingMcpClientAsync(CancellationToken cancellationToken)
