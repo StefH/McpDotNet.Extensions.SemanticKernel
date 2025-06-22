@@ -3,6 +3,7 @@
 using System.Text.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
+using ModelContextProtocol.Protocol;
 using ModelContextProtocol.SemanticKernel.Types;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
@@ -52,9 +53,7 @@ internal static class ModelContextProtocolExtensions
                 ).ConfigureAwait(false);
 
                 // Extract the text content from the result
-                return string.Join("\n", result.Content
-                    .Where(c => c.Type == "text")
-                    .Select(c => c.Text));
+                return result.GetAllText();
             }
             catch (Exception ex)
             {

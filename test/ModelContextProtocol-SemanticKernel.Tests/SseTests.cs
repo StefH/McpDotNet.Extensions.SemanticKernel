@@ -1,5 +1,6 @@
 using FluentAssertions;
 using ModelContextProtocol.Client;
+using ModelContextProtocol.Protocol;
 using Newtonsoft.Json.Linq;
 using WireMock.Matchers;
 using WireMock.Server;
@@ -26,7 +27,7 @@ public sealed class SseTests
         var commits = await mcpClient.CallToolAsync("list_commits", new Dictionary<string, object?> { { "owner", "StefH" }, { "repo", "FluentBuilder" } }, cancellationToken: ct);
 
         // Assert 2
-        commits.Content.SelectMany(c => c.Text ?? string.Empty).Should().Contain("229388090f50a39f489e30cb535f67f3705cf61f");
+        commits.GetAllText().Should().Contain("229388090f50a39f489e30cb535f67f3705cf61f");
     }
 
     private static async Task<AsyncDisposableTuple<IMcpClient, WireMockServer>> GetSseMcpClientAsync(CancellationToken cancellationToken)
