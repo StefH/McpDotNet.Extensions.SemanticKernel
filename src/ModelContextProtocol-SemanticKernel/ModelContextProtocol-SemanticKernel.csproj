@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.0.1-preview-18</Version>
+    <Version>0.3.0-preview-01</Version>
     <RootNamespace>ModelContextProtocol.SemanticKernel</RootNamespace>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
-    <Copyright>Copyright © 2025 Stef Heyenrath</Copyright>
+    <Copyright>Copyright © Stef Heyenrath</Copyright>
     <Authors>Microsoft;Stef Heyenrath</Authors>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>
@@ -34,10 +34,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.SemanticKernel" Version="1.57.0" />
     <PackageReference Include="ModelContextProtocol" Version="0.3.0-preview.1" />
-    <!--<PackageReference Include="Nullable" Version="1.3.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>-->
     <PackageReference Include="Stef.Validation.Options" Version="0.2.0" />
   </ItemGroup>
 

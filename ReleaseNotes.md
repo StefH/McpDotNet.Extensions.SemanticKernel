@@ -1,3 +1,6 @@
+# 0.3.0-preview-01 (22 June 2025)
+- [#33](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/33) - Updated package versions for `Microsoft.SemanticKernel` and `ModelContextProtocol` to latest [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.0.1-preview-18 (19 June 2025)
 - [#32](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/32) - Fix DictionaryExtensions [bug] contributed by [StefH](https://github.com/StefH)
 - [#31](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/issues/31) - ToStringNullableStringDictionary in DictionaryExtensions class convert Exception. [bug]
