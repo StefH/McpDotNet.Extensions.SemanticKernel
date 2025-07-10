@@ -1,9 +1,12 @@
 ﻿using System.Collections;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using ModelContextProtocol.SemanticKernel.Extensions;
+
+var currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
 var cts = new CancellationTokenSource();
 
@@ -16,6 +19,8 @@ builder.Services.AddOpenAIChatCompletion(
     apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY")!);
 
 var kernel = builder.Build();
+
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Filesystem", "npx", ["-y", "@modelcontextprotocol/server-filesystem", currentPath], cancellationToken: cts.Token);
 
 // await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
 
@@ -71,9 +76,13 @@ var executionSettings = new OpenAIPromptExecutionSettings
 //var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\nTools:\n{result}");
 
-var promptReadFile = "Convert the file '/workdir/CV.docx' to Markdown.";
+var promptReadFile = "Use the edit_file tool to set all tasks as done in the Tasklist.md file. Read the file before updating it.";
 var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
+
+//var promptReadFile = "Convert the file '/workdir/CV.docx' to Markdown.";
+//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
 //var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);

@@ -16,4 +16,10 @@
     <ProjectReference Include="..\..\src\ModelContextProtocol-SemanticKernel\ModelContextProtocol-SemanticKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Tasklist.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
