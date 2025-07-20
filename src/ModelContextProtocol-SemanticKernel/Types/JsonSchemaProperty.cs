@@ -1,5 +1,6 @@
 ﻿// Copyright (c) https://github.com/PederHP/mcpdotnet
 
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace ModelContextProtocol.SemanticKernel.Types;
@@ -11,10 +12,10 @@ namespace ModelContextProtocol.SemanticKernel.Types;
 internal class JsonSchemaProperty
 {
     /// <summary>
-    /// The type of the property. Should be a JSON Schema type and is required.
+    /// The type / types of the property. Should be a JSON Schema type and is required.
     /// </summary>
     [JsonPropertyName("type")]
-    public string Type { get; set; } = string.Empty;
+    public JsonElement Type { get; set; }
 
     /// <summary>
     /// A human-readable description of the property.

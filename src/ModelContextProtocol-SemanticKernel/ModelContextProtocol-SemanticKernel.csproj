@@ -4,6 +4,7 @@
     <Version>0.3.0-preview-01</Version>
     <RootNamespace>ModelContextProtocol.SemanticKernel</RootNamespace>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+    <LangVersion>13</LangVersion>
     <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
     <Copyright>Copyright © Stef Heyenrath</Copyright>
     <Authors>Microsoft;Stef Heyenrath</Authors>
@@ -32,8 +33,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SemanticKernel" Version="1.57.0" />
-    <PackageReference Include="ModelContextProtocol" Version="0.3.0-preview.1" />
+    <PackageReference Include="Microsoft.SemanticKernel" Version="1.60.0" />
+    <PackageReference Include="ModelContextProtocol" Version="0.3.0-preview.3" />
     <PackageReference Include="Stef.Validation.Options" Version="0.2.0" />
   </ItemGroup>
 

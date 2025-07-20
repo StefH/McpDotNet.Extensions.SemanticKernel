@@ -139,7 +139,33 @@ internal static class ModelContextProtocolExtensions
 
     private static Type ConvertParameterDataType(JsonSchemaProperty property, bool required)
     {
-        var type = property.Type switch
+        Type type;
+
+        switch (property.Type.ValueKind)
+        {
+            case JsonValueKind.String:
+                var typeString = property.Type.GetString();
+                type = FromString(typeString);
+                break;
+
+            case JsonValueKind.Array:
+                var value = property.Type.EnumerateArray()
+                    .Select(e => e.GetString())
+                    .FirstOrDefault(v => !string.Equals(v, "nullable", StringComparison.OrdinalIgnoreCase));
+                type = FromString(value);
+                break;
+
+            default:
+                type = typeof(string);
+                break;
+        }
+
+        return !required && type.IsValueType ? typeof(Nullable<>).MakeGenericType(type) : type;
+    }
+
+    private static Type FromString(string? typeString)
+    {
+        return typeString switch
         {
             "string" => typeof(string),
             "integer" => typeof(int),
@@ -147,9 +173,7 @@ internal static class ModelContextProtocolExtensions
             "boolean" => typeof(bool),
             "array" => typeof(List<string>),
             "object" => typeof(Dictionary<string, object>),
-            _ => typeof(object)
+            _ => typeof(string)
         };
-
-        return !required && type.IsValueType ? typeof(Nullable<>).MakeGenericType(type) : type;
     }
 }
