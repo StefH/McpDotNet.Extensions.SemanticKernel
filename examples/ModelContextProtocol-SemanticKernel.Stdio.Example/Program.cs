@@ -46,7 +46,7 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything2", "npx", [
 
 
 
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["mcpserver.openxml@0.4.0-preview-05", "--yes", "--allowedPath=c:\\Temp"], cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["--yes", "mcpserver.openxml@0.4.0-preview-05", "--allowedPath=c:\\\\Temp"], cancellationToken: cts.Token);
 
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("gordon", "docker", ["ai", "mcpserver"], new Dictionary<string,string> { { "a", "b" } }, cancellationToken: cts.Token);
 
@@ -82,7 +82,8 @@ var executionSettings = new OpenAIPromptExecutionSettings
 //var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
-var promptReadFile = "Convert the file '/workdir/CV.docx' to Markdown.";
+// var promptReadFile = "Convert the file '/workdir/CV.docx' to Markdown.";
+var promptReadFile = "Convert the file 'CV.docx' to Text."; //
 var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
