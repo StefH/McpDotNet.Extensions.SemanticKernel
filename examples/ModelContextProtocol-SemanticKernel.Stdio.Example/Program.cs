@@ -46,7 +46,7 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything2", "npx", [
 
 
 
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["--yes", "mcpserver.openxml@0.4.0-preview-05", "--allowedPath=c:\\\\Temp"], cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["--yes", "mcpserver.openxml@0.4.0-preview-05", "--allowedPath=c:\\Temp"], cancellationToken: cts.Token);
 
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("gordon", "docker", ["ai", "mcpserver"], new Dictionary<string,string> { { "a", "b" } }, cancellationToken: cts.Token);
 
