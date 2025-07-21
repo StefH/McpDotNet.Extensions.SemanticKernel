@@ -19,12 +19,12 @@ public sealed class StdioIntegrationTests
         var tools = await mcpClient.ListToolsAsync(cancellationToken: ct);
 
         // Assert
-        tools.Should().HaveCount(3);
+        tools.Select(t => t.Name).Should().BeEquivalentTo("add", "echo", "add_complex");
     }
 
     [Theory]
-    [InlineData("Add", new object[] { 1, 2 }, "The sum of 1 and 2 is 3.")]
-    [InlineData("Echo", new object[] { "test" }, "test")]
+    [InlineData("add", new object[] { 1, 2 }, "The sum of 1 and 2 is 3.")]
+    [InlineData("echo", new object[] { "test" }, "test")]
     public async Task CallTool(string toolName, object[] args, string expectedResult)
     {
         // Arrange
@@ -53,7 +53,7 @@ public sealed class StdioIntegrationTests
         var ct = TestContext.Current.CancellationToken;
         await using var mcpClient = await GetStdioEveryThingMcpClientAsync(ct);
 
-        var tool = (await mcpClient.ListToolsAsync(cancellationToken: ct)).First(t => t.Name == "AddComplex");
+        var tool = (await mcpClient.ListToolsAsync(cancellationToken: ct)).First(t => t.Name == "add_complex");
         var parameterNames = ToParameterNames(tool);
 
         var arguments = new Dictionary<string, object?>
