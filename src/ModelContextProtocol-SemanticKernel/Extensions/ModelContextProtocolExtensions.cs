@@ -4,7 +4,7 @@ using System.Text.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
-using ModelContextProtocol.SemanticKernel.Types;
+using Tool = ModelContextProtocol.Schema.Tool;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
 
@@ -110,23 +110,28 @@ internal static class ModelContextProtocolExtensions
         return value;
     }
 
-    private static List<KernelParameterMetadata>? ToParameters(this McpClientTool tool)
+    private static IEnumerable<KernelParameterMetadata>? ToParameters(this McpClientTool tool)
     {
-        var inputSchema = tool.JsonSchema.Deserialize<JsonSchema>();
-        var properties = inputSchema?.Properties;
-        if (properties == null)
+        var inputSchema = Tool.RequiredType.FromJson(tool.JsonSchema);
+        var properties = inputSchema.Properties;
+        if (properties == default)
         {
-            return null;
+            yield break;
         }
 
-        HashSet<string> requiredProperties = [.. inputSchema!.Required ?? []];
-        return properties.Select(kvp =>
-            new KernelParameterMetadata(kvp.Key)
+        var requiredProperties = inputSchema.Required.ToStringArray();
+        foreach (var property in properties)
+        {
+            var isRequired = requiredProperties.Contains(property.Key.GetString());
+            var metadata = new KernelParameterMetadata(property.Key.GetString())
             {
-                Description = kvp.Value.Description,
-                ParameterType = ConvertParameterDataType(kvp.Value, requiredProperties.Contains(kvp.Key)),
-                IsRequired = requiredProperties.Contains(kvp.Key)
-            }).ToList();
+                Description = property.Value.Description,
+                IsRequired = isRequired,
+                ParameterType = ConvertParameterDataType(property.Value.AsJsonElement, isRequired)
+            };
+
+            yield return metadata;
+        }
     }
 
     private static KernelReturnParameterMetadata ToReturnParameter()
@@ -137,19 +142,19 @@ internal static class ModelContextProtocolExtensions
         };
     }
 
-    private static Type ConvertParameterDataType(JsonSchemaProperty property, bool required)
+    private static Type ConvertParameterDataType(JsonElement property, bool required)
     {
         Type type;
 
-        switch (property.Type.ValueKind)
+        switch (property.ValueKind)
         {
             case JsonValueKind.String:
-                var typeString = property.Type.GetString();
+                var typeString = property.GetString();
                 type = FromString(typeString);
                 break;
 
             case JsonValueKind.Array:
-                var value = property.Type.EnumerateArray()
+                var value = property.EnumerateArray()
                     .Select(e => e.GetString())
                     .FirstOrDefault(v => !string.Equals(v, "nullable", StringComparison.OrdinalIgnoreCase));
                 type = FromString(value);

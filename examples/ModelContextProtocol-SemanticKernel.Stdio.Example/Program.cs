@@ -75,8 +75,9 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-//var result = await kernel.InvokePromptAsync("Which tools are currently registered?", new(executionSettings)).ConfigureAwait(false);
-//Console.WriteLine($"\n\nTools:\n{result}");
+var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\nTools:\n{result}");
+return;
 
 //var promptReadFile = "Use the edit_file tool to set all tasks as done in the Tasklist.md file. Read the file before updating it.";
 //var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
