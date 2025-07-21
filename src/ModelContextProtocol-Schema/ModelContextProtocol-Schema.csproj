@@ -9,7 +9,7 @@
     <Copyright>Copyright © Stef Heyenrath</Copyright>
     <Authors>Stef Heyenrath</Authors>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>
+    <!--<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>-->
     <PackageProjectUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.16" />
+    <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.17" />
   </ItemGroup>
 
   <ItemGroup>
