@@ -118,11 +118,10 @@ internal static class ModelContextProtocolExtensions
             yield break;
         }
 
-        var requiredProperties = inputSchema.Required.ToStringArray();
         foreach (var property in properties)
         {
             var name = property.Key.GetString();
-            var isRequired = requiredProperties.Contains(name);
+            var isRequired = inputSchema.Required.Any(requiredPropertyName => requiredPropertyName.EqualsString(name));
             var metadata = new KernelParameterMetadata(name)
             {
                 Description = property.Value.Description,
