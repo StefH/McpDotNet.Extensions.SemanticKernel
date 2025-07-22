@@ -121,8 +121,9 @@ internal static class ModelContextProtocolExtensions
         var requiredProperties = inputSchema.Required.ToStringArray();
         foreach (var property in properties)
         {
-            var isRequired = requiredProperties.Contains(property.Key.GetString());
-            var metadata = new KernelParameterMetadata(property.Key.GetString())
+            var name = property.Key.GetString();
+            var isRequired = requiredProperties.Contains(name);
+            var metadata = new KernelParameterMetadata(name)
             {
                 Description = property.Value.Description,
                 IsRequired = isRequired,
@@ -137,7 +138,7 @@ internal static class ModelContextProtocolExtensions
     {
         return new KernelReturnParameterMetadata
         {
-            ParameterType = typeof(string),
+            ParameterType = typeof(string)
         };
     }
 
