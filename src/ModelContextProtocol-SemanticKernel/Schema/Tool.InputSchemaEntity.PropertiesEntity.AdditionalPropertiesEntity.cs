@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace ModelContextProtocol.SemanticKernel.Schema;
+namespace ModelContextProtocol.Schema;
 
 internal readonly partial struct Tool
 {
