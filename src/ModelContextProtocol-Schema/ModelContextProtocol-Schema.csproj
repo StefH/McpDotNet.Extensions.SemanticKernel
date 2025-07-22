@@ -15,7 +15,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>
     <PackageTags>mcp;ai;ModelContextProtocol;Schema;Model</PackageTags>
-    <Description>Generated classes which describe the official ModelContextProtocol Schema</Description>
+    <Description>Generated classes (based on Corvus.JsonSchema) which describe the official ModelContextProtocol Schema.</Description>
     <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
   </PropertyGroup>
 

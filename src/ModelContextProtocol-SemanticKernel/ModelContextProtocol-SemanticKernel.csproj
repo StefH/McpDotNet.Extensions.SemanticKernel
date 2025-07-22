@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="Schema\2025-06-18.json" />
+    <AdditionalFiles Include="ToolSchema\2025-06-18.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,10 +49,6 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="$(AssemblyName).Tests" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!--<ProjectReference Include="..\ModelContextProtocol-Schema\ModelContextProtocol-Schema.csproj" />-->
   </ItemGroup>
 
 </Project>

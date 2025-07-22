@@ -1,8 +1,0 @@
-﻿using Corvus.Json;
-
-namespace ModelContextProtocol.Schema;
-
-[JsonSchemaTypeGenerator("./2025-06-18.json#/definitions/Tool")]
-public readonly partial struct Tool
-{
-}

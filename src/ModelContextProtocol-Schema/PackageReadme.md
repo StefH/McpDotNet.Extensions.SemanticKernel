@@ -1,10 +1,11 @@
-﻿# ModelContextProtocol-SchemaModel
-Generated classes which define the official ModelContextProtocol Schema.
+﻿# ModelContextProtocol-Schema
+Generated classes (based on [Corvus.JsonSchema](https://github.com/corvus-dotnet/Corvus.JsonSchema)) which define the official ModelContextProtocol Schema.
 
 
 ## 📖 References
 - https://modelcontextprotocol.io
 - https://github.com/modelcontextprotocol/modelcontextprotocol/tree/main/schema
+- https://github.com/corvus-dotnet/Corvus.JsonSchema
 
 
 ## Sponsors
