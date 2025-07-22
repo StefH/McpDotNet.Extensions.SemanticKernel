@@ -23,10 +23,10 @@ jobs:
        - name: 'Install mcpserver.everything.stdio Tool'
          run: dotnet tool install -g mcpserver.everything.stdio
 
-       - name: 'Install .NET 9 SDK'
+       - name: 'Install .NET 8 SDK'
          uses: actions/setup-dotnet@v4
          with:
-           dotnet-version: '9.0.x'
+           dotnet-version: '8.0.x'
 
        - name: 'Build Solution'
          run: dotnet build -c Release
