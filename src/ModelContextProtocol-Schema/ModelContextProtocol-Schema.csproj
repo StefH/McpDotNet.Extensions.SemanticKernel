@@ -23,6 +23,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <CorvusJsonSchemaUseImplicitOperatorString>True</CorvusJsonSchemaUseImplicitOperatorString>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="2025-06-18.json" />
   </ItemGroup>
