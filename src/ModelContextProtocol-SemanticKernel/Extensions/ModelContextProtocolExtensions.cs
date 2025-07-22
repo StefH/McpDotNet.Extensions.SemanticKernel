@@ -4,7 +4,6 @@ using System.Text.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
-using Tool = ModelContextProtocol.Schema.Tool;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
 
@@ -112,7 +111,7 @@ internal static class ModelContextProtocolExtensions
 
     private static IEnumerable<KernelParameterMetadata>? ToParameters(this McpClientTool tool)
     {
-        var inputSchema = Tool.RequiredType.FromJson(tool.JsonSchema);
+        var inputSchema = Schema.Tool.InputSchemaEntity.FromJson(tool.JsonSchema);
         var properties = inputSchema.Properties;
         if (properties == default)
         {

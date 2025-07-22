@@ -1,8 +1,8 @@
 ﻿using Corvus.Json;
 
-namespace ModelContextProtocol.Schema;
+namespace ModelContextProtocol.SemanticKernel.Schema;
 
 [JsonSchemaTypeGenerator("./2025-06-18.json#/definitions/Tool")]
-public readonly partial struct Tool
+internal readonly partial struct Tool
 {
 }

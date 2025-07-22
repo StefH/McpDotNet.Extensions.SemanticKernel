@@ -24,12 +24,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="2025-06-18.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="2025-06-18.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
     <None Include="PackageReadme.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.17" />
+    <PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
