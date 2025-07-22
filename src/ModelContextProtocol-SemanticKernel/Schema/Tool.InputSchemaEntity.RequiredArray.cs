@@ -17,7 +17,7 @@ internal readonly partial struct Tool
                 var index = 0;
 
                 var stringValues = new string[length];
-                foreach (var element in this)
+                foreach (var element in EnumerateArray())
                 {
                     if (element.TryGetString(out var stringValue))
                     {

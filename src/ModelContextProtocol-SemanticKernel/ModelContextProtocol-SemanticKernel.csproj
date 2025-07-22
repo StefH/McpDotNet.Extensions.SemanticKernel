@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="ToolSchema\2025-06-18.json" />
+    <AdditionalFiles Include="Schema\2025-06-18.json" />
   </ItemGroup>
 
   <ItemGroup>
