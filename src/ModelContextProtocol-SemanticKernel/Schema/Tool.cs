@@ -8,6 +8,4 @@ internal static class SchemaConstants
 }
 
 [JsonSchemaTypeGenerator($"./{SchemaConstants.Version}.json#/definitions/Tool")]
-internal readonly partial struct Tool
-{
-}
+internal readonly partial struct Tool;
