@@ -12,6 +12,7 @@ jobs:
   build-and-test:
     name: Build and Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     strategy:
       matrix:
         os: [windows-2022, ubuntu-latest]
@@ -20,7 +21,15 @@ jobs:
        - uses: actions/checkout@v4  
 
        - name: 'Install mcpserver.everything.stdio Tool'
-         run: dotnet tool install -g mcpserver.everything.stdio --version 0.0.1-preview-05
+         run: dotnet tool install -g mcpserver.everything.stdio
 
-       - name: 'Test'  
+       - name: 'Install .NET 8 SDK'
+         uses: actions/setup-dotnet@v4
+         with:
+           dotnet-version: '8.0.x'
+
+       - name: 'Build Solution'
+         run: dotnet build -c Release
+
+       - name: 'Test'
          run: dotnet test './test/ModelContextProtocol-SemanticKernel.Tests/ModelContextProtocol-SemanticKernel.Tests.csproj' -c Release

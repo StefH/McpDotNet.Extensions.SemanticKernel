@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.3.0-preview-01</Version>
-    <RootNamespace>ModelContextProtocol.SemanticKernel</RootNamespace>
+    <Version>0.0.1-preview-01</Version>
+    <RootNamespace>ModelContextProtocol.Schema</RootNamespace>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <LangVersion>preview</LangVersion>
     <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
     <Copyright>Copyright © Stef Heyenrath</Copyright>
-    <Authors>Microsoft;Stef Heyenrath</Authors>
+    <Authors>Stef Heyenrath</Authors>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>
+    <!--<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>-->
     <PackageProjectUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>
-    <PackageTags>mcp;ai;ModelContextProtocol;LLM;Microsoft-SemanticKernel;SemanticKernel;prompt</PackageTags>
-    <Description>Microsoft SemanticKernel integration for the ModelContextProtocol (official C# SDK). Enables seamless use of MCP tools as AI functions.</Description>
+    <PackageTags>mcp;ai;ModelContextProtocol;Schema;Model</PackageTags>
+    <Description>Generated classes (based on Corvus.JsonSchema) which describe the official ModelContextProtocol Schema.</Description>
     <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
   </PropertyGroup>
 
@@ -28,12 +28,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="Schema\2025-06-18.json" />
+    <None Remove="2025-06-18.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="2025-06-18.json" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
-    <None Include="../../PackageReadme.md" Pack="true" PackagePath="" />
+    <None Include="PackageReadme.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,9 +46,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.SemanticKernel" Version="1.61.0" />
-    <PackageReference Include="ModelContextProtocol" Version="0.3.0-preview.3" />
-    <PackageReference Include="Stef.Validation.Options" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>

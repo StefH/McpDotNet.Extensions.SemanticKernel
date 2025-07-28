@@ -17,5 +17,5 @@ public abstract class ModelContextProtocolSemanticKernelOptions
     /// <summary>
     /// A logger factory for creating loggers for clients.
     /// </summary>
-    public ILoggerFactory? LoggerFactory { get; init; } = new NullLoggerFactory();
+    public ILoggerFactory? LoggerFactory { get; set; } = new NullLoggerFactory();
 }

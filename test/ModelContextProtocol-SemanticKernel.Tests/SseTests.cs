@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
 using Newtonsoft.Json.Linq;
@@ -32,7 +32,7 @@ public sealed class SseTests
 
     private static async Task<AsyncDisposableTuple<IMcpClient, WireMockServer>> GetSseMcpClientAsync(CancellationToken cancellationToken)
     {
-        var server = InitWireMockServer(cancellationToken);
+        var server = await InitWireMockServerAsync(cancellationToken);
 
         McpClientOptions options = new()
         {
@@ -52,7 +52,7 @@ public sealed class SseTests
         return new(client, server);
     }
 
-    private static WireMockServer InitWireMockServer(CancellationToken cancellationToken)
+    private static async Task<WireMockServer> InitWireMockServerAsync(CancellationToken cancellationToken)
     {
         var tscInitialize = new TaskCompletionSource<string>();
         var tscTools = new TaskCompletionSource<string>();
@@ -152,6 +152,8 @@ public sealed class SseTests
                     return "accepted";
                 })
             );
+
+        await Task.Delay(1000, cancellationToken);
 
         return server;
     }
