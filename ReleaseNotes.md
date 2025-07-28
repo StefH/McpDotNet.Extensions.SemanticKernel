@@ -1,3 +1,6 @@
+# 0.3.0 (28 July 2025)
+- [#35](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/35) - Upgrade ModelContextProtocol to 0.3.0-preview.3 [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.3.0-preview-01 (22 June 2025)
 - [#33](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/33) - Updated package versions for `Microsoft.SemanticKernel` and `ModelContextProtocol` to latest [enhancement] contributed by [StefH](https://github.com/StefH)
 
