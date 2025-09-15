@@ -1,4 +1,5 @@
-﻿namespace ModelContextProtocol.Schema;
+﻿// ReSharper disable once CheckNamespace
+namespace ModelContextProtocol.Schema;
 
 internal readonly partial struct Tool
 {

@@ -1,5 +1,6 @@
 ﻿using Corvus.Json;
 
+// ReSharper disable once CheckNamespace
 namespace ModelContextProtocol.Schema;
 
 internal static class SchemaConstants
