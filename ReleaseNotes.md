@@ -1,8 +1,10 @@
-# 0.3.0 (28 July 2025)
+# 0.4.0 (15 September 2025)
 - [#35](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/35) - Upgrade ModelContextProtocol to 0.3.0-preview.3 [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#36](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/36) - Upgrade some packages (ModelContextProtocol 0.3.0-preview.4) [enhancement] contributed by [StefH](https://github.com/StefH)
 
-# 0.3.0-preview-01 (22 June 2025)
+# 0.3.0 (28 July 2025)
 - [#33](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/33) - Updated package versions for `Microsoft.SemanticKernel` and `ModelContextProtocol` to latest [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#35](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/35) - Upgrade ModelContextProtocol to 0.3.0-preview.3 [enhancement] contributed by [StefH](https://github.com/StefH)
 
 # 0.0.1-preview-18 (19 June 2025)
 - [#32](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/32) - Fix DictionaryExtensions [bug] contributed by [StefH](https://github.com/StefH)
