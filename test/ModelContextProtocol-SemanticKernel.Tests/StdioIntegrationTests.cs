@@ -69,7 +69,7 @@ public sealed class StdioIntegrationTests
         result.GetAllText().Should().Be("The sum of 1 + 2i and 9 - 7i is 10 - 5i.");
     }
 
-    private static Task<IMcpClient> GetStdioEveryThingMcpClientAsync(CancellationToken cancellationToken)
+    private static Task<McpClient> GetStdioEveryThingMcpClientAsync(CancellationToken cancellationToken)
     {
         McpClientOptions options = new()
         {
@@ -83,7 +83,7 @@ public sealed class StdioIntegrationTests
         };
         var clientTransport = new StdioClientTransport(stdioClientTransportOptions);
 
-        return McpClientFactory.CreateAsync(clientTransport, options, cancellationToken: cancellationToken);
+        return McpClient.CreateAsync(clientTransport, options, cancellationToken: cancellationToken);
     }
 
     private static List<string> ToParameterNames(McpClientTool tool)

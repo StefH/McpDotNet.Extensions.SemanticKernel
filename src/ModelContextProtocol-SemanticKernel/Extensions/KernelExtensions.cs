@@ -275,7 +275,7 @@ public static class KernelExtensions
         return SseMap[key] = sseKernelPlugin;
     }
 
-    private static async Task<IMcpClient> GetStdioClientAsync(string serverName, ModelContextProtocolSemanticKernelStdioOptions options, CancellationToken cancellationToken)
+    private static async Task<McpClient> GetStdioClientAsync(string serverName, ModelContextProtocolSemanticKernelStdioOptions options, CancellationToken cancellationToken)
     {
         var clientOptions = GetMcpClientOptions(serverName, "stdio");
 
@@ -290,25 +290,25 @@ public static class KernelExtensions
         };
         var clientTransport = new StdioClientTransport(stdioOptions, loggerFactory);
 
-        return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
+        return await McpClient.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
     }
 
-    private static async Task<IMcpClient> GetSseClientAsync(string serverName, ModelContextProtocolSemanticKernelSseOptions options, HttpClient? httpClient, CancellationToken cancellationToken)
+    private static async Task<McpClient> GetSseClientAsync(string serverName, ModelContextProtocolSemanticKernelSseOptions options, HttpClient? httpClient, CancellationToken cancellationToken)
     {
         var clientOptions = GetMcpClientOptions(serverName, "sse");
 
         var loggerFactory = options.LoggerFactory ?? NullLoggerFactory.Instance;
 
-        var sseOptions = new SseClientTransportOptions
+        var sseOptions = new HttpClientTransportOptions
         {
             Endpoint = options.Endpoint,
             AdditionalHeaders = options.AdditionalHeaders,
             Name = clientOptions.ClientInfo?.Name
         };
 
-        var clientTransport = httpClient == null ? new SseClientTransport(sseOptions, loggerFactory) : new SseClientTransport(sseOptions, httpClient, loggerFactory);
+        var clientTransport = httpClient == null ? new HttpClientTransport(sseOptions, loggerFactory) : new HttpClientTransport(sseOptions, httpClient, loggerFactory);
 
-        return await McpClientFactory.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
+        return await McpClient.CreateAsync(clientTransport, clientOptions, loggerFactory: loggerFactory, cancellationToken: cancellationToken);
     }
 
     // A plugin name can contain only ASCII letters, digits, and underscores.
