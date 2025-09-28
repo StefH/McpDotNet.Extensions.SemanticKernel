@@ -17,7 +17,7 @@ internal static class ModelContextProtocolExtensions
     /// <param name="mcpClient">The <see cref="IMcpClient"/>.</param>
     /// <param name="cancellationToken">The optional <see cref="CancellationToken"/>.</param>
     /// </summary>
-    internal static async Task<IReadOnlyList<KernelFunction>> MapToFunctionsAsync(this IMcpClient mcpClient, CancellationToken cancellationToken = default)
+    internal static async Task<IReadOnlyList<KernelFunction>> MapToFunctionsAsync(this McpClient mcpClient, CancellationToken cancellationToken = default)
     {
         var functions = new List<KernelFunction>();
         foreach (var tool in await mcpClient.ListToolsAsync(cancellationToken: cancellationToken).ConfigureAwait(false))
@@ -28,7 +28,7 @@ internal static class ModelContextProtocolExtensions
         return functions;
     }
 
-    private static KernelFunction ToKernelFunction(this McpClientTool tool, IMcpClient mcpClient)
+    private static KernelFunction ToKernelFunction(this McpClientTool tool, McpClient mcpClient)
     {
         async Task<string> InvokeToolAsync(Kernel kernel, KernelFunction function, KernelArguments arguments, CancellationToken ct)
         {

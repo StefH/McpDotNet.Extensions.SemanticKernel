@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <RootNamespace>ModelContextProtocol.Schema</RootNamespace>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
     <LangVersion>preview</LangVersion>
@@ -41,8 +41,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.18" />
-    <PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.18">
+    <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.19" />
+    <PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.19">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
