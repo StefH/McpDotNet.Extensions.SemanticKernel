@@ -1,3 +1,7 @@
+# 0.5.0 (28 September 2025)
+- [#37](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/37) - Upgrade ModelContextProtocol to 0.4.0-preview.1 [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#38](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/38) - Fix for optional (invalid) Required property (in tool schema) [bug] contributed by [StefH](https://github.com/StefH)
+
 # 0.4.0 (15 September 2025)
 - [#35](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/35) - Upgrade ModelContextProtocol to 0.3.0-preview.3 [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#36](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/36) - Upgrade some packages (ModelContextProtocol 0.3.0-preview.4) [enhancement] contributed by [StefH](https://github.com/StefH)
