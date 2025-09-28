@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.
 
 using System.Text.Json;
+using Corvus.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
@@ -121,7 +122,8 @@ internal static class ModelContextProtocolExtensions
         foreach (var property in properties)
         {
             var name = property.Key.GetString();
-            var isRequired = inputSchema.Required.Any(requiredPropertyName => requiredPropertyName.EqualsString(name));
+
+            var isRequired = inputSchema.Required.IsValid() && inputSchema.Required.Any(requiredPropertyName => requiredPropertyName.EqualsString(name));
             var metadata = new KernelParameterMetadata(name)
             {
                 Description = property.Value.Description,
