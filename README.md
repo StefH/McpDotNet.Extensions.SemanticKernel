@@ -7,7 +7,7 @@ Enables seamless use of MCP tools as AI functions.
 
 ## 📦 NuGet packages
 | | |
-- | - |
+| - | - |
 Stef.ModelContextProtocol.SemanticKernel | [![NuGet Badge](https://img.shields.io/nuget/v/Stef.ModelContextProtocol.SemanticKernel)](https://www.nuget.org/packages/Stef.ModelContextProtocol.SemanticKernel)
 Stef.ModelContextProtocol.Schema | [![NuGet Badge](https://img.shields.io/nuget/v/Stef.ModelContextProtocol.SemanticKernel)](https://www.nuget.org/packages/Stef.ModelContextProtocol.Schema)
 
