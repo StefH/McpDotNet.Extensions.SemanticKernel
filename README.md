@@ -1,12 +1,15 @@
-﻿# ![Project Icon](./resources/icon_32x32.png) ModelContextProtocol-SemanticKernel
+﻿# ![Project Icon](./resources/icon_32x32.png) ModelContextProtocol.SemanticKernel
 [Microsoft SemanticKernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) integration for the [Model Context Protocol](https://modelcontextprotocol.io) using the [csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk).
 Enables seamless use of MCP tools as AI functions.
 
 > [!NOTE]
 > This project is in preview; breaking changes can be introduced without prior notice.
 
-## 📦 NuGet
-[![NuGet Badge](https://img.shields.io/nuget/v/ModelContextProtocol-SemanticKernel)](https://www.nuget.org/packages/ModelContextProtocol-SemanticKernel)
+## 📦 NuGet packages
+| | |
+- | - |
+Stef.ModelContextProtocol.SemanticKernel | [![NuGet Badge](https://img.shields.io/nuget/v/Stef.ModelContextProtocol.SemanticKernel)](https://www.nuget.org/packages/Stef.ModelContextProtocol.SemanticKernel)
+Stef.ModelContextProtocol.Schema | [![NuGet Badge](https://img.shields.io/nuget/v/Stef.ModelContextProtocol.SemanticKernel)](https://www.nuget.org/packages/Stef.ModelContextProtocol.Schema)
 
 ## Overview
 ``` mermaid
