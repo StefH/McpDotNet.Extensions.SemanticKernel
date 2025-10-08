@@ -1,54 +1,55 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Version>0.5.0</Version>
-    <RootNamespace>ModelContextProtocol.SemanticKernel</RootNamespace>
-    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
-    <LangVersion>preview</LangVersion>
-    <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
-    <Copyright>Copyright © Stef Heyenrath</Copyright>
-    <Authors>Microsoft;Stef Heyenrath</Authors>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>
-    <PackageTags>mcp;ai;ModelContextProtocol;LLM;Microsoft-SemanticKernel;SemanticKernel;prompt</PackageTags>
-    <Description>Microsoft SemanticKernel integration for the ModelContextProtocol (official C# SDK). Enables seamless use of MCP tools as AI functions.</Description>
-    <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Version>0.5.0</Version>
+		<PackageId>Stef.ModelContextProtocol.SemanticKernel</PackageId>
+		<RootNamespace>ModelContextProtocol.SemanticKernel</RootNamespace>
+		<TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+		<LangVersion>preview</LangVersion>
+		<ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
+		<Copyright>Copyright © Stef Heyenrath</Copyright>
+		<Authors>Stef Heyenrath</Authors>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>
+		<PackageTags>mcp;ai;ModelContextProtocol;LLM;Microsoft-SemanticKernel;SemanticKernel;prompt</PackageTags>
+		<Description>SemanticKernel integration for the ModelContextProtocol (official C# SDK). Enables seamless use of MCP tools as AI functions.</Description>
+		<PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <CorvusJsonSchemaUseImplicitOperatorString>True</CorvusJsonSchemaUseImplicitOperatorString>
-  </PropertyGroup>
+	<PropertyGroup>
+		<CorvusJsonSchemaUseImplicitOperatorString>True</CorvusJsonSchemaUseImplicitOperatorString>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="Schema\2025-06-18.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<AdditionalFiles Include="Schema\2025-06-18.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
-    <None Include="../../PackageReadme.md" Pack="true" PackagePath="" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="../../resources/icon.png" Pack="true" PackagePath="" />
+		<None Include="../../PackageReadme.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.19" />
-    <PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.19">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.SemanticKernel" Version="1.65.0" />
-    <PackageReference Include="ModelContextProtocol" Version="0.4.0-preview.1" />
-    <PackageReference Include="Stef.Validation.Options" Version="0.2.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.19" />
+		<PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.19">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.SemanticKernel" Version="1.65.0" />
+		<PackageReference Include="ModelContextProtocol" Version="0.4.0-preview.1" />
+		<PackageReference Include="Stef.Validation.Options" Version="0.2.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
-  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+	</ItemGroup>
 
 </Project>
