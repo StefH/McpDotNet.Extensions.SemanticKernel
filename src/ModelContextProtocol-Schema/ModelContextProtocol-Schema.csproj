@@ -1,56 +1,56 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Version>0.0.3</Version>
-	  <PackageId>Stef.ModelContextProtocol.Schema</PackageId>
-    <RootNamespace>ModelContextProtocol.Schema</RootNamespace>
-    <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
-    <LangVersion>preview</LangVersion>
-    <ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
-    <Copyright>Copyright © Stef Heyenrath</Copyright>
-    <Authors>Stef Heyenrath</Authors>
-    <PackageIcon>icon.png</PackageIcon>
-    <!--<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>-->
-    <PackageProjectUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>
-    <PackageTags>mcp;ai;ModelContextProtocol;Schema;Model</PackageTags>
-    <Description>Generated classes (based on Corvus.JsonSchema) which describe the official ModelContextProtocol Schema.</Description>
-    <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Version>0.0.3</Version>
+		<PackageId>Stef.ModelContextProtocol.Schema</PackageId>
+		<RootNamespace>ModelContextProtocol.Schema</RootNamespace>
+		<TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+		<LangVersion>preview</LangVersion>
+		<ApplicationIcon>../../resources/icon.ico</ApplicationIcon>
+		<Copyright>Copyright © Stef Heyenrath</Copyright>
+		<Authors>Stef Heyenrath</Authors>
+		<PackageIcon>icon.png</PackageIcon>
+		<!--<PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../PackageReleaseNotes.txt"))</PackageReleaseNotes>-->
+		<PackageProjectUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/StefH/McpDotNet.Extensions.SemanticKernel</RepositoryUrl>
+		<PackageTags>mcp;ai;ModelContextProtocol;Schema;Model</PackageTags>
+		<Description>Generated classes (based on Corvus.JsonSchema) which describe the official ModelContextProtocol Schema.</Description>
+		<PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <CorvusJsonSchemaUseImplicitOperatorString>True</CorvusJsonSchemaUseImplicitOperatorString>
-  </PropertyGroup>
+	<PropertyGroup>
+		<CorvusJsonSchemaUseImplicitOperatorString>True</CorvusJsonSchemaUseImplicitOperatorString>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="2025-06-18.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="2025-06-18.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="2025-06-18.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<AdditionalFiles Include="2025-06-18.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="../../resources/icon.png" Pack="true" PackagePath="" />
-    <None Include="PackageReadme.md" Pack="true" PackagePath="" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="../../resources/icon.png" Pack="true" PackagePath="" />
+		<None Include="PackageReadme.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.19" />
-    <PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.19">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.19" />
+		<PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.19">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
-  </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+	</ItemGroup>
 
 </Project>
