@@ -1,3 +1,6 @@
+# 0.6.0 (08 October 2025)
+- [#39](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/39) - Rename NuGet packages + update icon [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.5.0 (28 September 2025)
 - [#37](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/37) - Upgrade ModelContextProtocol to 0.4.0-preview.1 [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#38](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/38) - Fix for optional (invalid) Required property (in tool schema) [bug] contributed by [StefH](https://github.com/StefH)
