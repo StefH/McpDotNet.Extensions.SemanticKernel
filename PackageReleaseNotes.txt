@@ -1,4 +1,5 @@
-# 0.6.0 (08 October 2025)
-- #39 Rename NuGet packages + update icon [enhancement]
+# 0.6.1 (29 November 2025)
+- #41 Upgrade dependencies [enhancement]
+- #40 Unable to remove MCP functions from Kernel.Plugins without breaking function calling
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md
