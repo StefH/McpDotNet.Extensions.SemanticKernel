@@ -38,13 +38,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.19" />
-		<PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.19">
+		<PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.21" />
+		<PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.21">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.SemanticKernel" Version="1.65.0" />
-		<PackageReference Include="ModelContextProtocol" Version="0.4.0-preview.1" />
+		<PackageReference Include="Microsoft.SemanticKernel" Version="1.67.1" />
+		<PackageReference Include="ModelContextProtocol" Version="0.4.1-preview.1" />
 		<PackageReference Include="Stef.Validation.Options" Version="0.2.0" />
 	</ItemGroup>
 

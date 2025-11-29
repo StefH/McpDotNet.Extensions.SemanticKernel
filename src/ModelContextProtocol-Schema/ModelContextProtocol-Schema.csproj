@@ -42,8 +42,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.19" />
-		<PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.19">
+		<PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.21" />
+		<PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.21">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
