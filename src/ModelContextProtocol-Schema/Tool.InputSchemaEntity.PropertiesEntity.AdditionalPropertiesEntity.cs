@@ -13,6 +13,9 @@ public readonly partial struct Tool
                 /// </summary>
                 public string Description =>
                     TryGetProperty("description", out var descriptionValue) && descriptionValue.AsString.TryGetString(out var description) ? description : string.Empty;
+
+                public string? Type =>
+                    TryGetProperty("type", out var typeValue) && typeValue.AsString.TryGetString(out var type) ? type : null;
             }
         }
     }

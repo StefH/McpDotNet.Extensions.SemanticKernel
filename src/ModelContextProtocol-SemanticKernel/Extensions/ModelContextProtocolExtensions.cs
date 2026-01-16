@@ -2,9 +2,11 @@
 
 using System.Text.Json;
 using Corvus.Json;
+using Microsoft.Extensions.AI;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
+using static ModelContextProtocol.Schema.Tool.InputSchemaEntity.PropertiesEntity;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
 
@@ -35,22 +37,26 @@ internal static class ModelContextProtocolExtensions
         {
             try
             {
-                // Convert arguments to dictionary format expected by ModelContextProtocol
-                Dictionary<string, object?> mcpArguments = [];
-                foreach (var arg in arguments)
+                var toolArguments = new Dictionary<string, JsonElement>();
+                foreach (var param in function.Metadata.Parameters)
                 {
-                    if (arg.Value is not null)
+                    if (arguments.TryGetValue(param.Name, out var value))
                     {
-                        mcpArguments[arg.Key] = function.ToArgumentValue(arg.Key, arg.Value);
+                        toolArguments[param.Name] = function.ToArgumentValue(param.Name, value);
+                    }
+                    else
+                    {
+                        toolArguments[param.Name] = function.ToArgumentValue(param.Name, null);
                     }
                 }
 
                 // Call the tool through ModelContextProtocol
-                var result = await mcpClient.CallToolAsync(
-                    tool.Name,
-                    mcpArguments.AsReadOnly(),
-                    cancellationToken: ct
-                ).ConfigureAwait(false);
+                var callToolRequest = new CallToolRequestParams
+                {
+                    Name = tool.Name,
+                    Arguments = toolArguments
+                };
+                var result = await mcpClient.CallToolAsync(callToolRequest, ct).ConfigureAwait(false);
 
                 // Extract the text content from the result
                 return result.GetAllText();
@@ -73,41 +79,12 @@ internal static class ModelContextProtocolExtensions
         );
     }
 
-    private static object ToArgumentValue(this KernelFunction function, string name, object value)
+    private static JsonElement ToArgumentValue(this KernelFunction function, string name, object? value)
     {
-        var parameterType = function.Metadata.Parameters.FirstOrDefault(p => p.Name == name)?.ParameterType;
+        var parameterType = function.Metadata.Parameters.FirstOrDefault(p => p.Name == name)?.ParameterType ?? typeof(object);
 
-        if (parameterType == null)
-        {
-            return value;
-        }
-
-        if (Nullable.GetUnderlyingType(parameterType) == typeof(int))
-        {
-            return Convert.ToInt32(value);
-        }
-
-        if (Nullable.GetUnderlyingType(parameterType) == typeof(double))
-        {
-            return Convert.ToDouble(value);
-        }
-
-        if (Nullable.GetUnderlyingType(parameterType) == typeof(bool))
-        {
-            return Convert.ToBoolean(value);
-        }
-
-        if (parameterType == typeof(List<string>))
-        {
-            return (value as IEnumerable<object>)?.ToList() ?? value;
-        }
-
-        if (parameterType == typeof(Dictionary<string, object>))
-        {
-            return (value as Dictionary<string, object>)?.ToDictionary(kvp => kvp.Key, kvp => kvp.Value) ?? value;
-        }
-
-        return value;
+        var jsonTypeInfo = McpJsonUtilities.DefaultOptions.GetTypeInfo(parameterType);
+        return JsonSerializer.SerializeToElement(value, jsonTypeInfo);
     }
 
     private static IEnumerable<KernelParameterMetadata>? ToParameters(this McpClientTool tool)
@@ -128,7 +105,7 @@ internal static class ModelContextProtocolExtensions
             {
                 Description = property.Value.Description,
                 IsRequired = isRequired,
-                ParameterType = ConvertParameterDataType(property.Value.AsJsonElement, isRequired)
+                ParameterType = ConvertParameterDataType(property.Value, isRequired)
             };
 
             yield return metadata;
@@ -143,27 +120,32 @@ internal static class ModelContextProtocolExtensions
         };
     }
 
-    private static Type ConvertParameterDataType(JsonElement property, bool required)
+    private static Type ConvertParameterDataType(AdditionalPropertiesEntity property, bool required)
     {
-        Type type;
+        var type = property.Type ?? typeof(object);
 
-        switch (property.ValueKind)
+        //switch (property.ValueKind)
+        //{
+        //    case JsonValueKind.String:
+        //        var typeString = property.GetString();
+        //        type = FromString(typeString);
+        //        break;
+
+        //    case JsonValueKind.Array:
+        //        var value = property.EnumerateArray()
+        //            .Select(e => e.GetString())
+        //            .FirstOrDefault(v => !string.Equals(v, "nullable", StringComparison.OrdinalIgnoreCase));
+        //        type = FromString(value);
+        //        break;
+
+        //    default:
+        //        type = typeof(string);
+        //        break;
+        //}
+
+        if (type.IsGenericType)
         {
-            case JsonValueKind.String:
-                var typeString = property.GetString();
-                type = FromString(typeString);
-                break;
-
-            case JsonValueKind.Array:
-                var value = property.EnumerateArray()
-                    .Select(e => e.GetString())
-                    .FirstOrDefault(v => !string.Equals(v, "nullable", StringComparison.OrdinalIgnoreCase));
-                type = FromString(value);
-                break;
-
-            default:
-                type = typeof(string);
-                break;
+            return type;
         }
 
         return !required && type.IsValueType ? typeof(Nullable<>).MakeGenericType(type) : type;

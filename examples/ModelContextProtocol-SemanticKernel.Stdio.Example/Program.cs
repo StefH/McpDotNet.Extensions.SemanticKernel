@@ -26,7 +26,7 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
     [@"C:\dev\GitHub\mcpserver.azuredevops\src\mcpserver.azuredevops.stdio\mcpserver.azuredevops.stdio.csproj"],
     new Dictionary<string, string>
     {
-        { "AZURE_DEVOPS_ORG_URL", "https://dev.azure.com/mstack" },
+        { "AZURE_DEVOPS_ORG_URL", "https://dev.azure.com/alfa1group" },
         { "AZURE_DEVOPS_AUTH_METHOD", "pat" },
         { "AZURE_DEVOPS_PAT", Environment.GetEnvironmentVariable("MCP_PAT")! }
     },
@@ -77,6 +77,19 @@ var executionSettings = new OpenAIPromptExecutionSettings
 
 var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\nTools:\n{result}");
+
+//var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
+//var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\n{prompt1}\n{result1}");
+
+var promptAzureDevops =
+    """
+    For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.
+    When retrieving a particular commit details for a repository: for the parameter 'changeCount', use the value null.
+    """;
+var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
+
 return;
 
 //var promptReadFile = "Use the edit_file tool to set all tasks as done in the Tasklist.md file. Read the file before updating it.";
@@ -88,17 +101,13 @@ var promptReadFile = "Convert the file 'CV.docx' to Text."; //
 var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
-//var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
-//var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
-//Console.WriteLine($"\n\n{prompt1}\n{result1}");
+
 
 //var prompt2 = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
 //var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt2}\n{result2}");
 
-//var promptAzureDevops = "For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.";
-//var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
-//Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
+
 
 await cts.CancelAsync().ConfigureAwait(false);
 cts.Dispose();
