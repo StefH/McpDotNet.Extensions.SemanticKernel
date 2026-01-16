@@ -28,7 +28,7 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
     {
         { "AZURE_DEVOPS_ORG_URL", "https://dev.azure.com/alfa1group" },
         { "AZURE_DEVOPS_AUTH_METHOD", "pat" },
-        { "AZURE_DEVOPS_PAT", Environment.GetEnvironmentVariable("MCP_PAT")! }
+        { "AZURE_DEVOPS_PAT", Environment.GetEnvironmentVariable("AZURE_DEVOPS_PAT")! }
     },
     cancellationToken: cts.Token);
 
