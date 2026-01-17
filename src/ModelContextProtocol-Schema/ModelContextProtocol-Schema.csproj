@@ -24,6 +24,10 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);TOOL_EXTENSION_PUBLIC</DefineConstants>
+  </PropertyGroup>
+
 	<PropertyGroup>
 		<CorvusJsonSchemaUseImplicitOperatorString>True</CorvusJsonSchemaUseImplicitOperatorString>
 	</PropertyGroup>

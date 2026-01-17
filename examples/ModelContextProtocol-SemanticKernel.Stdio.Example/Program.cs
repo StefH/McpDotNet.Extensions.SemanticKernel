@@ -32,21 +32,19 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
     },
     cancellationToken: cts.Token);
 
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Filesystem", "npx", ["-y", "@modelcontextprotocol/server-filesystem", currentPath], cancellationToken: cts.Token);
+// await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Filesystem", "npx", ["-y", "@modelcontextprotocol/server-filesystem", currentPath], cancellationToken: cts.Token);
 
 // await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
 
-IDictionary everything1 = new Dictionary<string, string> { { "e", "x" } };
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything1", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything1, cancellationToken: cts.Token);
+//IDictionary everything1 = new Dictionary<string, string> { { "e", "x" } };
+//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything1", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything1, cancellationToken: cts.Token);
 
-IDictionary everything2 = Environment.GetEnvironmentVariables();
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything2", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything2, cancellationToken: cts.Token);
+//IDictionary everything2 = Environment.GetEnvironmentVariables();
+//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything2", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything2, cancellationToken: cts.Token);
 
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
-
-
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["--yes", "mcpserver.openxml@0.4.0-preview-05", "--allowedPath=c:\\Temp"], cancellationToken: cts.Token);
+// await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["--yes", "mcpserver.openxml@0.4.0-preview-05", "--allowedPath=c:\\Temp"], cancellationToken: cts.Token);
 
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("gordon", "docker", ["ai", "mcpserver"], new Dictionary<string,string> { { "a", "b" } }, cancellationToken: cts.Token);
 
@@ -75,8 +73,8 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\nTools:\n{result}");
+//var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\nTools:\n{result}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
 //var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
