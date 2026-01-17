@@ -1,4 +1,5 @@
 ﻿// ReSharper disable once CheckNamespace
+using System.Diagnostics.CodeAnalysis;
 using Corvus.Json;
 
 namespace ModelContextProtocol.Schema;
@@ -14,67 +15,96 @@ internal readonly partial struct Tool
                 /// <summary>
                 /// Gets the description from the JSON property named "description".
                 /// </summary>
-                public string Description =>
-                    TryGetProperty("description", out var descriptionValue) && descriptionValue.AsString.TryGetString(out var description) ? description : string.Empty;
-
-                public Type? Type
+                public bool TryGetDescription([NotNullWhen(true)] out string? description)
                 {
-                    get
+                    if (TryGetProperty("description", out var descriptionValue) &&
+                        descriptionValue.AsString.TryGetString(out description))
                     {
-                        if (!TryGetProperty("type", out var typeValue))
-                        {
-                            return null;
-                        }
-
-                        if (typeValue.AsArray.IsValid())
-                        {
-                            // Handle multiple types (e.g., ["integer","null"])
-                            var types = typeValue.AsArray.EnumerateArray()
-                                .Select(e => e.AsString.TryGetString(out var arrayItem) ? arrayItem : null)
-                                .OfType<string>()
-                                .ToArray();
-                            if (types.Length == 0)
-                            {
-                                return null;
-                            }
-
-                            if (types.Length == 1)
-                            {
-                                return FromString(types[0]);
-                            }
-
-                            if (types.Length > 1 && types.Contains("null"))
-                            {
-                                var nonNullType = FromString(types.First(t => t != "null"));
-                                return typeof(Nullable<>).MakeGenericType(nonNullType);
-                            }
-
-                            return FromString(types.First());
-                        }
-
-                        if (typeValue.AsString.TryGetString(out var typeAsString))
-                        {
-                            // Handle array type
-                            if (typeAsString == "array")
-                            {
-                                if (TryGetProperty("items", out var itemsValue))
-                                {
-                                    if (itemsValue.AsObject.TryGetProperty("type", out var itemTypeValue) &&
-                                        itemTypeValue.AsString.TryGetString(out var itemTypeAsString))
-                                    {
-                                        var itemType = FromString(itemTypeAsString);
-                                        return typeof(List<>).MakeGenericType(itemType);
-                                    }
-                                }
-
-                                return typeof(List<string>);
-                            }
-
-                            return FromString(typeAsString);
-                        }
-
-                        return null;
+                        return true;
                     }
+
+                    description = null;
+                    return false;
+                }
+
+                /// <summary>
+                /// Gets the .NET type represented by the schema's "type" property, if available.
+                /// </summary>
+                /// <remarks>If the schema defines multiple types, such as ["integer", "null"],
+                /// this property returns a nullable type when appropriate. For array types, the returned value reflects
+                /// the type of the array elements if specified; otherwise, it defaults to a list of strings. Returns
+                /// null if the type cannot be determined from the schema.</remarks>
+                public bool TryGetType([NotNullWhen(true)] out Type? type)
+                {
+                    if (!TryGetProperty("type", out var typeValue))
+                    {
+                        type = null;
+                        return false;
+                    }
+
+                    if (typeValue.AsArray.IsValid())
+                    {
+                        // Handle multiple types (e.g., ["integer","null"])
+                        var types = typeValue.AsArray.EnumerateArray()
+                            .Select(e => e.AsString.TryGetString(out var arrayItem) ? arrayItem : null)
+                            .OfType<string>()
+                            .ToArray();
+
+                        if (types.Length == 0)
+                        {
+                            type = null;
+                            return false;
+                        }
+
+                        if (types.Length == 1)
+                        {
+                            type = FromString(types[0]);
+                            return true;
+                        }
+
+                        if (types.Length > 1 && types.Contains("null"))
+                        {
+                            var nonNullType = FromString(types.First(t => t != "null"));
+                            type = typeof(Nullable<>).MakeGenericType(nonNullType);
+                            return true;
+                        }
+
+                        type = FromString(types.First());
+                        return true;
+                    }
+
+                    if (typeValue.AsString.TryGetString(out var typeAsString))
+                    {
+                        // Handle array type
+                        if (typeAsString == "array")
+                        {
+                            if (TryGetProperty("items", out var itemsValue))
+                            {
+                                if (itemsValue.AsObject.TryGetProperty("type", out var itemTypeValue) &&
+                                    itemTypeValue.AsString.TryGetString(out var itemTypeAsString))
+                                {
+                                    var itemType = FromString(itemTypeAsString);
+                                    type = typeof(List<>).MakeGenericType(itemType);
+                                    return true;
+                                }
+                            }
+
+                            type = typeof(List<string>);
+                            return true;
+                        }
+
+                        type = FromString(typeAsString);
+                        return true;
+                    }
+
+                    if (typeValue.AsObject.IsValid())
+                    {
+                        type = typeof(Dictionary<string, object>);
+                        return true;
+                    }
+
+                    type = null;
+                    return false;
                 }
 
                 private static Type FromString(string typeString)
@@ -94,22 +124,3 @@ internal readonly partial struct Tool
         }
     }
 }
-
-/*
-{{"description":"Filter on projects (names).","type":"array","items":{"type":"string"},"default":null}}
-
-{{"description":"Number of team projects to return.","type":["integer","null"],"default":null}}
- * 
- * 
- * 
- * return typeString switch
-        {
-            "string" => typeof(string),
-            "integer" => typeof(int),
-            "number" => typeof(double),
-            "boolean" => typeof(bool),
-            "array" => typeof(List<string>),
-            "object" => typeof(Dictionary<string, object>),
-            _ => typeof(string)
-        };
-*/

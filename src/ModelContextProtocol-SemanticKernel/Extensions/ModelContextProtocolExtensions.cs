@@ -2,7 +2,6 @@
 
 using System.Text.Json;
 using Corvus.Json;
-using Microsoft.Extensions.AI;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
@@ -46,7 +45,7 @@ internal static class ModelContextProtocolExtensions
                     }
                     else
                     {
-                        toolArguments[param.Name] = function.ToArgumentValue(param.Name, null);
+                        //toolArguments[param.Name] = function.ToArgumentValue(param.Name, null);
                     }
                 }
 
@@ -82,9 +81,49 @@ internal static class ModelContextProtocolExtensions
     private static JsonElement ToArgumentValue(this KernelFunction function, string name, object? value)
     {
         var parameterType = function.Metadata.Parameters.FirstOrDefault(p => p.Name == name)?.ParameterType ?? typeof(object);
+        var nonNullableParameterType = parameterType.GetNonNullableType();
+
+        object? changedValue = value;
+
+        if (value is string valueAsAstring && nonNullableParameterType != typeof(string))
+        {
+            if (nonNullableParameterType == typeof(int) && int.TryParse(valueAsAstring, out var intValue))
+            {
+                changedValue = intValue;
+            }
+
+            if (nonNullableParameterType == typeof(double) && double.TryParse(valueAsAstring, out var doubleValue))
+            {
+                changedValue = doubleValue;
+            }
+
+            if (nonNullableParameterType == typeof(bool) && bool.TryParse(valueAsAstring, out var boolValue))
+            {
+                changedValue = boolValue;
+            }
+
+            try
+            {
+                changedValue = JsonSerializer.Deserialize(valueAsAstring, nonNullableParameterType);
+            }
+            catch
+            {
+                // Ignore deserialization errors and keep the original string value
+            }
+        }
 
         var jsonTypeInfo = McpJsonUtilities.DefaultOptions.GetTypeInfo(parameterType);
-        return JsonSerializer.SerializeToElement(value, jsonTypeInfo);
+        return JsonSerializer.SerializeToElement(changedValue, jsonTypeInfo);
+    }
+
+    private static bool IsNullableType(this Type type)
+    {
+        return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+    }
+
+    private static Type GetNonNullableType(this Type type)
+    {
+        return type.IsNullableType() ? type.GetGenericArguments()[0] : type;
     }
 
     private static IEnumerable<KernelParameterMetadata>? ToParameters(this McpClientTool tool)
@@ -103,7 +142,7 @@ internal static class ModelContextProtocolExtensions
             var isRequired = inputSchema.Required.IsValid() && inputSchema.Required.Any(requiredPropertyName => requiredPropertyName.EqualsString(name));
             var metadata = new KernelParameterMetadata(name)
             {
-                Description = property.Value.Description,
+                Description = property.Value.TryGetDescription(out var description) ? description : string.Empty,
                 IsRequired = isRequired,
                 ParameterType = ConvertParameterDataType(property.Value, isRequired)
             };
@@ -122,46 +161,13 @@ internal static class ModelContextProtocolExtensions
 
     private static Type ConvertParameterDataType(AdditionalPropertiesEntity property, bool required)
     {
-        var type = property.Type ?? typeof(object);
+        var propertyType = property.TryGetType(out var type) ? type : typeof(object);
 
-        //switch (property.ValueKind)
-        //{
-        //    case JsonValueKind.String:
-        //        var typeString = property.GetString();
-        //        type = FromString(typeString);
-        //        break;
-
-        //    case JsonValueKind.Array:
-        //        var value = property.EnumerateArray()
-        //            .Select(e => e.GetString())
-        //            .FirstOrDefault(v => !string.Equals(v, "nullable", StringComparison.OrdinalIgnoreCase));
-        //        type = FromString(value);
-        //        break;
-
-        //    default:
-        //        type = typeof(string);
-        //        break;
-        //}
-
-        if (type.IsGenericType)
+        if (propertyType.IsGenericType)
         {
-            return type;
+            return propertyType;
         }
 
-        return !required && type.IsValueType ? typeof(Nullable<>).MakeGenericType(type) : type;
-    }
-
-    private static Type FromString(string? typeString)
-    {
-        return typeString switch
-        {
-            "string" => typeof(string),
-            "integer" => typeof(int),
-            "number" => typeof(double),
-            "boolean" => typeof(bool),
-            "array" => typeof(List<string>),
-            "object" => typeof(Dictionary<string, object>),
-            _ => typeof(string)
-        };
+        return !required && propertyType.IsValueType ? typeof(Nullable<>).MakeGenericType(propertyType) : propertyType;
     }
 }

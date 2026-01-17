@@ -85,7 +85,6 @@ Console.WriteLine($"\n\nTools:\n{result}");
 var promptAzureDevops =
     """
     For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.
-    When retrieving a particular commit details for a repository: for the parameter 'changeCount', use the value null.
     """;
 var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
