@@ -42,7 +42,7 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "dnx", ["
 
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("mcpserver.everything.stdio", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything2, cancellationToken: cts.Token);
 
-// await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
 // await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["--yes", "mcpserver.openxml@0.4.0-preview-05", "--allowedPath=c:\\Temp"], cancellationToken: cts.Token);
 
@@ -100,9 +100,9 @@ Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 //var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
-//var prompt2 = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
-//var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
-//Console.WriteLine($"\n\n{prompt2}\n{result2}");
+var promptGitHub = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
+var resultGitHub = await kernel.InvokePromptAsync(promptGitHub, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{promptGitHub}\n{resultGitHub}");
 
 await cts.CancelAsync().ConfigureAwait(false);
 cts.Dispose();
