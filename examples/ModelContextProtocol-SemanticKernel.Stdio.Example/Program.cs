@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
@@ -36,13 +35,14 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
 
 // await kernel.Plugins.AddToolsFromClaudeDesktopConfigAsync(cancellationToken: cts.Token);
 
-//IDictionary everything1 = new Dictionary<string, string> { { "e", "x" } };
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything1", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything1, cancellationToken: cts.Token);
+// IDictionary everything1 = new Dictionary<string, string> { { "e", "x" } };
+// await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything1", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything1, cancellationToken: cts.Token);
 
-//IDictionary everything2 = Environment.GetEnvironmentVariables();
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything2", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything2, cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "dnx", ["--yes", "mcpserver.everything.stdio"], cancellationToken: cts.Token);
 
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
+//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("mcpserver.everything.stdio", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything2, cancellationToken: cts.Token);
+
+// await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
 // await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["--yes", "mcpserver.openxml@0.4.0-preview-05", "--allowedPath=c:\\Temp"], cancellationToken: cts.Token);
 
@@ -73,12 +73,16 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-//var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings)).ConfigureAwait(false);
-//Console.WriteLine($"\n\nTools:\n{result}");
+var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\nTools:\n{result}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
 //var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt1}\n{result1}");
+
+var promptComplex = "Use the Everything tool and call the add_complex function to add these complex numbers: 1 + 2i and 3 - 7i";
+var resultComplex = await kernel.InvokePromptAsync(promptComplex, new(executionSettings)).ConfigureAwait(false);
+Console.WriteLine($"\n\n{promptComplex}\n{resultComplex}");
 
 var promptAzureDevops =
     """
@@ -87,24 +91,18 @@ var promptAzureDevops =
 var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
-return;
-
 //var promptReadFile = "Use the edit_file tool to set all tasks as done in the Tasklist.md file. Read the file before updating it.";
 //var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 // var promptReadFile = "Convert the file '/workdir/CV.docx' to Markdown.";
-var promptReadFile = "Convert the file 'CV.docx' to Text."; //
-var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
-Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
-
-
+//var promptReadFile = "Convert the file 'CV.docx' to Text."; //
+//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
+//Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 //var prompt2 = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
 //var result2 = await kernel.InvokePromptAsync(prompt2, new(executionSettings)).ConfigureAwait(false);
 //Console.WriteLine($"\n\n{prompt2}\n{result2}");
-
-
 
 await cts.CancelAsync().ConfigureAwait(false);
 cts.Dispose();

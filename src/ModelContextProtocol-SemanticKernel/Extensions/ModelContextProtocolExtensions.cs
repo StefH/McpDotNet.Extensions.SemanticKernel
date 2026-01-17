@@ -43,9 +43,9 @@ internal static class ModelContextProtocolExtensions
                     {
                         toolArguments[param.Name] = function.ToArgumentValue(param.Name, value);
                     }
-                    else
+                    else if (param.IsRequired)
                     {
-                        //toolArguments[param.Name] = function.ToArgumentValue(param.Name, null);
+                        toolArguments[param.Name] = function.ToArgumentValue(param.Name, null);
                     }
                 }
 

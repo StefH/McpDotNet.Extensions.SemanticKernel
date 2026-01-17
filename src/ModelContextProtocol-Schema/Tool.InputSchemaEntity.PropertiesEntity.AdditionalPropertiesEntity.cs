@@ -1,13 +1,14 @@
 ﻿// ReSharper disable once CheckNamespace
 using System.Diagnostics.CodeAnalysis;
 using Corvus.Json;
+using ModelContextProtocol.Schema.Dynamic;
 
 namespace ModelContextProtocol.Schema;
 
 #if TOOL_EXTENSION_PUBLIC
-public 
+public
 #else
-internal 
+internal
 #endif
 readonly partial struct Tool
 {
@@ -63,67 +64,100 @@ readonly partial struct Tool
 
                         if (types.Length == 1)
                         {
-                            type = FromString(types[0]);
-                            return true;
+                            return TryGetFromString(types[0], out type);
                         }
 
-                        if (types.Length > 1 && types.Contains("null"))
+                        if (types.Length > 1 && types.Contains("null") && TryGetFromString(types.First(t => t != "null"), out var nonNullType))
                         {
-                            var nonNullType = FromString(types.First(t => t != "null"));
                             type = typeof(Nullable<>).MakeGenericType(nonNullType);
                             return true;
                         }
 
-                        type = FromString(types.First());
-                        return true;
+                        type = null;
+                        return false;
                     }
 
                     if (typeValue.AsString.TryGetString(out var typeAsString))
                     {
-                        // Handle array type
-                        if (typeAsString == "array")
-                        {
-                            if (TryGetProperty("items", out var itemsValue))
-                            {
-                                if (itemsValue.AsObject.TryGetProperty("type", out var itemTypeValue) &&
-                                    itemTypeValue.AsString.TryGetString(out var itemTypeAsString))
-                                {
-                                    var itemType = FromString(itemTypeAsString);
-                                    type = typeof(List<>).MakeGenericType(itemType);
-                                    return true;
-                                }
-                            }
-
-                            type = typeof(List<string>);
-                            return true;
-                        }
-
-                        type = FromString(typeAsString);
-                        return true;
-                    }
-
-                    if (typeValue.AsObject.IsValid())
-                    {
-                        type = typeof(Dictionary<string, object>);
-                        return true;
+                        return TryGetFromString(typeAsString, out type);
                     }
 
                     type = null;
                     return false;
                 }
 
-                private static Type FromString(string typeString)
+                private bool TryGetFromString(string typeAsString, [NotNullWhen(true)] out Type? type)
                 {
-                    return typeString switch
+                    if (typeAsString == "string")
                     {
-                        "string" => typeof(string),
-                        "integer" => typeof(int),
-                        "number" => typeof(double),
-                        "boolean" => typeof(bool),
-                        "array" => typeof(List<string>),
-                        "object" => typeof(Dictionary<string, object>),
-                        _ => typeof(string)
-                    };
+                        type = typeof(string);
+                        return true;
+                    }
+
+                    if (typeAsString == "integer")
+                    {
+                        type = typeof(int);
+                        return true;
+                    }
+
+                    if (typeAsString == "number")
+                    {
+                        type = typeof(double);
+                        return true;
+                    }
+
+                    if (typeAsString == "boolean")
+                    {
+                        type = typeof(bool);
+                        return true;
+                    }
+
+                    if (typeAsString == "array")
+                    {
+                        if (TryGetProperty("items", out var itemsValue))
+                        {
+                            if (itemsValue.AsObject.TryGetProperty("type", out var itemTypeValue) &&
+                                itemTypeValue.AsString.TryGetString(out var itemTypeAsString))
+                            {
+                                if (TryGetFromString(itemTypeAsString, out var itemType))
+                                {
+                                    type = typeof(List<>).MakeGenericType(itemType);
+                                    return true;
+                                }
+                            }
+                        }
+
+                        type = typeof(List<string>);
+                        return true;
+                    }
+
+                    if (typeAsString == "object")
+                    {
+                        if (TryGetProperty("properties", out var propertiesValue) && propertiesValue.AsObject.IsValid())
+                        {
+                            var dynamicProperties = new List<DynamicPropertyWithValue>();
+
+                            foreach (var property in propertiesValue.AsObject.AsPropertyBacking())
+                            {
+                                var dynamicPropertyName = property.Name.GetString();
+                                if (property.Value.AsObject.TryGetProperty("type", out var propertyType) &&
+                                    propertyType.AsString.TryGetString(out var propertyAsString) &&
+                                    TryGetFromString(propertyAsString, out var dynamicPropertyType))
+                                {
+                                    dynamicProperties.Add(new DynamicPropertyWithValue(dynamicPropertyName, type: dynamicPropertyType));
+                                }
+                            }
+
+                            type = DynamicClassFactory.CreateType(dynamicProperties);
+                            return true;
+                        }
+
+                        type = typeof(Dictionary<string, object>);
+                        return true;
+                    }
+
+                    type = null;
+                    return false;
                 }
             }
         }
