@@ -106,13 +106,13 @@ internal static class DynamicClassFactory
                     for (int i = 0; i < names.Length; i++)
                     {
                         // field
-                        fields[i] = tb.DefineField($"<{names[i]}>i__Field", generics[i].AsType(), FieldAttributes.Private | FieldAttributes.InitOnly);
+                        fields[i] = tb.DefineField($"<{names[i]}>i__Field", generics[i], FieldAttributes.Private | FieldAttributes.InitOnly);
                         fields[i].SetCustomAttribute(DebuggerBrowsableAttributeBuilder);
 
-                        PropertyBuilder property = tb.DefineProperty(names[i], PropertyAttributes.None, CallingConventions.HasThis, generics[i].AsType(), Type.EmptyTypes);
+                        PropertyBuilder property = tb.DefineProperty(names[i], PropertyAttributes.None, CallingConventions.HasThis, generics[i], Type.EmptyTypes);
 
                         // getter
-                        MethodBuilder getter = tb.DefineMethod($"get_{names[i]}", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName, CallingConventions.HasThis, generics[i].AsType(), null);
+                        MethodBuilder getter = tb.DefineMethod($"get_{names[i]}", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName, CallingConventions.HasThis, generics[i], null);
                         getter.SetCustomAttribute(CompilerGeneratedAttributeBuilder);
                         ILGenerator ilgeneratorGetter = getter.GetILGenerator();
                         ilgeneratorGetter.Emit(OpCodes.Ldarg_0);
@@ -121,7 +121,7 @@ internal static class DynamicClassFactory
                         property.SetGetMethod(getter);
 
                         // setter
-                        MethodBuilder setter = tb.DefineMethod($"set_{names[i]}", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName, CallingConventions.HasThis, null, [generics[i].AsType()]);
+                        MethodBuilder setter = tb.DefineMethod($"set_{names[i]}", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName, CallingConventions.HasThis, null, [generics[i]]);
                         setter.SetCustomAttribute(CompilerGeneratedAttributeBuilder);
 
                         // workaround for https://github.com/dotnet/corefx/issues/7792
@@ -149,9 +149,9 @@ internal static class DynamicClassFactory
                     equals.DefineParameter(1, ParameterAttributes.In, "value");
 
                     ILGenerator ilgeneratorEquals = equals.GetILGenerator();
-                    ilgeneratorEquals.DeclareLocal(tb.AsType());
+                    ilgeneratorEquals.DeclareLocal(tb);
                     ilgeneratorEquals.Emit(OpCodes.Ldarg_1);
-                    ilgeneratorEquals.Emit(OpCodes.Isinst, tb.AsType());
+                    ilgeneratorEquals.Emit(OpCodes.Isinst, tb);
                     ilgeneratorEquals.Emit(OpCodes.Stloc_0);
                     ilgeneratorEquals.Emit(OpCodes.Ldloc_0);
 
@@ -187,7 +187,7 @@ internal static class DynamicClassFactory
                         // https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/516
                         if (!RuntimeInformationUtils.IsBlazorWASM)
                         {
-                            Type equalityComparerT = EqualityComparer.MakeGenericType(generics[i].AsType());
+                            Type equalityComparerT = EqualityComparer.MakeGenericType(generics[i]);
 
                             // Equals()
                             MethodInfo equalityComparerTDefault = TypeBuilder.GetMethod(equalityComparerT, EqualityComparerDefault);
@@ -224,7 +224,7 @@ internal static class DynamicClassFactory
                         ilgeneratorToString.Emit(OpCodes.Ldloc_0);
                         ilgeneratorToString.Emit(OpCodes.Ldarg_0);
                         ilgeneratorToString.Emit(OpCodes.Ldfld, fields[i]);
-                        ilgeneratorToString.Emit(OpCodes.Box, generics[i].AsType());
+                        ilgeneratorToString.Emit(OpCodes.Box, generics[i]);
                         ilgeneratorToString.Emit(OpCodes.Callvirt, StringBuilderAppendObject);
                         ilgeneratorToString.Emit(OpCodes.Pop);
                     }
@@ -244,7 +244,7 @@ internal static class DynamicClassFactory
                         ilgeneratorConstructorDef.Emit(OpCodes.Ret);
 
                         // .ctor with params
-                        ConstructorBuilder constructor = tb.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig, CallingConventions.HasThis, generics.Select(p => p.AsType()).ToArray());
+                        ConstructorBuilder constructor = tb.DefineConstructor(MethodAttributes.Public | MethodAttributes.HideBySig, CallingConventions.HasThis, generics.ToArray());
                         constructor.SetCustomAttribute(DebuggerHiddenAttributeBuilder);
 
                         ILGenerator ilgeneratorConstructor = constructor.GetILGenerator();

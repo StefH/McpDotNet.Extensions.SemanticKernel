@@ -69,7 +69,7 @@ readonly partial struct Tool
 
                         if (types.Length > 1 && types.Contains("null") && TryGetFromString(types.First(t => t != "null"), out var nonNullType))
                         {
-                            type = typeof(Nullable<>).MakeGenericType(nonNullType);
+                            type = nonNullType.IsValueType ? typeof(Nullable<>).MakeGenericType(nonNullType) : nonNullType;
                             return true;
                         }
 
