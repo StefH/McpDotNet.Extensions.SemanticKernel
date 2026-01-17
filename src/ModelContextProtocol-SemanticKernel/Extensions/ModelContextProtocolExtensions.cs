@@ -91,24 +91,24 @@ internal static class ModelContextProtocolExtensions
             {
                 changedValue = intValue;
             }
-
-            if (nonNullableParameterType == typeof(double) && double.TryParse(valueAsAstring, out var doubleValue))
+            else if (nonNullableParameterType == typeof(double) && double.TryParse(valueAsAstring, out var doubleValue))
             {
                 changedValue = doubleValue;
             }
-
-            if (nonNullableParameterType == typeof(bool) && bool.TryParse(valueAsAstring, out var boolValue))
+            else if (nonNullableParameterType == typeof(bool) && bool.TryParse(valueAsAstring, out var boolValue))
             {
                 changedValue = boolValue;
             }
-
-            try
+            else
             {
-                changedValue = JsonSerializer.Deserialize(valueAsAstring, nonNullableParameterType);
-            }
-            catch
-            {
-                // Ignore deserialization errors and keep the original string value
+                try
+                {
+                    changedValue = JsonSerializer.Deserialize(valueAsAstring, nonNullableParameterType);
+                }
+                catch
+                {
+                    // Ignore deserialization errors and keep the original string value
+                }
             }
         }
 

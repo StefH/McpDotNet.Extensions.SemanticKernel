@@ -28,8 +28,8 @@ internal static class DynamicClassFactory
 
     private static readonly ConstructorInfo StringBuilderCtor = typeof(StringBuilder).GetConstructor(Type.EmptyTypes)!;
 #if NETSTANDARD
-    private static readonly MethodInfo StringBuilderAppendString = typeof(StringBuilder).GetMethod("Append", [typeof(string)]);
-    private static readonly MethodInfo StringBuilderAppendObject = typeof(StringBuilder).GetMethod("Append", [typeof(object)]);
+    private static readonly MethodInfo StringBuilderAppendString = typeof(StringBuilder).GetMethod("Append", [typeof(string)])!;
+    private static readonly MethodInfo StringBuilderAppendObject = typeof(StringBuilder).GetMethod("Append", [typeof(object)])!;
 #else
     private static readonly MethodInfo StringBuilderAppendString = typeof(StringBuilder).GetMethod("Append", BindingFlags.Instance | BindingFlags.Public, null, [typeof(string)], null)!;
     private static readonly MethodInfo StringBuilderAppendObject = typeof(StringBuilder).GetMethod("Append", BindingFlags.Instance | BindingFlags.Public, null, [typeof(object)], null)!;
@@ -37,6 +37,7 @@ internal static class DynamicClassFactory
 
     private static readonly Type EqualityComparer = typeof(EqualityComparer<>);
     private static readonly Type EqualityComparerGenericArgument = EqualityComparer.GetGenericArguments()[0];
+
 #if NETSTANDARD
     private static readonly MethodInfo EqualityComparerDefault = EqualityComparer.GetMethod("get_Default", BindingFlags.Static | BindingFlags.Public)!;
     private static readonly MethodInfo EqualityComparerEquals = EqualityComparer.GetMethod("Equals", [EqualityComparerGenericArgument, EqualityComparerGenericArgument])!;
