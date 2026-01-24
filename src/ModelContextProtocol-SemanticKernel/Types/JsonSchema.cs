@@ -1,6 +1,4 @@
-﻿// Copyright (c) https://github.com/PederHP/mcpdotnet
-
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace ModelContextProtocol.SemanticKernel.Types;
 

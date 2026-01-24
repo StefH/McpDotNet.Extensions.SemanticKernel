@@ -24,6 +24,10 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);TOOL_EXTENSION_PUBLIC</DefineConstants>
+  </PropertyGroup>
+
 	<PropertyGroup>
 		<CorvusJsonSchemaUseImplicitOperatorString>True</CorvusJsonSchemaUseImplicitOperatorString>
 	</PropertyGroup>
@@ -42,12 +46,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.3.21" />
-		<PackageReference Include="Corvus.Json.SourceGenerator" Version="4.3.21">
+		<PackageReference Include="Corvus.Json.ExtendedTypes" Version="4.5.0" />
+		<PackageReference Include="Corvus.Json.SourceGenerator" Version="4.5.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="$(AssemblyName).Tests" />

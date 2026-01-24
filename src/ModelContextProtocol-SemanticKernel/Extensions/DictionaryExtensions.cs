@@ -1,5 +1,3 @@
-// Copyright (c) Stef Heyenrath
-
 using System.Collections;
 
 namespace ModelContextProtocol.SemanticKernel.Extensions;
