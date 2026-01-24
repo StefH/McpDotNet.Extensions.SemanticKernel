@@ -1,6 +1,4 @@
-﻿// Copyright (c) Microsoft.
-
-using System.Text.Json;
+﻿using System.Text.Json;
 using Corvus.Json;
 using Microsoft.SemanticKernel;
 using ModelContextProtocol.Client;

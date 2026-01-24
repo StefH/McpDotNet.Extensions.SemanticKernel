@@ -7,7 +7,7 @@ using ModelContextProtocol.SemanticKernel.Extensions;
 
 var currentPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-var cts = new CancellationTokenSource();
+using var cts = new CancellationTokenSource();
 
 var builder = Kernel.CreateBuilder();
 builder.Services.AddLogging(c => c.AddDebug().SetMinimumLevel(LogLevel.Trace));
@@ -15,7 +15,8 @@ builder.Services.AddLogging(c => c.AddDebug().SetMinimumLevel(LogLevel.Trace));
 builder.Services.AddOpenAIChatCompletion(
     serviceId: "openai",
     modelId: "gpt-4o",
-    apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY")!);
+    apiKey: Environment.GetEnvironmentVariable("OPENAI_API_KEY")!
+);
 
 var kernel = builder.Build();
 
@@ -73,7 +74,9 @@ var executionSettings = new OpenAIPromptExecutionSettings
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 };
 
-var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings)).ConfigureAwait(false);
+var logger = kernel.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Program");
+
+var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings));
 Console.WriteLine($"\n\nTools:\n{result}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
@@ -81,28 +84,27 @@ Console.WriteLine($"\n\nTools:\n{result}");
 //Console.WriteLine($"\n\n{prompt1}\n{result1}");
 
 var promptComplex = "Use the Everything tool and call the add_complex function to add these complex numbers: 1 + 2i and 3 - 7i";
-var resultComplex = await kernel.InvokePromptAsync(promptComplex, new(executionSettings)).ConfigureAwait(false);
+var resultComplex = await kernel.InvokePromptAsync(promptComplex, new(executionSettings));
 Console.WriteLine($"\n\n{promptComplex}\n{resultComplex}");
 
 var promptAzureDevops =
     """
     For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.
     """;
-var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings)).ConfigureAwait(false);
+var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings));
 Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
 //var promptReadFile = "Use the edit_file tool to set all tasks as done in the Tasklist.md file. Read the file before updating it.";
-//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
+//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings));
 //Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 // var promptReadFile = "Convert the file '/workdir/CV.docx' to Markdown.";
 //var promptReadFile = "Convert the file 'CV.docx' to Text."; //
-//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings)).ConfigureAwait(false);
+//var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings));
 //Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
 var promptGitHub = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
-var resultGitHub = await kernel.InvokePromptAsync(promptGitHub, new(executionSettings)).ConfigureAwait(false);
+var resultGitHub = await kernel.InvokePromptAsync(promptGitHub, new(executionSettings));
 Console.WriteLine($"\n\n{promptGitHub}\n{resultGitHub}");
 
-await cts.CancelAsync().ConfigureAwait(false);
-cts.Dispose();
+await cts.CancelAsync();
