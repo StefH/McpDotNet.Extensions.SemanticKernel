@@ -1,3 +1,7 @@
+# 0.7.0 (24 January 2026)
+- [#42](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/42) - Upgrade dependencies + refactor tool arguments [enhancement] contributed by [StefH](https://github.com/StefH)
+- [#22](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/issues/22) - When the input parameter is a class, it will cause the request to fail [bug]
+
 # 0.6.1 (29 November 2025)
 - [#41](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/41) - Upgrade dependencies [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#40](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/issues/40) - Unable to remove MCP functions from Kernel.Plugins without breaking function calling
