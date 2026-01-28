@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.7.0</Version>
+    <Version>0.7.1</Version>
     <PackageId>Stef.ModelContextProtocol.SemanticKernel</PackageId>
     <RootNamespace>ModelContextProtocol.SemanticKernel</RootNamespace>
     <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>

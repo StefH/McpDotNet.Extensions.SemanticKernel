@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>0.0.3</Version>
+		<Version>0.0.4</Version>
 		<PackageId>Stef.ModelContextProtocol.Schema</PackageId>
 		<RootNamespace>ModelContextProtocol.Schema</RootNamespace>
 		<TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>

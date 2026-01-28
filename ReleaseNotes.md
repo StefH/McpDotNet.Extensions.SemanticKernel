@@ -1,3 +1,6 @@
+# 0.7.1 (28 January 2026)
+- [#43](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/43) - Upgrade ModelContextProtocol to 0.7.0-preview.1 [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.7.0 (24 January 2026)
 - [#42](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/42) - Upgrade dependencies + refactor tool arguments [enhancement] contributed by [StefH](https://github.com/StefH)
 - [#22](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/issues/22) - When the input parameter is a class, it will cause the request to fail [bug]
