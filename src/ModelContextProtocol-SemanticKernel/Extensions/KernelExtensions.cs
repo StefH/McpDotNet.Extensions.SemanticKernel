@@ -301,7 +301,8 @@ public static class KernelExtensions
         {
             Endpoint = options.Endpoint,
             AdditionalHeaders = options.AdditionalHeaders,
-            Name = clientOptions.ClientInfo?.Name
+            Name = clientOptions.ClientInfo?.Name,
+            TransportMode = options.TransportMode
         };
 
         var clientTransport = httpClient == null ? new HttpClientTransport(sseOptions, loggerFactory) : new HttpClientTransport(sseOptions, httpClient, loggerFactory);

@@ -9,12 +9,12 @@ namespace ModelContextProtocol.SemanticKernel.Tests;
 
 public sealed class SseTests
 {
-    [Fact(Skip = "Difficult to mock using WireMock.Net due to changing internal code from MCPClient")]
-    //[Fact]
+    [Fact]
     public async Task ListToolsAndCallTool()
     {
         // Arrange
-        var ct = TestContext.Current.CancellationToken;
+        var ct = GetCancellationToken();
+
         await using var tuple = await GetSseMcpClientAsync(ct);
         var mcpClient = tuple.Item1;
 
@@ -31,6 +31,14 @@ public sealed class SseTests
         commits.GetAllText().Should().Contain("229388090f50a39f489e30cb535f67f3705cf61f");
     }
 
+    private static CancellationToken GetCancellationToken()
+    {
+        var ctsTimeout = new CancellationTokenSource();
+        ctsTimeout.CancelAfter(TimeSpan.FromMinutes(1));
+
+        return CancellationTokenSource.CreateLinkedTokenSource(ctsTimeout.Token, TestContext.Current.CancellationToken).Token;
+    }
+
     private static async Task<AsyncDisposableTuple<McpClient, WireMockServer>> GetSseMcpClientAsync(CancellationToken cancellationToken)
     {
         var server = await InitWireMockServerAsync(cancellationToken);
@@ -44,7 +52,8 @@ public sealed class SseTests
         var sseOptions = new HttpClientTransportOptions
         {
             Endpoint = new Uri(server.Url!),
-            Name = "GitHub"
+            Name = "GitHub",
+            TransportMode = HttpTransportMode.Sse // Force the test client to use SSE transport to avoid Streamable HTTP auto-detect.
         };
         var clientTransport = new HttpClientTransport(sseOptions);
 
