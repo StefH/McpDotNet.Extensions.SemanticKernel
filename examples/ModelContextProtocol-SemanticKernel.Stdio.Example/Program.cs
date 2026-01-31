@@ -49,23 +49,23 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y",
 
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("gordon", "docker", ["ai", "mcpserver"], new Dictionary<string,string> { { "a", "b" } }, cancellationToken: cts.Token);
 
-var markitdownArguments = new[]
-{
-    "run",
+//var markitdownArguments = new[]
+//{
+//    "run",
 
-    // Automatically remove the container after it exits (no need to clean up manually).
-    "--rm",
+//    // Automatically remove the container after it exits (no need to clean up manually).
+//    "--rm",
 
-    // -i: Keep STDIN open (interactive mode)
-    "-i",
+//    // -i: Keep STDIN open (interactive mode)
+//    "-i",
 
-    // Mounts the local host directory C:\temp into the container at /workdir.
-    "-v",
-    "C:\\\\temp:/workdir",
+//    // Mounts the local host directory C:\temp into the container at /workdir.
+//    "-v",
+//    "C:\\\\temp:/workdir",
 
-    // The name (and tag) of the Docker image to use.
-    "sheyenrath/markitdown-mcp:latest"
-};
+//    // The name (and tag) of the Docker image to use.
+//    "sheyenrath/markitdown-mcp:latest"
+//};
 //await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("MarkItDown-MCP", "docker", markitdownArguments, Environment.GetEnvironmentVariables(), cancellationToken: cts.Token);
 
 var executionSettings = new OpenAIPromptExecutionSettings
@@ -80,7 +80,7 @@ var result = await kernel.InvokePromptAsync("Which tools are currently registere
 Console.WriteLine($"\n\nTools:\n{result}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
-//var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings)).ConfigureAwait(false);
+//var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings));
 //Console.WriteLine($"\n\n{prompt1}\n{result1}");
 
 var promptComplex = "Use the Everything tool and call the add_complex function to add these complex numbers: 1 + 2i and 3 - 7i";
