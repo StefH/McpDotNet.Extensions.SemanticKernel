@@ -1,3 +1,6 @@
+# 0.7.2 (01 February 2026)
+- [#44](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/44) - Add TransportMode to ModelContextProtocolSemanticKernelSseOptions + fix SSE example + unittest [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.7.1 (28 January 2026)
 - [#43](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/43) - Upgrade ModelContextProtocol to 0.7.0-preview.1 [enhancement] contributed by [StefH](https://github.com/StefH)
 
