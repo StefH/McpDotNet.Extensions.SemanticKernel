@@ -20,17 +20,17 @@ builder.Services.AddOpenAIChatCompletion(
 
 var kernel = builder.Build();
 
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
-    "AzureDevOpsStef",
-    "dotnet run --project",
-    [@"C:\dev\GitHub\mcpserver.azuredevops\src\mcpserver.azuredevops.stdio\mcpserver.azuredevops.stdio.csproj"],
-    new Dictionary<string, string>
-    {
-        { "AZURE_DEVOPS_ORG_URL", "https://dev.azure.com/alfa1group" },
-        { "AZURE_DEVOPS_AUTH_METHOD", "pat" },
-        { "AZURE_DEVOPS_PAT", Environment.GetEnvironmentVariable("AZURE_DEVOPS_PAT")! }
-    },
-    cancellationToken: cts.Token);
+//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
+//    "AzureDevOpsStef",
+//    "dotnet run --project",
+//    [@"C:\dev\GitHub\mcpserver.azuredevops\src\mcpserver.azuredevops.stdio\mcpserver.azuredevops.stdio.csproj"],
+//    new Dictionary<string, string>
+//    {
+//        { "AZURE_DEVOPS_ORG_URL", "https://dev.azure.com/alfa1group" },
+//        { "AZURE_DEVOPS_AUTH_METHOD", "pat" },
+//        { "AZURE_DEVOPS_PAT", Environment.GetEnvironmentVariable("AZURE_DEVOPS_PAT")! }
+//    },
+//    cancellationToken: cts.Token);
 
 // await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Filesystem", "npx", ["-y", "@modelcontextprotocol/server-filesystem", currentPath], cancellationToken: cts.Token);
 
@@ -39,11 +39,11 @@ await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync(
 // IDictionary everything1 = new Dictionary<string, string> { { "e", "x" } };
 // await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything1", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything1, cancellationToken: cts.Token);
 
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "dnx", ["--yes", "mcpserver.everything.stdio"], cancellationToken: cts.Token);
+await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("Everything", "dnx", ["--yes", "mcpserver.everything.stdio@0.7.0-preview-01"], cancellationToken: cts.Token);
 
-//await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("mcpserver.everything.stdio", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything2, cancellationToken: cts.Token);
+// await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("mcpserver.everything.stdio", "npx", ["-y", "@modelcontextprotocol/server-everything"], everything2, cancellationToken: cts.Token);
 
-await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
+// await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("GitHub", "npx", ["-y", "@modelcontextprotocol/server-github"], cancellationToken: cts.Token);
 
 // await kernel.Plugins.AddMcpFunctionsFromStdioServerAsync("OpenXML", "dnx", ["--yes", "mcpserver.openxml@0.4.0-preview-05", "--allowedPath=c:\\Temp"], cancellationToken: cts.Token);
 
@@ -76,23 +76,23 @@ var executionSettings = new OpenAIPromptExecutionSettings
 
 var logger = kernel.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Program");
 
-var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings));
-Console.WriteLine($"\n\nTools:\n{result}");
+//var result = await kernel.InvokePromptAsync("Which tools are currently registered? And what are the functions?", new(executionSettings));
+//Console.WriteLine($"\n\nTools:\n{result}");
 
 //var prompt1 = "Please call the echo tool with the string 'Hello Stef!' and give me the response as-is.";
 //var result1 = await kernel.InvokePromptAsync(prompt1, new(executionSettings));
 //Console.WriteLine($"\n\n{prompt1}\n{result1}");
 
-var promptComplex = "Use the Everything tool and call the add_complex function to add these complex numbers: 1 + 2i and 3 - 7i";
+var promptComplex = "Add these complex numbers: 1 + 2i and 3 - 7i";
 var resultComplex = await kernel.InvokePromptAsync(promptComplex, new(executionSettings));
 Console.WriteLine($"\n\n{promptComplex}\n{resultComplex}");
 
-var promptAzureDevops =
-    """
-    For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.
-    """;
-var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings));
-Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
+//var promptAzureDevops =
+//    """
+//    For the Azure Devops project 'mstack-skills' and repository 'mstack-skills-blazor', get 2 latest commits with all details.
+//    """;
+//var resultAzureDevops = await kernel.InvokePromptAsync(promptAzureDevops, new(executionSettings));
+//Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 
 //var promptReadFile = "Use the edit_file tool to set all tasks as done in the Tasklist.md file. Read the file before updating it.";
 //var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings));
@@ -103,8 +103,8 @@ Console.WriteLine($"\n\n{promptAzureDevops}\n{resultAzureDevops}");
 //var resultReadFile = await kernel.InvokePromptAsync(promptReadFile, new(executionSettings));
 //Console.WriteLine($"\n\n{promptReadFile}\n{resultReadFile}");
 
-var promptGitHub = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
-var resultGitHub = await kernel.InvokePromptAsync(promptGitHub, new(executionSettings));
-Console.WriteLine($"\n\n{promptGitHub}\n{resultGitHub}");
+//var promptGitHub = "Summarize the last 3 commits to the StefH/FluentBuilder repository.";
+//var resultGitHub = await kernel.InvokePromptAsync(promptGitHub, new(executionSettings));
+//Console.WriteLine($"\n\n{promptGitHub}\n{resultGitHub}");
 
 await cts.CancelAsync();

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using AwesomeAssertions;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
@@ -44,6 +45,7 @@ public sealed class StdioIntegrationTests
 
         // Assert
         result.GetAllText().Should().Be(expectedResult);
+        result.StructuredContent.Should().BeNull();
     }
 
     [Fact]
@@ -66,7 +68,9 @@ public sealed class StdioIntegrationTests
         var result = await mcpClient.CallToolAsync(tool.Name, arguments, cancellationToken: ct);
 
         // Assert
-        result.GetAllText().Should().Be("The sum of 1 + 2i and 9 - 7i is 10 - 5i.");
+        var expectedJson = "{\u0022real\u0022:10,\u0022imaginary\u0022:-5}";
+        result.GetAllText().Should().Be(expectedJson);
+        JsonNode.DeepEquals(result.StructuredContent, JsonNode.Parse(expectedJson)).Should().BeTrue();
     }
 
     private static Task<McpClient> GetStdioEveryThingMcpClientAsync(CancellationToken cancellationToken)
