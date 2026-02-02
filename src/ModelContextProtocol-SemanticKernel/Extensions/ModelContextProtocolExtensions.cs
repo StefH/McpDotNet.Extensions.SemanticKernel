@@ -61,7 +61,7 @@ internal static class ModelContextProtocolExtensions
                     return result.StructuredContent;
                 }
 
-                // Eslse extract all text content from the result
+                // Else extract all text content from the result
                 return result.GetAllText();
             }
             catch (Exception ex)
