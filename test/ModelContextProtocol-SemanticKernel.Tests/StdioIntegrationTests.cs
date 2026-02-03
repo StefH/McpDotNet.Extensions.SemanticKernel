@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using AwesomeAssertions;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
@@ -6,17 +7,32 @@ using ModelContextProtocol.SemanticKernel.Types;
 
 namespace ModelContextProtocol.SemanticKernel.Tests;
 
-public sealed class StdioIntegrationTests
+public sealed class StdioIntegrationTests : IDisposable
 {
+    private readonly CancellationTokenSource _cts;
+
+    public StdioIntegrationTests()
+    {
+        using var ctsTimeout = new CancellationTokenSource();
+        ctsTimeout.CancelAfter(TimeSpan.FromMinutes(1));
+
+        _cts = CancellationTokenSource.CreateLinkedTokenSource(ctsTimeout.Token, TestContext.Current.CancellationToken);
+    }
+
+    public void Dispose()
+    {
+        _cts.Cancel();
+        _cts.Dispose();
+    }
+
     [Fact]
     public async Task ListTools()
     {
         // Arrange
-        var ct = TestContext.Current.CancellationToken;
-        await using var mcpClient = await GetStdioEveryThingMcpClientAsync(ct);
+        await using var mcpClient = await GetStdioEveryThingMcpClientAsync(_cts.Token);
 
         // Act
-        var tools = await mcpClient.ListToolsAsync(cancellationToken: ct);
+        var tools = await mcpClient.ListToolsAsync(cancellationToken: _cts.Token);
 
         // Assert
         tools.Select(t => t.Name).Should().BeEquivalentTo("add", "echo", "add_complex");
@@ -28,10 +44,9 @@ public sealed class StdioIntegrationTests
     public async Task CallTool(string toolName, object[] args, string expectedResult)
     {
         // Arrange
-        var ct = TestContext.Current.CancellationToken;
-        await using var mcpClient = await GetStdioEveryThingMcpClientAsync(ct);
+        await using var mcpClient = await GetStdioEveryThingMcpClientAsync(_cts.Token);
 
-        var tool = (await mcpClient.ListToolsAsync(cancellationToken: ct)).First(t => t.Name == toolName);
+        var tool = (await mcpClient.ListToolsAsync(cancellationToken: _cts.Token)).First(t => t.Name == toolName);
         var parameterNames = ToParameterNames(tool);
         var arguments = new Dictionary<string, object?>();
         for (var i = 0; i < args.Length; i++)
@@ -40,20 +55,20 @@ public sealed class StdioIntegrationTests
         }
 
         // Act
-        var result = await mcpClient.CallToolAsync(tool.Name, arguments, cancellationToken: ct);
+        var result = await mcpClient.CallToolAsync(tool.Name, arguments, cancellationToken: _cts.Token);
 
         // Assert
         result.GetAllText().Should().Be(expectedResult);
+        result.StructuredContent.Should().BeNull();
     }
 
     [Fact]
     public async Task CallToolWithComplexArguments()
     {
         // Arrange
-        var ct = TestContext.Current.CancellationToken;
-        await using var mcpClient = await GetStdioEveryThingMcpClientAsync(ct);
+        await using var mcpClient = await GetStdioEveryThingMcpClientAsync(_cts.Token);
 
-        var tool = (await mcpClient.ListToolsAsync(cancellationToken: ct)).First(t => t.Name == "add_complex");
+        var tool = (await mcpClient.ListToolsAsync(cancellationToken: _cts.Token)).First(t => t.Name == "add_complex");
         var parameterNames = ToParameterNames(tool);
 
         var arguments = new Dictionary<string, object?>
@@ -63,10 +78,12 @@ public sealed class StdioIntegrationTests
         };
 
         // Act
-        var result = await mcpClient.CallToolAsync(tool.Name, arguments, cancellationToken: ct);
+        var result = await mcpClient.CallToolAsync(tool.Name, arguments, cancellationToken: _cts.Token);
 
         // Assert
-        result.GetAllText().Should().Be("The sum of 1 + 2i and 9 - 7i is 10 - 5i.");
+        var expectedJson = """{"real":10,"imaginary":-5}""";
+        result.GetAllText().Should().Be(expectedJson);
+        JsonNode.DeepEquals(result.StructuredContent, JsonNode.Parse(expectedJson)).Should().BeTrue();
     }
 
     private static Task<McpClient> GetStdioEveryThingMcpClientAsync(CancellationToken cancellationToken)

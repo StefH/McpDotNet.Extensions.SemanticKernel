@@ -30,7 +30,7 @@ internal static class ModelContextProtocolExtensions
 
     private static KernelFunction ToKernelFunction(this McpClientTool tool, McpClient mcpClient)
     {
-        async Task<string> InvokeToolAsync(Kernel kernel, KernelFunction function, KernelArguments arguments, CancellationToken ct)
+        async Task<object> InvokeToolAsync(Kernel kernel, KernelFunction function, KernelArguments arguments, CancellationToken ct)
         {
             try
             {
@@ -55,7 +55,13 @@ internal static class ModelContextProtocolExtensions
                 };
                 var result = await mcpClient.CallToolAsync(callToolRequest, ct).ConfigureAwait(false);
 
-                // Extract the text content from the result
+                if (result.StructuredContent != null)
+                {
+                    // If structured content is available, return it as a JsonElement
+                    return result.StructuredContent;
+                }
+
+                // Else extract all text content from the result
                 return result.GetAllText();
             }
             catch (Exception ex)
@@ -72,7 +78,7 @@ internal static class ModelContextProtocolExtensions
             functionName: tool.Name,
             description: tool.Description,
             parameters: tool.ToParameters(),
-            returnParameter: ToReturnParameter()
+            returnParameter: tool.ToReturnParameter()
         );
     }
 
@@ -149,11 +155,19 @@ internal static class ModelContextProtocolExtensions
         }
     }
 
-    private static KernelReturnParameterMetadata ToReturnParameter()
+    private static KernelReturnParameterMetadata ToReturnParameter(this McpClientTool tool)
     {
+        if (tool.ReturnJsonSchema == null)
+        {
+            return new KernelReturnParameterMetadata
+            {
+                ParameterType = typeof(string) // Assume string if no return schema is defined
+            };
+        }
+
         return new KernelReturnParameterMetadata
         {
-            ParameterType = typeof(string)
+            Schema = KernelJsonSchema.Parse(tool.ReturnJsonSchema.Value.ToString()),
         };
     }
 
