@@ -7,7 +7,7 @@ using ModelContextProtocol.SemanticKernel.Types;
 
 namespace ModelContextProtocol.SemanticKernel.Tests;
 
-public sealed class StdioIntegrationTests
+public sealed class StdioIntegrationTests : IDisposable
 {
     private readonly CancellationTokenSource _cts;
 
@@ -17,6 +17,12 @@ public sealed class StdioIntegrationTests
         ctsTimeout.CancelAfter(TimeSpan.FromMinutes(1));
 
         _cts = CancellationTokenSource.CreateLinkedTokenSource(ctsTimeout.Token, TestContext.Current.CancellationToken);
+    }
+
+    public void Dispose()
+    {
+        _cts.Cancel();
+        _cts.Dispose();
     }
 
     [Fact]
