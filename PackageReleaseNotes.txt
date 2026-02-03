@@ -1,4 +1,4 @@
-# 0.7.2 (01 February 2026)
-- #44 Add TransportMode to ModelContextProtocolSemanticKernelSseOptions + fix SSE example + unittest [enhancement]
+# 0.8.0 (03 February 2026)
+- #45 Add support for structured output [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md
