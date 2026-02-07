@@ -1,3 +1,6 @@
+# 0.8.1 (07 February 2026)
+- [#46](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/46) - Upgrade ModelContextProtocol to 0.8.0-preview.1 [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.8.0 (03 February 2026)
 - [#45](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/45) - Add support for structured output [enhancement] contributed by [StefH](https://github.com/StefH)
 
