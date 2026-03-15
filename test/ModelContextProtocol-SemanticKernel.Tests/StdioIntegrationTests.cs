@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using AwesomeAssertions;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
@@ -83,7 +82,8 @@ public sealed class StdioIntegrationTests : IDisposable
         // Assert
         var expectedJson = """{"real":10,"imaginary":-5}""";
         result.GetAllText().Should().Be(expectedJson);
-        JsonNode.DeepEquals(result.StructuredContent, JsonNode.Parse(expectedJson)).Should().BeTrue();
+        result.StructuredContent.Should().NotBeNull();
+        JsonElement.DeepEquals(result.StructuredContent.Value, JsonElement.Parse(expectedJson)).Should().BeTrue();
     }
 
     private static Task<McpClient> GetStdioEveryThingMcpClientAsync(CancellationToken cancellationToken)
