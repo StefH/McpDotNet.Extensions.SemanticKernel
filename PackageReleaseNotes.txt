@@ -1,4 +1,4 @@
-# 0.8.1 (07 February 2026)
-- #46 Upgrade ModelContextProtocol to 0.8.0-preview.1 [enhancement]
+# 0.9.0 (15 March 2026)
+- #47 Upgrade ModelContextProtocol to 1.1.0 [enhancement]
 
 The full release notes can be found here: https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/blob/main/ReleaseNotes.md
