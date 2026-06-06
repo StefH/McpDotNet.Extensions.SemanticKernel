@@ -1,3 +1,6 @@
+# 0.10.0 (06 June 2026)
+- [#48](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/48) - Upgrade ModelContextProtocol to 1.4.0 [enhancement] contributed by [StefH](https://github.com/StefH)
+
 # 0.9.0 (15 March 2026)
 - [#47](https://github.com/StefH/McpDotNet.Extensions.SemanticKernel/pull/47) - Upgrade ModelContextProtocol to 1.1.0 [enhancement] contributed by [StefH](https://github.com/StefH)
 
